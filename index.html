@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mi Biblioteca de Fanfics</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#f8fafc">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --accent: #eef2ff;
+      --tag-bg: #f1f5f9;
+      --tag-text: #475569;
+      --ao3: #990000;
+      --ffnet: #1e3a8a;
+      --fav: #eab308;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 16px 14px 80px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    /* Cabecera */
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .badge-fics {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      background: var(--accent);
+      color: var(--primary);
+      padding: 4px 12px;
+      border-radius: 99px;
+      margin-bottom: 6px;
+    }
+
+    h1 {
+      font-size: 1.55rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.4px;
+    }
+
+    /* Buscador */
+    .search-box {
+      position: sticky;
+      top: 10px;
+      z-index: 20;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 11px 15px;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .search-box:focus-within {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    }
+
+    .search-input {
+      border: none;
+      outline: none;
+      width: 100%;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: var(--text);
+      background: transparent;
+    }
+
+    .btn-clear {
+      border: none;
+      background: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 1rem;
+      display: none;
+      padding: 2px 6px;
+    }
+
+    /* Filtros por pestaña */
+    .filter-chips {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 14px;
+      scrollbar-width: none;
+    }
+
+    .filter-chips::-webkit-scrollbar {
+      display: none;
+    }
+
+    .chip {
+      border: 1px solid var(--border);
+      background: #ffffff;
+      padding: 6px 12px;
+      border-radius: 99px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+
+    .chip.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    /* Acciones */
+    .actions-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 12px;
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: 0.82rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: inherit;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn:active {
+      transform: scale(0.94);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+    }
+
+    .btn-primary:active {
+      background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      color: var(--text);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    }
+
+    /* Tarjetas de Fic */
+    .fic-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .fic-card {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .fic-title-group {
+      flex: 1;
+    }
+
+    .fic-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.3;
+      margin-bottom: 3px;
+    }
+
+    .fic-author {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .badge-platform {
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-platform.ao3 { background: #fee2e2; color: var(--ao3); border: 1px solid #fca5a5; }
+    .badge-platform.ffnet { background: #dbeafe; color: var(--ffnet); border: 1px solid #bfdbfe; }
+    .badge-platform.wattpad { background: #ffedd5; color: #c2410c; border: 1px solid #fed7aa; }
+    .badge-platform.otro { background: #f1f5f9; color: var(--text-muted); border: 1px solid var(--border); }
+
+    .fic-meta-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .pill-fandom {
+      background: #fdf2f8;
+      color: #be185d;
+      border: 1px solid #fbcfe8;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 99px;
+    }
+
+    .pill-ship {
+      background: #f0fdf4;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 99px;
+    }
+
+    .pill-status {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 99px;
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      border: 1px solid var(--border);
+    }
+
+    .pill-fav {
+      background: #fefce8;
+      color: #a16207;
+      border: 1px solid #fef08a;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 99px;
+    }
+
+    .fic-tags {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .fic-notes {
+      background: #f8fafc;
+      border-left: 3px solid var(--primary);
+      padding: 8px 12px;
+      border-radius: 0 10px 10px 0;
+      font-size: 0.8rem;
+      color: #334155;
+      font-style: italic;
+    }
+
+    .card-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 8px;
+      border-top: 1px dashed var(--border);
+    }
+
+    .btn-link {
+      background: var(--primary);
+      color: #ffffff;
+      padding: 6px 14px;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: transform 0.1s ease;
+    }
+
+    .btn-link:active {
+      transform: scale(0.95);
+    }
+
+    .btn-icon {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px 8px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      border-radius: 8px;
+    }
+
+    .btn-icon:hover {
+      background: #e2e8f0;
+      color: var(--text);
+    }
+
+    /* Modal a prueba de teclado */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.45);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      z-index: 100;
+      padding: 20px 14px 40px;
+      overflow-y: auto;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal {
+      background: #ffffff;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 440px;
+      padding: 22px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.16);
+      transform: translateY(16px) scale(0.96);
+      transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+      margin-top: 24px;
+    }
+
+    .modal-overlay.active .modal {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal h3 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+    }
+
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      outline: none;
+      color: var(--text);
+      background: #fff;
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <span class="badge-fics">Catálogo Personal</span>
+      <h1>Mis Fanfics</h1>
+    </div>
+
+    <!-- Buscador Global -->
+    <div class="search-box">
+      <span>🔍</span>
+      <input type="text" id="busqueda" class="search-input" placeholder="Buscar por título, fandom, ship, tropo o recuerdo...">
+      <button id="btn-limpiar" class="btn-clear">✕</button>
+    </div>
+
+    <!-- Filtros rápidos por estado -->
+    <div class="filter-chips">
+      <div class="chip active" onclick="filtrarEstado('todos', this)">Todos</div>
+      <div class="chip" onclick="filtrarEstado('fav', this)">★ Favoritos</div>
+      <div class="chip" onclick="filtrarEstado('leyendo', this)">📖 Leyendo</div>
+      <div class="chip" onclick="filtrarEstado('por_leer', this)">⏳ Por leer</div>
+      <div class="chip" onclick="filtrarEstado('completado', this)">✅ Completados</div>
+    </div>
+
+    <div class="actions-row">
+      <button class="btn btn-primary" onclick="abrirModalFic()">+ Agregar Fanfic</button>
+      <div style="display: flex; gap: 6px;">
+        <button class="btn btn-secondary" id="btn-exportar">💾 Respaldar</button>
+        <button class="btn btn-secondary" id="btn-importar">📂 Cargar</button>
+        <input type="file" id="file-input" style="display: none;" accept=".json">
+      </div>
+    </div>
+
+    <div id="contenedor-fics" class="fic-list"></div>
+  </div>
+
+  <!-- Modal Fanfic -->
+  <div class="modal-overlay" id="modal-fic" onclick="cerrarSiFondo(event)">
+    <div class="modal">
+      <h3 id="modal-fic-titulo">Agregar Fanfic</h3>
+
+      <div class="form-group">
+        <label class="form-label">Título del Fanfic *</label>
+        <input type="text" id="fic-titulo" class="form-input" placeholder="Ej: Pasado imperfecto">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Autor(a)</label>
+          <input type="text" id="fic-autor" class="form-input" placeholder="Ej: MoonWriter">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Plataforma</label>
+          <select id="fic-plataforma" class="form-select">
+            <option value="ao3">AO3</option>
+            <option value="ffnet">FanFiction.net</option>
+            <option value="wattpad">Wattpad</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Enlace URL directo *</label>
+        <input type="url" id="fic-url" class="form-input" placeholder="https://archiveofourown.org/works/...">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Fandom / Universo</label>
+          <input type="text" id="fic-fandom" class="form-input" placeholder="Ej: Kimetsu no Yaiba, TCF...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Pareja / Personajes (Ship)</label>
+          <input type="text" id="fic-ship" class="form-input" placeholder="Ej: Giyuu & Tanjiro, Gen">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Estado de lectura</label>
+          <select id="fic-estado" class="form-select">
+            <option value="leyendo">📖 Leyendo</option>
+            <option value="por_leer">⏳ Por leer</option>
+            <option value="completado">✅ Completado</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">¿Es favorito?</label>
+          <select id="fic-fav" class="form-select">
+            <option value="no">Normal</option>
+            <option value="si">★ Favorito inolvidable</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Tropes / Etiquetas clave</label>
+        <input type="text" id="fic-tags" class="form-input" placeholder="Ej: Time travel, Fix-it, Hurt/Comfort, Canon divergence">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">"De qué iba" / Notas de recuerdo</label>
+        <textarea id="fic-notas" class="form-textarea" placeholder="Escribe el detalle que siempre recuerdas: ej. Aquel donde viaja al pasado y despierta en el tren..."></textarea>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="cerrarModales()">Cancelar</button>
+        <button class="btn btn-primary" id="btn-guardar-fic">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let db = JSON.parse(localStorage.getItem('biblioteca_fics') || '[]');
+    let activoId = null;
+    let estadoFiltroActual = 'todos';
+
+    function vibrar() {
+      if (navigator.vibrate) navigator.vibrate(10);
+    }
+
+    function guardar() {
+      localStorage.setItem('biblioteca_fics', JSON.stringify(db));
+      renderizar();
+    }
+
+    function renderizar() {
+      const cont = document.getElementById('contenedor-fics');
+      cont.innerHTML = '';
+
+      const query = document.getElementById('busqueda').value.toLowerCase().trim();
+
+      // Filtrar por texto y por estado
+      const filtrados = db.filter(fic => {
+        const coincideEstado = (estadoFiltroActual === 'todos') ||
+                               (estadoFiltroActual === 'fav' && fic.fav === 'si') ||
+                               (fic.estado === estadoFiltroActual);
+
+        if (!coincideEstado) return false;
+
+        if (!query) return true;
+
+        const enTitulo = (fic.titulo || '').toLowerCase().includes(query);
+        const enAutor = (fic.autor || '').toLowerCase().includes(query);
+        const enFandom = (fic.fandom || '').toLowerCase().includes(query);
+        const enShip = (fic.ship || '').toLowerCase().includes(query);
+        const enTags = (fic.tags || '').toLowerCase().includes(query);
+        const enNotas = (fic.notas || '').toLowerCase().includes(query);
+
+        return enTitulo || enAutor || enFandom || enShip || enTags || enNotas;
+      });
+
+      if (filtrados.length === 0) {
+        cont.innerHTML = `<div style="text-align:center;color:var(--text-muted);padding:50px 0;font-size:0.9rem;">
+          ${db.length === 0 ? 'No tienes fanfics guardados todavía.<br>Toca <b>+ Agregar Fanfic</b> para registrar el primero.' : 'No se encontraron fics con ese filtro.'}
+        </div>`;
+        return;
+      }
+
+      filtrados.forEach(fic => {
+        const div = document.createElement('div');
+        div.className = 'fic-card';
+
+        const labelEstado = {
+          'leyendo': '📖 Leyendo',
+          'por_leer': '⏳ Por leer',
+          'completado': '✅ Completado'
+        }[fic.estado] || '📖 Leyendo';
+
+        div.innerHTML = `
+          <div class="card-top">
+            <div class="fic-title-group">
+              <div class="fic-title">${fic.titulo}</div>
+              ${fic.autor ? `<div class="fic-author">por ${fic.autor}</div>` : ''}
+            </div>
+            <span class="badge-platform ${fic.plataforma || 'ao3'}">${fic.plataforma || 'ao3'}</span>
+          </div>
+
+          <div class="fic-meta-pills">
+            ${fic.fav === 'si' ? `<span class="pill-fav">★ Favorito</span>` : ''}
+            <span class="pill-status">${labelEstado}</span>
+            ${fic.fandom ? `<span class="pill-fandom">${fic.fandom}</span>` : ''}
+            ${fic.ship ? `<span class="pill-ship">${fic.ship}</span>` : ''}
+          </div>
+
+          ${fic.tags ? `<div class="fic-tags"><b>Tropes:</b> ${fic.tags}</div>` : ''}
+          ${fic.notas ? `<div class="fic-notes">"${fic.notas}"</div>` : ''}
+
+          <div class="card-actions">
+            ${fic.url ? `<a href="${fic.url}" target="_blank" rel="noopener noreferrer" class="btn-link">🔗 Leer Fic</a>` : '<span></span>'}
+            <div>
+              <button class="btn-icon" onclick="editarFic('${fic.id}')">✎</button>
+              <button class="btn-icon" onclick="eliminarFic('${fic.id}')">🗑</button>
+            </div>
+          </div>
+        `;
+        cont.appendChild(div);
+      });
+    }
+
+    function filtrarEstado(estado, el) {
+      vibrar();
+      estadoFiltroActual = estado;
+      document.querySelectorAll('.filter-chips .chip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      renderizar();
+    }
+
+    function abrirModalFic() {
+      vibrar();
+      activoId = null;
+      document.getElementById('modal-fic-titulo').textContent = 'Agregar Fanfic';
+      document.getElementById('fic-titulo').value = '';
+      document.getElementById('fic-autor').value = '';
+      document.getElementById('fic-plataforma').value = 'ao3';
+      document.getElementById('fic-url').value = '';
+      document.getElementById('fic-fandom').value = '';
+      document.getElementById('fic-ship').value = '';
+      document.getElementById('fic-estado').value = 'leyendo';
+      document.getElementById('fic-fav').value = 'no';
+      document.getElementById('fic-tags').value = '';
+      document.getElementById('fic-notas').value = '';
+
+      document.getElementById('modal-fic').classList.add('active');
+      setTimeout(() => document.getElementById('fic-titulo').focus(), 150);
+    }
+
+    function editarFic(id) {
+      vibrar();
+      activoId = id;
+      const fic = db.find(x => x.id === id);
+      document.getElementById('modal-fic-titulo').textContent = 'Editar Fanfic';
+      document.getElementById('fic-titulo').value = fic.titulo;
+      document.getElementById('fic-autor').value = fic.autor || '';
+      document.getElementById('fic-plataforma').value = fic.plataforma || 'ao3';
+      document.getElementById('fic-url').value = fic.url || '';
+      document.getElementById('fic-fandom').value = fic.fandom || '';
+      document.getElementById('fic-ship').value = fic.ship || '';
+      document.getElementById('fic-estado').value = fic.estado || 'leyendo';
+      document.getElementById('fic-fav').value = fic.fav || 'no';
+      document.getElementById('fic-tags').value = fic.tags || '';
+      document.getElementById('fic-notas').value = fic.notas || '';
+
+      document.getElementById('modal-fic').classList.add('active');
+      setTimeout(() => document.getElementById('fic-titulo').focus(), 150);
+    }
+
+    document.getElementById('btn-guardar-fic').onclick = () => {
+      const titulo = document.getElementById('fic-titulo').value.trim();
+      const url = document.getElementById('fic-url').value.trim();
+
+      if (!titulo) return alert('Por favor escribe al menos el título del fic');
+
+      vibrar();
+
+      const datos = {
+        titulo: titulo,
+        autor: document.getElementById('fic-autor').value.trim(),
+        plataforma: document.getElementById('fic-plataforma').value,
+        url: url,
+        fandom: document.getElementById('fic-fandom').value.trim(),
+        ship: document.getElementById('fic-ship').value.trim(),
+        estado: document.getElementById('fic-estado').value,
+        fav: document.getElementById('fic-fav').value,
+        tags: document.getElementById('fic-tags').value.trim(),
+        notas: document.getElementById('fic-notas').value.trim()
+      };
+
+      if (activoId) {
+        const fic = db.find(x => x.id === activoId);
+        Object.assign(fic, datos);
+      } else {
+        db.unshift({ id: 'f_' + Date.now(), ...datos });
+      }
+
+      cerrarModales();
+      guardar();
+    };
+
+    function eliminarFic(id) {
+      vibrar();
+      if (confirm('¿Eliminar este fanfic de tu lista?')) {
+        db = db.filter(x => x.id !== id);
+        guardar();
+      }
+    }
+
+    // Buscador interactivo
+    const inBusq = document.getElementById('busqueda');
+    const btnClr = document.getElementById('btn-limpiar');
+
+    inBusq.addEventListener('input', (e) => {
+      btnClr.style.display = e.target.value.trim() ? 'block' : 'none';
+      renderizar();
+    });
+
+    btnClr.onclick = () => {
+      inBusq.value = '';
+      btnClr.style.display = 'none';
+      renderizar();
+    };
+
+    function cerrarModales() {
+      document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+      activoId = null;
+    }
+
+    function cerrarSiFondo(e) {
+      if (e.target.classList.contains('modal-overlay')) cerrarModales();
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') cerrarModales();
+    });
+
+    // Respaldos JSON
+    document.getElementById('btn-exportar').onclick = () => {
+      vibrar();
+      const blob = new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `respaldo-fics-${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+    };
+
+    document.getElementById('btn-importar').onclick = () => {
+      vibrar();
+      document.getElementById('file-input').click();
+    };
+
+    document.getElementById('file-input').onchange = (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const r = new FileReader();
+      r.onload = (ev) => {
+        try {
+          db = JSON.parse(ev.target.result);
+          guardar();
+          alert('¡Fanfics cargados con éxito!');
+        } catch (err) {
+          alert('Archivo no válido.');
+        }
+      };
+      r.readAsText(file);
+    };
+
+    renderizar();
+  </script>
+</body>
+</html>
