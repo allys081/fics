@@ -18,11 +18,8 @@
       --primary: #6366f1;
       --primary-hover: #4f46e5;
       --accent: #eef2ff;
-      --tag-bg: #f1f5f9;
-      --tag-text: #475569;
       --ao3: #990000;
       --ffnet: #1e3a8a;
-      --fav: #eab308;
     }
 
     * {
@@ -48,7 +45,7 @@
     /* Cabecera */
     .header {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .badge-fics {
@@ -86,7 +83,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
@@ -115,7 +112,16 @@
       padding: 2px 6px;
     }
 
-    /* Filtros por pestaña */
+    /* Filtros por Categoría Temática */
+    .filter-section-title {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
     .filter-chips {
       display: flex;
       gap: 6px;
@@ -134,7 +140,7 @@
       background: #ffffff;
       padding: 6px 12px;
       border-radius: 99px;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 700;
       color: var(--text-muted);
       cursor: pointer;
@@ -193,7 +199,7 @@
       box-shadow: 0 2px 5px rgba(0,0,0,0.02);
     }
 
-    /* Tarjetas de Fic */
+    /* Tarjetas de Fanfic */
     .fic-list {
       display: flex;
       flex-direction: column;
@@ -277,16 +283,6 @@
       border-radius: 99px;
     }
 
-    .pill-status {
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 99px;
-      background: var(--tag-bg);
-      color: var(--tag-text);
-      border: 1px solid var(--border);
-    }
-
     .pill-fav {
       background: #fefce8;
       color: #a16207;
@@ -297,11 +293,25 @@
       border-radius: 99px;
     }
 
-    .fic-tags {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      line-height: 1.4;
+    /* Estilos dinámicos para las etiquetas de temáticas */
+    .tag-bubble {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
+
+    .tag-suave { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+    .tag-angst { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+    .tag-dark { background: #475569; color: #ffffff; border: 1px solid #334155; }
+    .tag-largo { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+    .tag-oneshot { background: #faf5ff; color: #7e22ce; border: 1px solid #e9d5ff; }
+    .tag-timetravel { background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; }
+    .tag-au { background: #fdf2f8; color: #be185d; border: 1px solid #fbcfe8; }
+    .tag-humor { background: #fefce8; color: #854d0e; border: 1px solid #fef08a; }
 
     .fic-notes {
       background: #f8fafc;
@@ -332,7 +342,6 @@
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      transition: transform 0.1s ease;
     }
 
     .btn-link:active {
@@ -426,7 +435,7 @@
 
     .form-textarea {
       resize: vertical;
-      min-height: 60px;
+      min-height: 55px;
     }
 
     .form-input:focus, .form-select:focus, .form-textarea:focus {
@@ -438,6 +447,33 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
+    }
+
+    /* Selector de etiquetas en el modal */
+    .tag-selector-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .tag-btn {
+      border: 1.5px solid var(--border);
+      background: #f8fafc;
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s ease;
+    }
+
+    .tag-btn.selected {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
     }
 
     .modal-footer {
@@ -463,13 +499,19 @@
       <button id="btn-limpiar" class="btn-clear">✕</button>
     </div>
 
-    <!-- Filtros rápidos por estado -->
-    <div class="filter-chips">
-      <div class="chip active" onclick="filtrarEstado('todos', this)">Todos</div>
-      <div class="chip" onclick="filtrarEstado('fav', this)">★ Favoritos</div>
-      <div class="chip" onclick="filtrarEstado('leyendo', this)">📖 Leyendo</div>
-      <div class="chip" onclick="filtrarEstado('por_leer', this)">⏳ Por leer</div>
-      <div class="chip" onclick="filtrarEstado('completado', this)">✅ Completados</div>
+    <!-- Filtro de Categorías / Agrupaciones -->
+    <div class="filter-section-title">Filtrar por Etiqueta / Vibe:</div>
+    <div class="filter-chips" id="filtros-tags">
+      <div class="chip active" onclick="filtrarPorEtiqueta('todos', this)">Todas</div>
+      <div class="chip" onclick="filtrarPorEtiqueta('fav', this)">★ Favoritos</div>
+      <div class="chip" onclick="filtrarPorEtiqueta('suave', this)">🌸 Suave / Confort</div>
+      <div class="chip" onclick="filtrarPorEtiqueta('angst', this)">💔 Angustia / Angst</div>
+      <div class="chip" onclick="filtrarPorEtiqueta('dark', this)">⚠️ Oscuro / Heavy</div>
+      <div class="chip" onclick="filtrarPorEtiqueta('largo', this)">📖 Historias Largas</div>
+      <div class="chip" onclick="filtrarPorEtiqueta('oneshot', this)">⚡ 1 Capítulo / One-shot</div>
+      <div class="chip" onclick="filtrarPorEtiqueta('timetravel', this)">⏳ Viajes en el tiempo / Fix-it</div>
+      <div class="chip" onclick="filtrarPorEtiqueta('au', this)">✨ AU (Universo Alterno)</div>
+      <div class="chip" onclick="filtrarPorEtiqueta('humor', this)">😂 Comedia / Divertido</div>
     </div>
 
     <div class="actions-row">
@@ -526,15 +568,22 @@
         </div>
       </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Estado de lectura</label>
-          <select id="fic-estado" class="form-select">
-            <option value="leyendo">📖 Leyendo</option>
-            <option value="por_leer">⏳ Por leer</option>
-            <option value="completado">✅ Completado</option>
-          </select>
+      <!-- Selector visual de Categorías / Agrupaciones -->
+      <div class="form-group">
+        <label class="form-label">Etiquetas / Agrupación (Toca para seleccionar varias)</label>
+        <div class="tag-selector-grid" id="modal-tag-selector">
+          <div class="tag-btn" data-tag="suave" onclick="toggleModalTag('suave')">🌸 Suave / Confort</div>
+          <div class="tag-btn" data-tag="angst" onclick="toggleModalTag('angst')">💔 Angustia / Angst</div>
+          <div class="tag-btn" data-tag="dark" onclick="toggleModalTag('dark')">⚠️ Oscuro / Heavy</div>
+          <div class="tag-btn" data-tag="largo" onclick="toggleModalTag('largo')">📖 Historia Larga</div>
+          <div class="tag-btn" data-tag="oneshot" onclick="toggleModalTag('oneshot')">⚡ 1 Cap / One-shot</div>
+          <div class="tag-btn" data-tag="timetravel" onclick="toggleModalTag('timetravel')">⏳ Viaje en el tiempo / Fix-it</div>
+          <div class="tag-btn" data-tag="au" onclick="toggleModalTag('au')">✨ Universo Alterno (AU)</div>
+          <div class="tag-btn" data-tag="humor" onclick="toggleModalTag('humor')">😂 Comedia / Divertido</div>
         </div>
+      </div>
+
+      <div class="form-row">
         <div class="form-group">
           <label class="form-label">¿Es favorito?</label>
           <select id="fic-fav" class="form-select">
@@ -542,16 +591,15 @@
             <option value="si">★ Favorito inolvidable</option>
           </select>
         </div>
+        <div class="form-group">
+          <label class="form-label">Otros tropes libres (Opcional)</label>
+          <input type="text" id="fic-tags-extra" class="form-input" placeholder="Ej: Enemies to lovers, Amnesia">
+        </div>
       </div>
 
       <div class="form-group">
-        <label class="form-label">Tropes / Etiquetas clave</label>
-        <input type="text" id="fic-tags" class="form-input" placeholder="Ej: Time travel, Fix-it, Hurt/Comfort, Canon divergence">
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">"De qué iba" / Notas de recuerdo</label>
-        <textarea id="fic-notas" class="form-textarea" placeholder="Escribe el detalle que siempre recuerdas: ej. Aquel donde viaja al pasado y despierta en el tren..."></textarea>
+        <label class="form-label">"De qué iba" / Notas para recordar la trama</label>
+        <textarea id="fic-notas" class="form-textarea" placeholder="Aquel fic donde despierta en una cabaña y encuentra la carta..."></textarea>
       </div>
 
       <div class="modal-footer">
@@ -564,7 +612,19 @@
   <script>
     let db = JSON.parse(localStorage.getItem('biblioteca_fics') || '[]');
     let activoId = null;
-    let estadoFiltroActual = 'todos';
+    let etiquetaFiltroActual = 'todos';
+    let etiquetasSeleccionadasModal = new Set();
+
+    const mapaEtiquetas = {
+      'suave': { nombre: '🌸 Suave / Confort', clase: 'tag-suave' },
+      'angst': { nombre: '💔 Angustia', clase: 'tag-angst' },
+      'dark': { nombre: '⚠️ Oscuro / Heavy', clase: 'tag-dark' },
+      'largo': { nombre: '📖 Historia Larga', clase: 'tag-largo' },
+      'oneshot': { nombre: '⚡ 1 Capítulo', clase: 'tag-oneshot' },
+      'timetravel': { nombre: '⏳ Viaje / Fix-it', clase: 'tag-timetravel' },
+      'au': { nombre: '✨ AU', clase: 'tag-au' },
+      'humor': { nombre: '😂 Comedia', clase: 'tag-humor' }
+    };
 
     function vibrar() {
       if (navigator.vibrate) navigator.vibrate(10);
@@ -575,19 +635,37 @@
       renderizar();
     }
 
+    function toggleModalTag(tagKey) {
+      vibrar();
+      if (etiquetasSeleccionadasModal.has(tagKey)) {
+        etiquetasSeleccionadasModal.delete(tagKey);
+      } else {
+        etiquetasSeleccionadasModal.add(tagKey);
+      }
+      actualizarVisualModalTags();
+    }
+
+    function actualizarVisualModalTags() {
+      document.querySelectorAll('#modal-tag-selector .tag-btn').forEach(btn => {
+        const tag = btn.getAttribute('data-tag');
+        btn.classList.toggle('selected', etiquetasSeleccionadasModal.has(tag));
+      });
+    }
+
     function renderizar() {
       const cont = document.getElementById('contenedor-fics');
       cont.innerHTML = '';
 
       const query = document.getElementById('busqueda').value.toLowerCase().trim();
 
-      // Filtrar por texto y por estado
       const filtrados = db.filter(fic => {
-        const coincideEstado = (estadoFiltroActual === 'todos') ||
-                               (estadoFiltroActual === 'fav' && fic.fav === 'si') ||
-                               (fic.estado === estadoFiltroActual);
+        // Filtro por etiqueta seleccionada
+        const categoriasFic = fic.categorias || [];
+        const coincideEtiqueta = (etiquetaFiltroActual === 'todos') ||
+                                 (etiquetaFiltroActual === 'fav' && fic.fav === 'si') ||
+                                 (categoriasFic.includes(etiquetaFiltroActual));
 
-        if (!coincideEstado) return false;
+        if (!coincideEtiqueta) return false;
 
         if (!query) return true;
 
@@ -595,15 +673,15 @@
         const enAutor = (fic.autor || '').toLowerCase().includes(query);
         const enFandom = (fic.fandom || '').toLowerCase().includes(query);
         const enShip = (fic.ship || '').toLowerCase().includes(query);
-        const enTags = (fic.tags || '').toLowerCase().includes(query);
+        const enTagsExtra = (fic.tagsExtra || '').toLowerCase().includes(query);
         const enNotas = (fic.notas || '').toLowerCase().includes(query);
 
-        return enTitulo || enAutor || enFandom || enShip || enTags || enNotas;
+        return enTitulo || enAutor || enFandom || enShip || enTagsExtra || enNotas;
       });
 
       if (filtrados.length === 0) {
         cont.innerHTML = `<div style="text-align:center;color:var(--text-muted);padding:50px 0;font-size:0.9rem;">
-          ${db.length === 0 ? 'No tienes fanfics guardados todavía.<br>Toca <b>+ Agregar Fanfic</b> para registrar el primero.' : 'No se encontraron fics con ese filtro.'}
+          ${db.length === 0 ? 'No tienes fanfics guardados todavía.<br>Toca <b>+ Agregar Fanfic</b> para registrar el primero.' : 'No se encontraron fics con esa etiqueta o búsqueda.'}
         </div>`;
         return;
       }
@@ -612,11 +690,14 @@
         const div = document.createElement('div');
         div.className = 'fic-card';
 
-        const labelEstado = {
-          'leyendo': '📖 Leyendo',
-          'por_leer': '⏳ Por leer',
-          'completado': '✅ Completado'
-        }[fic.estado] || '📖 Leyendo';
+        // Burbujas de etiquetas temáticas
+        let tagsHTML = '';
+        (fic.categorias || []).forEach(tagKey => {
+          const info = mapaEtiquetas[tagKey];
+          if (info) {
+            tagsHTML += `<span class="tag-bubble ${info.clase}">${info.nombre}</span>`;
+          }
+        });
 
         div.innerHTML = `
           <div class="card-top">
@@ -629,12 +710,12 @@
 
           <div class="fic-meta-pills">
             ${fic.fav === 'si' ? `<span class="pill-fav">★ Favorito</span>` : ''}
-            <span class="pill-status">${labelEstado}</span>
             ${fic.fandom ? `<span class="pill-fandom">${fic.fandom}</span>` : ''}
             ${fic.ship ? `<span class="pill-ship">${fic.ship}</span>` : ''}
           </div>
 
-          ${fic.tags ? `<div class="fic-tags"><b>Tropes:</b> ${fic.tags}</div>` : ''}
+          ${tagsHTML ? `<div style="display:flex; flex-wrap:wrap; gap:5px;">${tagsHTML}</div>` : ''}
+          ${fic.tagsExtra ? `<div style="font-size:0.78rem; color:var(--text-muted);"><b>Tropes:</b> ${fic.tagsExtra}</div>` : ''}
           ${fic.notas ? `<div class="fic-notes">"${fic.notas}"</div>` : ''}
 
           <div class="card-actions">
@@ -649,10 +730,10 @@
       });
     }
 
-    function filtrarEstado(estado, el) {
+    function filtrarPorEtiqueta(etiqueta, el) {
       vibrar();
-      estadoFiltroActual = estado;
-      document.querySelectorAll('.filter-chips .chip').forEach(c => c.classList.remove('active'));
+      etiquetaFiltroActual = etiqueta;
+      document.querySelectorAll('#filtros-tags .chip').forEach(c => c.classList.remove('active'));
       el.classList.add('active');
       renderizar();
     }
@@ -660,6 +741,9 @@
     function abrirModalFic() {
       vibrar();
       activoId = null;
+      etiquetasSeleccionadasModal.clear();
+      actualizarVisualModalTags();
+
       document.getElementById('modal-fic-titulo').textContent = 'Agregar Fanfic';
       document.getElementById('fic-titulo').value = '';
       document.getElementById('fic-autor').value = '';
@@ -667,9 +751,8 @@
       document.getElementById('fic-url').value = '';
       document.getElementById('fic-fandom').value = '';
       document.getElementById('fic-ship').value = '';
-      document.getElementById('fic-estado').value = 'leyendo';
       document.getElementById('fic-fav').value = 'no';
-      document.getElementById('fic-tags').value = '';
+      document.getElementById('fic-tags-extra').value = '';
       document.getElementById('fic-notas').value = '';
 
       document.getElementById('modal-fic').classList.add('active');
@@ -680,6 +763,10 @@
       vibrar();
       activoId = id;
       const fic = db.find(x => x.id === id);
+
+      etiquetasSeleccionadasModal = new Set(fic.categorias || []);
+      actualizarVisualModalTags();
+
       document.getElementById('modal-fic-titulo').textContent = 'Editar Fanfic';
       document.getElementById('fic-titulo').value = fic.titulo;
       document.getElementById('fic-autor').value = fic.autor || '';
@@ -687,9 +774,8 @@
       document.getElementById('fic-url').value = fic.url || '';
       document.getElementById('fic-fandom').value = fic.fandom || '';
       document.getElementById('fic-ship').value = fic.ship || '';
-      document.getElementById('fic-estado').value = fic.estado || 'leyendo';
       document.getElementById('fic-fav').value = fic.fav || 'no';
-      document.getElementById('fic-tags').value = fic.tags || '';
+      document.getElementById('fic-tags-extra').value = fic.tagsExtra || '';
       document.getElementById('fic-notas').value = fic.notas || '';
 
       document.getElementById('modal-fic').classList.add('active');
@@ -711,9 +797,9 @@
         url: url,
         fandom: document.getElementById('fic-fandom').value.trim(),
         ship: document.getElementById('fic-ship').value.trim(),
-        estado: document.getElementById('fic-estado').value,
         fav: document.getElementById('fic-fav').value,
-        tags: document.getElementById('fic-tags').value.trim(),
+        categorias: Array.from(etiquetasSeleccionadasModal),
+        tagsExtra: document.getElementById('fic-tags-extra').value.trim(),
         notas: document.getElementById('fic-notas').value.trim()
       };
 
