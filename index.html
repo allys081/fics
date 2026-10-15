@@ -1,887 +1,880 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="light" data-acc="terra">
 <head>
-  <meta charset="UTF-8">
-  <title>Mi Biblioteca de Fanfics</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#f8fafc">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #f8fafc;
-      --card: #ffffff;
-      --border: #e2e8f0;
-      --text: #0f172a;
-      --text-muted: #64748b;
-      --primary: #6366f1;
-      --primary-hover: #4f46e5;
-      --accent: #eef2ff;
-      --ao3: #990000;
-      --ffnet: #1e3a8a;
-    }
+<meta charset="UTF-8">
+<title>Mis Fanfics</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="theme-color" content="#fbf5ee">
+<script>
+/* Aplica el tema antes de pintar para evitar el "parpadeo" */
+try{var p=JSON.parse(localStorage.getItem('fics_prefs_v2')||'{}');
+var d=p.tema==='oscuro'||((p.tema||'auto')==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);
+document.documentElement.dataset.theme=d?'dark':'light';document.documentElement.dataset.acc=p.acento||'terra';}catch(e){}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#fbf5ee; --card:#fffdf9; --ink:#3b2a22; --mute:#7a685d; --line:#eadfd2;
+  --chip:#f1e8dd; --chip-ink:#65534a;
+  --ok:#3d7a60; --ok-soft:#dcefe6; --danger:#b4412f;
+  --f0:#c4623f; --f1:#5f8f7a; --f2:#8a6fb0; --f3:#b98524; --f4:#4f7fb5; --f5:#b9567a; --f6:#6f8f3d; --f7:#a0675a;
+  --acc:#c4623f; --acc-soft:#f6e1d6; --on-acc:#fff;
+  --shadow:0 1px 2px rgba(80,50,30,.06),0 6px 18px rgba(80,50,30,.06);
+  --scrim:rgba(30,18,10,.45);
+  --serif:'Fraunces','Lora',Georgia,'DejaVu Serif',serif;
+  --sans:'Plus Jakarta Sans',Inter,system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+[data-theme=dark]{
+  color-scheme:dark;
+  --bg:#14121a; --card:#1e1b27; --ink:#efeaf7; --mute:#a39cb3; --line:#2d2939;
+  --chip:#282434; --chip-ink:#bab2ca;
+  --ok:#6ee7b7; --ok-soft:rgba(110,231,183,.14); --danger:#ff8a78;
+  --f0:#f0916d; --f1:#5eead4; --f2:#c4b5fd; --f3:#fcd34d; --f4:#7cb7ff; --f5:#f9a8d4; --f6:#bef264; --f7:#fdba74;
+  --on-acc:#14121a;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px rgba(0,0,0,.25);
+  --scrim:rgba(0,0,0,.6);
+}
+[data-acc=violeta]{--acc:#7c5cd6;--acc-soft:#ece6fb}
+[data-acc=rosa]{--acc:#c2417a;--acc-soft:#fbe1ec}
+[data-acc=verde]{--acc:#2f8a76;--acc-soft:#d9f0ea}
+[data-theme=dark][data-acc=terra]{--acc:#f0916d;--acc-soft:#3a2620}
+[data-theme=dark][data-acc=violeta]{--acc:#a78bfa;--acc-soft:#2b2445}
+[data-theme=dark][data-acc=rosa]{--acc:#f472b6;--acc-soft:#40202f}
+[data-theme=dark][data-acc=verde]{--acc:#5eead4;--acc-soft:#173b36}
 
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-      margin: 0;
-      padding: 0;
-    }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);font-size:14px;line-height:1.45;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;min-height:100dvh}
+body.locked{overflow:hidden}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+input,select,textarea{font:inherit;color:inherit}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:8px}
+.ic{display:block;flex:none}
 
-    body {
-      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      padding: 16px 14px 80px;
-      -webkit-font-smoothing: antialiased;
-    }
+.app{max-width:640px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 10px) 16px calc(110px + env(safe-area-inset-bottom))}
 
-    .container {
-      max-width: 760px;
-      margin: 0 auto;
-    }
+/* Cabecera */
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:6px 0 12px}
+.top h1{font-family:var(--serif);font-size:26px;font-weight:700;letter-spacing:-.4px;line-height:1.1}
+.top p{color:var(--mute);font-size:12px;margin-top:3px}
+.top-actions{display:flex;gap:8px}
+.ibtn{width:40px;height:40px;border-radius:13px;background:var(--card);border:1px solid var(--line);display:grid;place-items:center;color:var(--ink);transition:transform .12s}
+.ibtn:active{transform:scale(.92)}
+.ibtn.sm{width:34px;height:34px;border-radius:11px}
+.ibtn.on{background:var(--acc-soft);color:var(--acc);border-color:transparent}
 
-    /* Cabecera */
-    .header {
-      text-align: center;
-      margin-bottom: 18px;
-    }
+/* Buscador */
+.searchbar{position:sticky;top:0;z-index:20;padding:6px 0 10px;background:linear-gradient(var(--bg) 82%,transparent)}
+.search{display:flex;align-items:center;gap:10px;height:46px;padding:0 6px 0 14px;background:var(--card);border:1.5px solid var(--line);border-radius:15px;color:var(--mute);transition:border-color .15s,box-shadow .15s}
+.search:focus-within{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-soft)}
+.search input{flex:1;min-width:0;border:0;outline:0;background:none;font-size:16px;color:var(--ink)}
+.search input::placeholder{color:var(--mute);opacity:.85}
+.search .clear{width:34px;height:34px;display:none;place-items:center;border-radius:10px;color:var(--mute)}
+.search.has .clear{display:grid}
 
-    .badge-fics {
-      display: inline-block;
-      font-size: 0.75rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      background: var(--accent);
-      color: var(--primary);
-      padding: 4px 12px;
-      border-radius: 99px;
-      margin-bottom: 6px;
-    }
+/* Estados */
+.seg{display:flex;background:var(--chip);border-radius:14px;padding:3px;gap:2px}
+.seg button{flex:1;padding:8px 2px;border-radius:11px;font-size:12.5px;font-weight:600;color:var(--mute);white-space:nowrap;transition:background .15s,color .15s}
+.seg button b{font-weight:700;opacity:.7;margin-left:3px;font-size:11px}
+.seg button.on{background:var(--card);color:var(--acc);box-shadow:0 1px 3px rgba(0,0,0,.14)}
+.seg.mini button{padding:9px 4px}
 
-    h1 {
-      font-size: 1.55rem;
-      font-weight: 800;
-      color: var(--text);
-      letter-spacing: -0.4px;
-    }
+/* Herramientas */
+.tools{display:flex;gap:8px;align-items:center;margin:12px 0}
+.fbtn{display:flex;align-items:center;gap:7px;height:38px;padding:0 13px;border-radius:12px;background:var(--card);border:1px solid var(--line);font-weight:700;font-size:12.5px;flex:none}
+.fbtn em{font-style:normal;background:var(--acc);color:var(--on-acc);min-width:18px;height:18px;border-radius:99px;display:none;place-items:center;font-size:10.5px;padding:0 5px}
+.fbtn.has em{display:grid}
+.pills{display:flex;gap:6px;overflow-x:auto;flex:1;scrollbar-width:none;min-width:0}
+.pills::-webkit-scrollbar{display:none}
+.pill{flex:none;display:inline-flex;align-items:center;gap:5px;background:var(--acc-soft);color:var(--acc);border-radius:99px;padding:7px 8px 7px 11px;font-size:12px;font-weight:700;white-space:nowrap}
+.view{display:flex;flex:none;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-left:auto}
+.view button{width:36px;height:36px;display:grid;place-items:center;color:var(--mute)}
+.view button.on{background:var(--acc-soft);color:var(--acc)}
+.listhead{display:flex;justify-content:space-between;align-items:center;color:var(--mute);font-size:12px;margin-bottom:8px;min-height:24px}
+.listhead label{display:flex;align-items:center;gap:4px}
+.listhead select{appearance:none;-webkit-appearance:none;border:0;background:none;color:var(--ink);font-weight:700;font-size:12px;padding:4px 16px 4px 2px;cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none' stroke='%23999' stroke-width='1.6'%3E%3Cpath d='M1 1l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 2px center}
 
-    /* Buscador */
-    .search-box {
-      position: sticky;
-      top: 10px;
-      z-index: 20;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1.5px solid var(--border);
-      border-radius: 16px;
-      padding: 11px 15px;
-      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 12px;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }
+/* Tarjetas */
+.lista{display:flex;flex-direction:column;gap:10px}
+.card{position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:13px 10px 12px 18px;box-shadow:var(--shadow);cursor:pointer}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--c,var(--mute))}
+.c-head{display:flex;gap:6px;align-items:flex-start}
+.c-titles{flex:1;min-width:0;padding-top:2px}
+.c-title{font-family:var(--serif);font-size:16px;font-weight:700;line-height:1.25;letter-spacing:-.1px;overflow-wrap:anywhere}
+.c-by{color:var(--mute);font-size:12px;margin-top:3px}
+.badge18{display:inline-block;vertical-align:2px;margin-left:6px;font:800 10px var(--sans);letter-spacing:.3px;color:var(--danger);border:1.5px solid currentColor;border-radius:6px;padding:0 4px}
+.c-btns{display:flex;flex:none}
+.cbtn{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;color:var(--mute)}
+.cbtn:active{background:var(--chip)}
+.cbtn.fav{color:var(--acc)}
+.c-fandom{margin-top:6px;font-size:12.5px;font-weight:700;color:var(--c,var(--mute));padding-right:6px}
+.c-fandom span{color:var(--mute);font-weight:500}
+.c-notes{margin-top:7px;font-size:12.5px;color:var(--mute);font-style:italic;line-height:1.45;padding-right:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.c-tropes{display:none;margin-top:7px;font-size:12px;color:var(--mute);padding-right:6px}
+.c-tropes b{color:var(--ink)}
+.c-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:10px;padding-right:6px}
+.tags{display:flex;flex-wrap:wrap;gap:5px;min-width:0}
+.tag{background:var(--chip);color:var(--chip-ink);border-radius:8px;padding:3px 8px;font-size:11px;font-weight:600}
+.st{flex:none;font-size:11px;font-weight:800;border-radius:99px;padding:5px 11px}
+.st-por-leer{background:var(--chip);color:var(--chip-ink)}
+.st-leyendo{background:var(--acc-soft);color:var(--acc)}
+.st-terminado{background:var(--ok-soft);color:var(--ok)}
+.c-actions{display:none;gap:8px;margin-top:12px;padding:12px 6px 0 0;border-top:1px dashed var(--line)}
+.c-actions .btn{flex:1;justify-content:center;padding:10px 8px;font-size:12.5px}
+.card.open .c-notes{display:block;-webkit-line-clamp:unset}
+.card.open .c-tropes{display:block}
+.card.open .c-actions{display:flex}
 
-    .search-box:focus-within {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
-    }
+/* Vista lista compacta */
+.lista.compacta .card{padding:9px 6px 9px 16px;border-radius:14px;box-shadow:none}
+.lista.compacta .c-title{font-size:14.5px}
+.lista.compacta .c-fandom{margin-top:3px;font-size:12px}
+.lista.compacta .cbtn{width:34px;height:34px}
+.lista.compacta .c-btns .link{display:none}
+.lista.compacta .card:not(.open) .c-notes,
+.lista.compacta .card:not(.open) .c-foot .tags{display:none}
+.lista.compacta .c-foot{margin-top:6px}
+.lista.compacta .card:not(.open) .c-foot{justify-content:flex-start}
+.lista.compacta .st{padding:3px 9px;font-size:10.5px}
+.lista.compacta .card.open .c-btns .link{display:grid}
 
-    .search-input {
-      border: none;
-      outline: none;
-      width: 100%;
-      font-size: 0.95rem;
-      font-family: inherit;
-      color: var(--text);
-      background: transparent;
-    }
+/* Difuminado +18 */
+.card.blur .c-body{filter:blur(9px);opacity:.7;pointer-events:none;user-select:none}
+.veil{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:800;font-size:12.5px;color:var(--ink);background:color-mix(in srgb,var(--card) 35%,transparent)}
 
-    .btn-clear {
-      border: none;
-      background: none;
-      cursor: pointer;
-      color: var(--text-muted);
-      font-size: 1rem;
-      display: none;
-      padding: 2px 6px;
-    }
+.vacio{text-align:center;color:var(--mute);padding:48px 10px;font-size:14px}
+.vacio .big{font-family:var(--serif);font-size:19px;color:var(--ink);font-weight:700;margin-bottom:6px}
+.vacio .btn{margin-top:16px}
+.ocultos{margin:16px auto 0;display:flex;align-items:center;gap:7px;color:var(--mute);font-size:12px;font-weight:600;padding:8px 12px;border-radius:99px}
 
-    /* Filtros por Categoría Temática */
-    .filter-section-title {
-      font-size: 0.72rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-    }
+/* Botones */
+.btn{text-decoration:none;display:inline-flex;align-items:center;gap:7px;height:44px;padding:0 18px;border-radius:13px;font-weight:700;font-size:14px;transition:transform .12s,filter .12s}
+.btn:active{transform:scale(.96)}
+.btn.primary{background:var(--acc);color:var(--on-acc)}
+.btn.sec{background:var(--card);border:1.5px solid var(--line)}
+.btn.danger{color:var(--danger)}
+.btn.block{width:100%;justify-content:center}
+.fab{position:fixed;z-index:30;right:max(16px,calc(50% - 304px));bottom:calc(18px + env(safe-area-inset-bottom));height:54px;padding:0 22px 0 18px;border-radius:17px;background:var(--acc);color:var(--on-acc);font-weight:800;font-size:14.5px;display:flex;align-items:center;gap:8px;box-shadow:0 10px 24px rgba(0,0,0,.28);transition:transform .2s,opacity .2s}
+.fab:active{transform:scale(.95)}
+body.typing .fab{transform:translateY(120px);opacity:0;pointer-events:none}
 
-    .filter-chips {
-      display: flex;
-      gap: 6px;
-      overflow-x: auto;
-      padding-bottom: 8px;
-      margin-bottom: 14px;
-      scrollbar-width: none;
-    }
+/* Hojas (bottom sheets) — se ajustan al teclado con visualViewport */
+.overlay{position:fixed;left:0;right:0;top:var(--vvt,0px);height:var(--vvh,100dvh);z-index:100;display:flex;align-items:flex-end;justify-content:center;background:var(--scrim);opacity:0;visibility:hidden;transition:opacity .2s,visibility 0s .2s}
+.overlay.open{opacity:1;visibility:visible;transition:opacity .2s}
+.sheet{width:100%;max-width:520px;max-height:calc(100% - 8px);display:flex;flex-direction:column;background:var(--bg);border-radius:24px 24px 0 0;box-shadow:0 -10px 40px rgba(0,0,0,.25);transform:translateY(40px);transition:transform .26s cubic-bezier(.16,1,.3,1)}
+.overlay.open .sheet{transform:none}
+.grab{width:38px;height:4px;border-radius:9px;background:var(--line);margin:9px auto 0;flex:none}
+.sheet-head{display:flex;justify-content:space-between;align-items:center;padding:10px 18px 6px;flex:none}
+.sheet-head h2{font-family:var(--serif);font-size:20px;font-weight:700}
+.sheet-body{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:6px 18px 16px;-webkit-overflow-scrolling:touch}
+.sheet-foot{flex:none;display:flex;gap:10px;justify-content:flex-end;padding:12px 18px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--bg)}
+.sheet-foot .btn.primary{flex:1;justify-content:center}
+@media (min-width:600px){
+  .overlay{align-items:center}
+  .sheet{border-radius:24px;max-height:calc(100% - 40px)}
+  .grab{display:none}
+}
 
-    .filter-chips::-webkit-scrollbar {
-      display: none;
-    }
+/* Formularios */
+.group{margin-bottom:14px}
+.label{display:block;font-size:12px;font-weight:700;color:var(--mute);margin-bottom:6px}
+.label i{color:var(--acc);font-style:normal}
+.input,.select,.textarea{width:100%;background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:11px 13px;font-size:16px;outline:none;transition:border-color .15s,box-shadow .15s}
+.textarea{resize:vertical;min-height:84px;line-height:1.45}
+.input:focus,.select:focus,.textarea:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-soft)}
+.input::placeholder,.textarea::placeholder{color:var(--mute);opacity:.7}
+.group.has-error .input{border-color:var(--danger)}
+.err{display:none;color:var(--danger);font-size:12px;font-weight:600;margin-top:5px}
+.group.has-error .err{display:block}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:99px;background:var(--card);border:1.5px solid var(--line);font-size:12.5px;font-weight:700;color:var(--chip-ink);transition:all .12s}
+.chip em{font-style:normal;opacity:.65;font-size:11px}
+.chip.on{background:var(--acc);border-color:var(--acc);color:var(--on-acc)}
+.switch-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;background:var(--card);border:1.5px solid var(--line);border-radius:14px;margin-bottom:8px;cursor:pointer}
+.switch-row b{display:block;font-size:13.5px}
+.switch-row small{color:var(--mute);font-size:11.5px}
+.switch-row input{appearance:none;-webkit-appearance:none;flex:none;width:46px;height:28px;border-radius:99px;background:var(--chip);position:relative;transition:background .18s;border:1px solid var(--line)}
+.switch-row input::after{content:"";position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .18s}
+.switch-row input:checked{background:var(--acc);border-color:var(--acc)}
+.switch-row input:checked::after{transform:translateX(18px)}
+details.more{margin:6px 0 4px}
+details.more summary{list-style:none;cursor:pointer;font-weight:700;font-size:13px;color:var(--acc);padding:8px 0;display:flex;align-items:center;gap:6px}
+details.more summary::-webkit-details-marker{display:none}
+details.more[open] summary .ic{transform:rotate(180deg)}
+details.more .inner{padding-top:6px}
+.sec-title{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--mute);margin:18px 0 8px}
+.sec-title:first-child{margin-top:4px}
+.hint{color:var(--mute);font-size:12px;margin-top:8px;line-height:1.5}
+.swatches{display:flex;gap:12px}
+.sw{width:38px;height:38px;border-radius:50%;border:3px solid var(--bg);box-shadow:0 0 0 2px var(--line);display:grid;place-items:center;color:#fff}
+.sw[aria-pressed=true]{box-shadow:0 0 0 2.5px var(--ink)}
+.sw .ic{opacity:0}.sw[aria-pressed=true] .ic{opacity:1}
+.menu-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 
-    .chip {
-      border: 1px solid var(--border);
-      background: #ffffff;
-      padding: 6px 12px;
-      border-radius: 99px;
-      font-size: 0.76rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.15s ease;
-    }
-
-    .chip.active {
-      background: var(--primary);
-      color: #ffffff;
-      border-color: var(--primary);
-    }
-
-    /* Acciones */
-    .actions-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      border: none;
-      border-radius: 12px;
-      padding: 10px 16px;
-      font-weight: 700;
-      font-size: 0.82rem;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-family: inherit;
-      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .btn:active {
-      transform: scale(0.94);
-    }
-
-    .btn-primary {
-      background: var(--primary);
-      color: #fff;
-      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
-    }
-
-    .btn-primary:active {
-      background: var(--primary-hover);
-    }
-
-    .btn-secondary {
-      background: var(--card);
-      border: 1.5px solid var(--border);
-      color: var(--text);
-      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-    }
-
-    /* Tarjetas de Fanfic */
-    .fic-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .fic-card {
-      background: var(--card);
-      border: 1.5px solid var(--border);
-      border-radius: 18px;
-      padding: 16px;
-      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .card-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 10px;
-    }
-
-    .fic-title-group {
-      flex: 1;
-    }
-
-    .fic-title {
-      font-size: 1.05rem;
-      font-weight: 800;
-      color: var(--text);
-      line-height: 1.3;
-      margin-bottom: 3px;
-    }
-
-    .fic-author {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    .badge-platform {
-      font-size: 0.68rem;
-      font-weight: 800;
-      padding: 3px 8px;
-      border-radius: 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .badge-platform.ao3 { background: #fee2e2; color: var(--ao3); border: 1px solid #fca5a5; }
-    .badge-platform.ffnet { background: #dbeafe; color: var(--ffnet); border: 1px solid #bfdbfe; }
-    .badge-platform.wattpad { background: #ffedd5; color: #c2410c; border: 1px solid #fed7aa; }
-    .badge-platform.otro { background: #f1f5f9; color: var(--text-muted); border: 1px solid var(--border); }
-
-    .fic-meta-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      align-items: center;
-    }
-
-    .pill-fandom {
-      background: #fdf2f8;
-      color: #be185d;
-      border: 1px solid #fbcfe8;
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 99px;
-    }
-
-    .pill-ship {
-      background: #f0fdf4;
-      color: #15803d;
-      border: 1px solid #bbf7d0;
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 99px;
-    }
-
-    .pill-fav {
-      background: #fefce8;
-      color: #a16207;
-      border: 1px solid #fef08a;
-      font-size: 0.72rem;
-      font-weight: 800;
-      padding: 2px 8px;
-      border-radius: 99px;
-    }
-
-    /* Estilos dinámicos para las etiquetas de temáticas */
-    .tag-bubble {
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 8px;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .tag-suave { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
-    .tag-angst { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
-    .tag-dark { background: #475569; color: #ffffff; border: 1px solid #334155; }
-    .tag-largo { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
-    .tag-oneshot { background: #faf5ff; color: #7e22ce; border: 1px solid #e9d5ff; }
-    .tag-timetravel { background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; }
-    .tag-au { background: #fdf2f8; color: #be185d; border: 1px solid #fbcfe8; }
-    .tag-humor { background: #fefce8; color: #854d0e; border: 1px solid #fef08a; }
-
-    .fic-notes {
-      background: #f8fafc;
-      border-left: 3px solid var(--primary);
-      padding: 8px 12px;
-      border-radius: 0 10px 10px 0;
-      font-size: 0.8rem;
-      color: #334155;
-      font-style: italic;
-    }
-
-    .card-actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-top: 8px;
-      border-top: 1px dashed var(--border);
-    }
-
-    .btn-link {
-      background: var(--primary);
-      color: #ffffff;
-      padding: 6px 14px;
-      border-radius: 10px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .btn-link:active {
-      transform: scale(0.95);
-    }
-
-    .btn-icon {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 6px 8px;
-      font-size: 0.88rem;
-      color: var(--text-muted);
-      border-radius: 8px;
-    }
-
-    .btn-icon:hover {
-      background: #e2e8f0;
-      color: var(--text);
-    }
-
-    /* Modal a prueba de teclado */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.45);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      z-index: 100;
-      padding: 20px 14px 40px;
-      overflow-y: auto;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .modal {
-      background: #ffffff;
-      border-radius: 20px;
-      width: 100%;
-      max-width: 440px;
-      padding: 22px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.16);
-      transform: translateY(16px) scale(0.96);
-      transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
-      margin-top: 24px;
-    }
-
-    .modal-overlay.active .modal {
-      transform: translateY(0) scale(1);
-    }
-
-    .modal h3 {
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: var(--text);
-      margin-bottom: 14px;
-    }
-
-    .form-group {
-      margin-bottom: 12px;
-    }
-
-    .form-label {
-      display: block;
-      font-size: 0.76rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      margin-bottom: 5px;
-    }
-
-    .form-input, .form-select, .form-textarea {
-      width: 100%;
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 12px;
-      font-size: 0.9rem;
-      font-family: inherit;
-      outline: none;
-      color: var(--text);
-      background: #fff;
-    }
-
-    .form-textarea {
-      resize: vertical;
-      min-height: 55px;
-    }
-
-    .form-input:focus, .form-select:focus, .form-textarea:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    /* Selector de etiquetas en el modal */
-    .tag-selector-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 4px;
-    }
-
-    .tag-btn {
-      border: 1.5px solid var(--border);
-      background: #f8fafc;
-      padding: 5px 10px;
-      border-radius: 8px;
-      font-size: 0.74rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      cursor: pointer;
-      user-select: none;
-      transition: all 0.15s ease;
-    }
-
-    .tag-btn.selected {
-      background: var(--primary);
-      color: #fff;
-      border-color: var(--primary);
-    }
-
-    .modal-footer {
-      display: flex;
-      justify-content: flex-end;
-      gap: 8px;
-      margin-top: 18px;
-    }
-  </style>
+/* Aviso */
+.toast{position:fixed;z-index:200;left:50%;bottom:calc(88px + env(safe-area-inset-bottom));transform:translate(-50%,20px);opacity:0;pointer-events:none;display:flex;align-items:center;gap:14px;max-width:calc(100% - 32px);background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:14px;font-size:13px;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,.3);transition:all .25s}
+.toast.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.toast button{color:var(--acc);font-weight:800;filter:brightness(1.15)}
+[data-theme=light] .toast button{filter:brightness(1.6) saturate(1.1)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
 </head>
 <body>
-
-  <div class="container">
-    <div class="header">
-      <span class="badge-fics">Catálogo Personal</span>
+<div class="app">
+  <header class="top">
+    <div>
       <h1>Mis Fanfics</h1>
+      <p id="subtitulo"></p>
     </div>
-
-    <!-- Buscador Global -->
-    <div class="search-box">
-      <span>🔍</span>
-      <input type="text" id="busqueda" class="search-input" placeholder="Buscar por título, fandom, ship, tropo o recuerdo...">
-      <button id="btn-limpiar" class="btn-clear">✕</button>
+    <div class="top-actions">
+      <button class="ibtn" id="btn-priv" aria-label="Mostrar u ocultar fics +18"></button>
+      <button class="ibtn" id="btn-tema" aria-label="Cambiar entre modo claro y oscuro"></button>
+      <button class="ibtn" id="btn-menu" aria-label="Ajustes y respaldo" data-ic="more"></button>
     </div>
+  </header>
 
-    <!-- Filtro de Categorías / Agrupaciones -->
-    <div class="filter-section-title">Filtrar por Etiqueta / Vibe:</div>
-    <div class="filter-chips" id="filtros-tags">
-      <div class="chip active" onclick="filtrarPorEtiqueta('todos', this)">Todas</div>
-      <div class="chip" onclick="filtrarPorEtiqueta('fav', this)">★ Favoritos</div>
-      <div class="chip" onclick="filtrarPorEtiqueta('suave', this)">🌸 Suave / Confort</div>
-      <div class="chip" onclick="filtrarPorEtiqueta('angst', this)">💔 Angustia / Angst</div>
-      <div class="chip" onclick="filtrarPorEtiqueta('dark', this)">⚠️ Oscuro / Heavy</div>
-      <div class="chip" onclick="filtrarPorEtiqueta('largo', this)">📖 Historias Largas</div>
-      <div class="chip" onclick="filtrarPorEtiqueta('oneshot', this)">⚡ 1 Capítulo / One-shot</div>
-      <div class="chip" onclick="filtrarPorEtiqueta('timetravel', this)">⏳ Viajes en el tiempo / Fix-it</div>
-      <div class="chip" onclick="filtrarPorEtiqueta('au', this)">✨ AU (Universo Alterno)</div>
-      <div class="chip" onclick="filtrarPorEtiqueta('humor', this)">😂 Comedia / Divertido</div>
-    </div>
-
-    <div class="actions-row">
-      <button class="btn btn-primary" onclick="abrirModalFic()">+ Agregar Fanfic</button>
-      <div style="display: flex; gap: 6px;">
-        <button class="btn btn-secondary" id="btn-exportar">💾 Respaldar</button>
-        <button class="btn btn-secondary" id="btn-importar">📂 Cargar</button>
-        <input type="file" id="file-input" style="display: none;" accept=".json">
-      </div>
-    </div>
-
-    <div id="contenedor-fics" class="fic-list"></div>
-  </div>
-
-  <!-- Modal Fanfic -->
-  <div class="modal-overlay" id="modal-fic" onclick="cerrarSiFondo(event)">
-    <div class="modal">
-      <h3 id="modal-fic-titulo">Agregar Fanfic</h3>
-
-      <div class="form-group">
-        <label class="form-label">Título del Fanfic *</label>
-        <input type="text" id="fic-titulo" class="form-input" placeholder="Ej: Pasado imperfecto">
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Autor(a)</label>
-          <input type="text" id="fic-autor" class="form-input" placeholder="Ej: MoonWriter">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Plataforma</label>
-          <select id="fic-plataforma" class="form-select">
-            <option value="ao3">AO3</option>
-            <option value="ffnet">FanFiction.net</option>
-            <option value="wattpad">Wattpad</option>
-            <option value="otro">Otro</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Enlace URL directo *</label>
-        <input type="url" id="fic-url" class="form-input" placeholder="https://archiveofourown.org/works/...">
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Fandom / Universo</label>
-          <input type="text" id="fic-fandom" class="form-input" placeholder="Ej: Kimetsu no Yaiba, TCF...">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Pareja / Personajes (Ship)</label>
-          <input type="text" id="fic-ship" class="form-input" placeholder="Ej: Giyuu & Tanjiro, Gen">
-        </div>
-      </div>
-
-      <!-- Selector visual de Categorías / Agrupaciones -->
-      <div class="form-group">
-        <label class="form-label">Etiquetas / Agrupación (Toca para seleccionar varias)</label>
-        <div class="tag-selector-grid" id="modal-tag-selector">
-          <div class="tag-btn" data-tag="suave" onclick="toggleModalTag('suave')">🌸 Suave / Confort</div>
-          <div class="tag-btn" data-tag="angst" onclick="toggleModalTag('angst')">💔 Angustia / Angst</div>
-          <div class="tag-btn" data-tag="dark" onclick="toggleModalTag('dark')">⚠️ Oscuro / Heavy</div>
-          <div class="tag-btn" data-tag="largo" onclick="toggleModalTag('largo')">📖 Historia Larga</div>
-          <div class="tag-btn" data-tag="oneshot" onclick="toggleModalTag('oneshot')">⚡ 1 Cap / One-shot</div>
-          <div class="tag-btn" data-tag="timetravel" onclick="toggleModalTag('timetravel')">⏳ Viaje en el tiempo / Fix-it</div>
-          <div class="tag-btn" data-tag="au" onclick="toggleModalTag('au')">✨ Universo Alterno (AU)</div>
-          <div class="tag-btn" data-tag="humor" onclick="toggleModalTag('humor')">😂 Comedia / Divertido</div>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">¿Es favorito?</label>
-          <select id="fic-fav" class="form-select">
-            <option value="no">Normal</option>
-            <option value="si">★ Favorito inolvidable</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Otros tropes libres (Opcional)</label>
-          <input type="text" id="fic-tags-extra" class="form-input" placeholder="Ej: Enemies to lovers, Amnesia">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">"De qué iba" / Notas para recordar la trama</label>
-        <textarea id="fic-notas" class="form-textarea" placeholder="Aquel fic donde despierta en una cabaña y encuentra la carta..."></textarea>
-      </div>
-
-      <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="cerrarModales()">Cancelar</button>
-        <button class="btn btn-primary" id="btn-guardar-fic">Guardar</button>
-      </div>
+  <div class="searchbar">
+    <div class="search" id="search">
+      <span data-ic="search"></span>
+      <input id="busqueda" type="search" enterkeyhint="search" autocomplete="off" placeholder="Buscar título, fandom, ship…" aria-label="Buscar">
+      <button class="clear" id="btn-limpiar" aria-label="Borrar búsqueda" data-ic="x"></button>
     </div>
   </div>
 
-  <script>
-    let db = JSON.parse(localStorage.getItem('biblioteca_fics') || '[]');
-    let activoId = null;
-    let etiquetaFiltroActual = 'todos';
-    let etiquetasSeleccionadasModal = new Set();
+  <div class="seg" id="seg">
+    <button data-estado="todos">Todos<b></b></button>
+    <button data-estado="por-leer">Por leer<b></b></button>
+    <button data-estado="leyendo">Leyendo<b></b></button>
+    <button data-estado="terminado">Listos<b></b></button>
+  </div>
 
-    const mapaEtiquetas = {
-      'suave': { nombre: '🌸 Suave / Confort', clase: 'tag-suave' },
-      'angst': { nombre: '💔 Angustia', clase: 'tag-angst' },
-      'dark': { nombre: '⚠️ Oscuro / Heavy', clase: 'tag-dark' },
-      'largo': { nombre: '📖 Historia Larga', clase: 'tag-largo' },
-      'oneshot': { nombre: '⚡ 1 Capítulo', clase: 'tag-oneshot' },
-      'timetravel': { nombre: '⏳ Viaje / Fix-it', clase: 'tag-timetravel' },
-      'au': { nombre: '✨ AU', clase: 'tag-au' },
-      'humor': { nombre: '😂 Comedia', clase: 'tag-humor' }
-    };
+  <div class="tools">
+    <button class="fbtn" id="btn-filtros"><span data-ic="filter" data-size="17"></span>Filtros<em id="n-filtros"></em></button>
+    <div class="pills" id="pills"></div>
+    <div class="view" id="view">
+      <button data-vista="compacta" aria-label="Vista de lista compacta" data-ic="list"></button>
+      <button data-vista="tarjetas" aria-label="Vista de tarjetas" data-ic="grid"></button>
+    </div>
+  </div>
 
-    function vibrar() {
-      if (navigator.vibrate) navigator.vibrate(10);
-    }
+  <div class="listhead">
+    <span id="conteo"></span>
+    <label>Ordenar: <select id="orden" aria-label="Ordenar por"></select></label>
+  </div>
 
-    function guardar() {
-      localStorage.setItem('biblioteca_fics', JSON.stringify(db));
-      renderizar();
-    }
+  <main id="lista" class="lista"></main>
+  <button class="ocultos" id="aviso-ocultos" hidden></button>
+</div>
 
-    function toggleModalTag(tagKey) {
-      vibrar();
-      if (etiquetasSeleccionadasModal.has(tagKey)) {
-        etiquetasSeleccionadasModal.delete(tagKey);
-      } else {
-        etiquetasSeleccionadasModal.add(tagKey);
-      }
-      actualizarVisualModalTags();
-    }
+<button class="fab" id="fab"><span data-ic="plus" data-size="22"></span>Agregar</button>
+<div class="toast" id="toast" role="status" aria-live="polite"><span id="toast-msg"></span><button id="toast-btn" hidden></button></div>
 
-    function actualizarVisualModalTags() {
-      document.querySelectorAll('#modal-tag-selector .tag-btn').forEach(btn => {
-        const tag = btn.getAttribute('data-tag');
-        btn.classList.toggle('selected', etiquetasSeleccionadasModal.has(tag));
-      });
-    }
-
-    function renderizar() {
-      const cont = document.getElementById('contenedor-fics');
-      cont.innerHTML = '';
-
-      const query = document.getElementById('busqueda').value.toLowerCase().trim();
-
-      const filtrados = db.filter(fic => {
-        // Filtro por etiqueta seleccionada
-        const categoriasFic = fic.categorias || [];
-        const coincideEtiqueta = (etiquetaFiltroActual === 'todos') ||
-                                 (etiquetaFiltroActual === 'fav' && fic.fav === 'si') ||
-                                 (categoriasFic.includes(etiquetaFiltroActual));
-
-        if (!coincideEtiqueta) return false;
-
-        if (!query) return true;
-
-        const enTitulo = (fic.titulo || '').toLowerCase().includes(query);
-        const enAutor = (fic.autor || '').toLowerCase().includes(query);
-        const enFandom = (fic.fandom || '').toLowerCase().includes(query);
-        const enShip = (fic.ship || '').toLowerCase().includes(query);
-        const enTagsExtra = (fic.tagsExtra || '').toLowerCase().includes(query);
-        const enNotas = (fic.notas || '').toLowerCase().includes(query);
-
-        return enTitulo || enAutor || enFandom || enShip || enTagsExtra || enNotas;
-      });
-
-      if (filtrados.length === 0) {
-        cont.innerHTML = `<div style="text-align:center;color:var(--text-muted);padding:50px 0;font-size:0.9rem;">
-          ${db.length === 0 ? 'No tienes fanfics guardados todavía.<br>Toca <b>+ Agregar Fanfic</b> para registrar el primero.' : 'No se encontraron fics con esa etiqueta o búsqueda.'}
-        </div>`;
-        return;
-      }
-
-      filtrados.forEach(fic => {
-        const div = document.createElement('div');
-        div.className = 'fic-card';
-
-        // Burbujas de etiquetas temáticas
-        let tagsHTML = '';
-        (fic.categorias || []).forEach(tagKey => {
-          const info = mapaEtiquetas[tagKey];
-          if (info) {
-            tagsHTML += `<span class="tag-bubble ${info.clase}">${info.nombre}</span>`;
-          }
-        });
-
-        div.innerHTML = `
-          <div class="card-top">
-            <div class="fic-title-group">
-              <div class="fic-title">${fic.titulo}</div>
-              ${fic.autor ? `<div class="fic-author">por ${fic.autor}</div>` : ''}
-            </div>
-            <span class="badge-platform ${fic.plataforma || 'ao3'}">${fic.plataforma || 'ao3'}</span>
+<!-- Hoja: agregar / editar -->
+<div class="overlay" id="sheet-fic" aria-hidden="true">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="fic-h">
+    <div class="grab"></div>
+    <div class="sheet-head"><h2 id="fic-h">Agregar fanfic</h2><button class="ibtn sm" data-close aria-label="Cerrar" data-ic="x"></button></div>
+    <div class="sheet-body" id="fic-body">
+      <div class="group" id="g-titulo">
+        <label class="label" for="f-titulo">Título <i>*</i></label>
+        <input class="input" id="f-titulo" placeholder="Ej: Pasado imperfecto" autocomplete="off" autocapitalize="sentences">
+        <div class="err">Escribe al menos el título.</div>
+      </div>
+      <div class="group" id="g-url">
+        <label class="label" for="f-url">Enlace para leerlo</label>
+        <input class="input" id="f-url" inputmode="url" autocapitalize="off" autocomplete="off" spellcheck="false" placeholder="https://archiveofourown.org/works/…">
+        <div class="err">Ese enlace no parece válido.</div>
+      </div>
+      <div class="group">
+        <label class="label" for="f-autor">Autor(a)</label>
+        <input class="input" id="f-autor" placeholder="Ej: MoonWriter" autocomplete="off">
+      </div>
+      <div class="group">
+        <label class="label" for="f-fandom">Fandom / Universo</label>
+        <input class="input" id="f-fandom" list="dl-fandom" placeholder="Ej: Kimetsu no Yaiba" autocomplete="off">
+        <datalist id="dl-fandom"></datalist>
+      </div>
+      <div class="group">
+        <label class="label" for="f-ship">Pareja / Personajes (ship)</label>
+        <input class="input" id="f-ship" list="dl-ship" placeholder="Ej: Giyuu & Tanjiro, Gen" autocomplete="off">
+        <datalist id="dl-ship"></datalist>
+      </div>
+      <div class="group">
+        <span class="label">Vibes (toca para elegir varias)</span>
+        <div class="chips" id="f-vibes"></div>
+      </div>
+      <div class="group">
+        <span class="label">Estado de lectura</span>
+        <div class="seg mini" id="f-estado">
+          <button data-v="por-leer">Por leer</button><button data-v="leyendo">Leyendo</button><button data-v="terminado">Terminado</button>
+        </div>
+      </div>
+      <div class="group">
+        <label class="label" for="f-notas">“De qué iba” / notas para recordar la trama</label>
+        <textarea class="textarea" id="f-notas" placeholder="Aquel fic donde despierta en una cabaña y encuentra la carta…"></textarea>
+      </div>
+      <label class="switch-row"><span><b>★ Favorito</b><small>Para encontrarlo rápido</small></span><input type="checkbox" id="f-fav"></label>
+      <label class="switch-row"><span><b>Contenido +18</b><small>Se oculta con el modo privado</small></span><input type="checkbox" id="f-adulto"></label>
+      <details class="more">
+        <summary>Más opciones <span data-ic="chev" data-size="16"></span></summary>
+        <div class="inner">
+          <div class="group">
+            <label class="label" for="f-plat">Plataforma</label>
+            <select class="select" id="f-plat">
+              <option value="ao3">AO3</option><option value="ffnet">FanFiction.net</option><option value="wattpad">Wattpad</option><option value="otro">Otro</option>
+            </select>
           </div>
-
-          <div class="fic-meta-pills">
-            ${fic.fav === 'si' ? `<span class="pill-fav">★ Favorito</span>` : ''}
-            ${fic.fandom ? `<span class="pill-fandom">${fic.fandom}</span>` : ''}
-            ${fic.ship ? `<span class="pill-ship">${fic.ship}</span>` : ''}
+          <div class="group">
+            <label class="label" for="f-tropes">Otros tropes (opcional)</label>
+            <input class="input" id="f-tropes" placeholder="Ej: Enemies to lovers, Amnesia" autocomplete="off">
           </div>
+        </div>
+      </details>
+    </div>
+    <div class="sheet-foot">
+      <button class="btn sec" data-close>Cancelar</button>
+      <button class="btn primary" id="btn-guardar">Guardar</button>
+    </div>
+  </div>
+</div>
 
-          ${tagsHTML ? `<div style="display:flex; flex-wrap:wrap; gap:5px;">${tagsHTML}</div>` : ''}
-          ${fic.tagsExtra ? `<div style="font-size:0.78rem; color:var(--text-muted);"><b>Tropes:</b> ${fic.tagsExtra}</div>` : ''}
-          ${fic.notas ? `<div class="fic-notes">"${fic.notas}"</div>` : ''}
+<!-- Hoja: filtros -->
+<div class="overlay" id="sheet-filtros" aria-hidden="true">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="filt-h">
+    <div class="grab"></div>
+    <div class="sheet-head"><h2 id="filt-h">Filtros</h2><button class="ibtn sm" data-close aria-label="Cerrar" data-ic="x"></button></div>
+    <div class="sheet-body" id="filtros-body"></div>
+    <div class="sheet-foot">
+      <button class="btn sec" id="btn-limpiar-filtros">Limpiar</button>
+      <button class="btn primary" id="btn-ver" data-close>Ver resultados</button>
+    </div>
+  </div>
+</div>
 
-          <div class="card-actions">
-            ${fic.url ? `<a href="${fic.url}" target="_blank" rel="noopener noreferrer" class="btn-link">🔗 Leer Fic</a>` : '<span></span>'}
-            <div>
-              <button class="btn-icon" onclick="editarFic('${fic.id}')">✎</button>
-              <button class="btn-icon" onclick="eliminarFic('${fic.id}')">🗑</button>
-            </div>
-          </div>
-        `;
-        cont.appendChild(div);
-      });
+<!-- Hoja: ajustes -->
+<div class="overlay" id="sheet-menu" aria-hidden="true">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="menu-h">
+    <div class="grab"></div>
+    <div class="sheet-head"><h2 id="menu-h">Ajustes</h2><button class="ibtn sm" data-close aria-label="Cerrar" data-ic="x"></button></div>
+    <div class="sheet-body">
+      <div class="sec-title">Apariencia</div>
+      <div class="seg mini" id="m-tema">
+        <button data-v="auto">Automático</button><button data-v="claro">Claro</button><button data-v="oscuro">Oscuro</button>
+      </div>
+      <div class="hint">Automático sigue el modo claro/oscuro de tu celular.</div>
+      <div class="swatches" id="m-acentos" style="margin-top:14px">
+        <button class="sw" data-acc="terra" style="background:#c4623f" aria-label="Terracota"></button>
+        <button class="sw" data-acc="violeta" style="background:#7c5cd6" aria-label="Violeta"></button>
+        <button class="sw" data-acc="rosa" style="background:#c2417a" aria-label="Rosa"></button>
+        <button class="sw" data-acc="verde" style="background:#2f8a76" aria-label="Verde"></button>
+      </div>
+
+      <div class="sec-title">Fics +18</div>
+      <div class="seg mini" id="m-adultos">
+        <button data-v="ocultar">Ocultar</button><button data-v="difuminar">Difuminar</button><button data-v="mostrar">Mostrar</button>
+      </div>
+      <div class="hint"><b>Ocultar:</b> no aparecen en ningún lado (lista, búsqueda, filtros ni conteos). <b>Difuminar:</b> aparecen borrosos y los abres tocándolos. <b>Mostrar</b> se vuelve a ocultar solo al cerrar la página. El botón del ojo, arriba, alterna rápido.</div>
+      <label class="switch-row" style="margin-top:12px"><span><b>Avisar cuántos hay ocultos</b><small>Una línea discreta al final de la lista</small></span><input type="checkbox" id="m-aviso"></label>
+
+      <div class="sec-title">Tus datos</div>
+      <div class="menu-btns">
+        <button class="btn sec block" id="btn-exportar"><span data-ic="download" data-size="18"></span>Respaldar</button>
+        <button class="btn sec block" id="btn-importar"><span data-ic="upload" data-size="18"></span>Cargar</button>
+      </div>
+      <input type="file" id="file-input" accept=".json,application/json" hidden>
+      <div class="hint" id="info-respaldo"></div>
+    </div>
+    <div class="sheet-foot"><button class="btn primary" data-close>Listo</button></div>
+  </div>
+</div>
+
+<!-- Hoja: importar -->
+<div class="overlay" id="sheet-import" aria-hidden="true">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="imp-h">
+    <div class="grab"></div>
+    <div class="sheet-head"><h2 id="imp-h">Cargar respaldo</h2><button class="ibtn sm" data-close aria-label="Cerrar" data-ic="x"></button></div>
+    <div class="sheet-body">
+      <p id="imp-info" style="margin-bottom:14px"></p>
+      <div style="display:grid;gap:10px">
+        <button class="btn primary block" id="imp-combinar">Combinar con los que ya tengo</button>
+        <button class="btn sec block danger" id="imp-reemplazar">Reemplazar todo</button>
+      </div>
+      <div class="hint">“Combinar” agrega solo los que no tienes. “Reemplazar” borra los actuales y deja únicamente los del archivo.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+'use strict';
+
+/* ───────── Constantes ───────── */
+const KEY = 'biblioteca_fics';          // misma clave que la versión anterior (tus datos se conservan)
+const PKEY = 'fics_prefs_v2';
+const BKEY = 'fics_ultimo_respaldo';
+const VIBES = {
+  suave:      { n:'Suave / Confort',            s:'Suave',    e:'🌸' },
+  angst:      { n:'Angustia / Angst',           s:'Angst',    e:'💔' },
+  dark:       { n:'Oscuro / Heavy',             s:'Oscuro',   e:'⚠️' },
+  largo:      { n:'Historia larga',             s:'Larga',    e:'📖' },
+  oneshot:    { n:'One-shot (1 capítulo)',      s:'One-shot', e:'⚡' },
+  timetravel: { n:'Viaje en el tiempo / Fix-it',s:'Fix-it',   e:'⏳' },
+  au:         { n:'Universo alterno (AU)',      s:'AU',       e:'✨' },
+  humor:      { n:'Comedia / Divertido',        s:'Comedia',  e:'😂' }
+};
+const PLATS  = { ao3:'AO3', ffnet:'FanFiction.net', wattpad:'Wattpad', otro:'Otro' };
+const PLATS_S= { ao3:'AO3', ffnet:'FF.net', wattpad:'Wattpad', otro:'Web' };
+const ESTADOS = { 'por-leer':'Por leer', leyendo:'Leyendo', terminado:'Terminado' };
+const ORDENES = { recientes:'Más recientes', antiguos:'Más antiguos', titulo:'Título A–Z', favoritos:'Favoritos primero' };
+
+const I = {
+  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6L7 7M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"/>',
+  moon:'<path d="M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z"/>',
+  eye:'<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  eyeoff:'<path d="M3 3l18 18"/><path d="M10.6 5.1A10 10 0 0112 5c6.4 0 10 7 10 7a17 17 0 01-3.2 4M6.5 6.6A17 17 0 002 12s3.6 7 10 7a10 10 0 004.2-.9"/><path d="M9.9 9.9a3 3 0 004.2 4.2"/>',
+  more:'<circle cx="12" cy="5" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="12" cy="19" r="1.3"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
+  x:'<path d="M6 6l12 12M18 6L6 18"/>',
+  filter:'<path d="M4 6h16M7 12h10M10 18h4"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  heart:'<path d="M12 20s-7.5-4.6-9.2-9.3C1.7 7.4 3.8 4.5 6.9 4.5c1.9 0 3.5 1 5.1 3 1.6-2 3.2-3 5.1-3 3.1 0 5.2 2.9 4.1 6.2C19.5 15.4 12 20 12 20z"/>',
+  list:'<path d="M4 6h16M4 12h16M4 18h16"/>',
+  grid:'<rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/>',
+  link:'<path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1"/>',
+  edit:'<path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/>',
+  trash:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>',
+  download:'<path d="M12 4v11M7 11l5 5 5-5M5 20h14"/>',
+  upload:'<path d="M12 16V5M7 9l5-5 5 5M5 20h14"/>',
+  lock:'<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/>',
+  chev:'<path d="M6 9l6 6 6-6"/>',
+  check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>'
+};
+const icon = (n, size = 20, fill = false) =>
+  `<svg class="ic" viewBox="0 0 24 24" width="${size}" height="${size}" fill="${fill ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[n]}</svg>`;
+
+/* ───────── Utilidades ───────── */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+const norm = s => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+const hash = s => { let h = 0; for (const c of s) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
+function leer(k, def) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : def; } catch (e) { return def; } }
+function escribir(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }
+function safeUrl(u) {
+  u = (u || '').trim(); if (!u) return '';
+  if (!/^https?:\/\//i.test(u)) u = 'https://' + u;
+  try { const x = new URL(u); return (x.protocol === 'http:' || x.protocol === 'https:') && x.hostname.includes('.') ? x.href : ''; } catch (e) { return ''; }
+}
+function detectarPlat(u) {
+  const h = (u || '').toLowerCase();
+  if (h.includes('archiveofourown') || h.includes('ao3')) return 'ao3';
+  if (h.includes('fanfiction.net')) return 'ffnet';
+  if (h.includes('wattpad')) return 'wattpad';
+  return null;
+}
+function normFic(f) {
+  const s = v => typeof v === 'string' ? v.trim() : '';
+  return {
+    id: s(f.id) || 'f_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+    titulo: s(f.titulo), autor: s(f.autor),
+    plataforma: PLATS[f.plataforma] ? f.plataforma : 'ao3',
+    url: s(f.url), fandom: s(f.fandom), ship: s(f.ship),
+    fav: f.fav === 'si' ? 'si' : 'no',
+    categorias: Array.isArray(f.categorias) ? f.categorias.filter(k => VIBES[k]) : [],
+    tagsExtra: s(f.tagsExtra), notas: s(f.notas),
+    estado: ESTADOS[f.estado] ? f.estado : 'por-leer',
+    adulto: !!f.adulto
+  };
+}
+
+/* ───────── Estado ───────── */
+let db = (leer(KEY, []) || []).filter(f => f && typeof f === 'object').map(normFic).filter(f => f.titulo);
+const prefs = Object.assign({ tema:'auto', acento:'terra', vista:'tarjetas', orden:'recientes', adultos:'ocultar', aviso:false }, leer(PKEY, {}));
+if (prefs.adultos === 'mostrar') prefs.adultos = 'ocultar';   // "mostrar" solo dura la sesión
+const st = { q:'', estado:'todos', fandoms:new Set(), tags:new Set(), plats:new Set(), fav:false, abiertos:new Set(), revelados:new Set() };
+const guardarPrefs = () => escribir(PKEY, prefs);
+const guardarDB = () => { if (!escribir(KEY, db)) toast('No pude guardar en este navegador. Haz un respaldo.'); };
+
+/* ───────── Íconos estáticos ───────── */
+$$('[data-ic]').forEach(el => { el.insertAdjacentHTML('afterbegin', icon(el.dataset.ic, +el.dataset.size || 20)); });
+
+/* ───────── Tema ───────── */
+const mqDark = matchMedia('(prefers-color-scheme: dark)');
+function esOscuro() { return prefs.tema === 'oscuro' || (prefs.tema === 'auto' && mqDark.matches); }
+function aplicarTema() {
+  const r = document.documentElement;
+  r.dataset.theme = esOscuro() ? 'dark' : 'light';
+  r.dataset.acc = prefs.acento;
+  $('#btn-tema').innerHTML = icon(esOscuro() ? 'sun' : 'moon');
+  const m = $('meta[name=theme-color]'); if (m) m.content = getComputedStyle(r).getPropertyValue('--bg').trim();
+}
+mqDark.addEventListener?.('change', aplicarTema);
+$('#btn-tema').onclick = () => { prefs.tema = esOscuro() ? 'claro' : 'oscuro'; guardarPrefs(); aplicarTema(); pintarMenu(); };
+
+/* ───────── Filtrado ───────── */
+const visibles = () => db.filter(f => !f.adulto || prefs.adultos !== 'ocultar');
+const ocultosN = () => db.filter(f => f.adulto).length;
+
+function calcular() {
+  const vis = visibles();
+  const words = norm(st.q).split(/\s+/).filter(Boolean);
+  const base = vis.filter(f => {
+    if (st.fav && f.fav !== 'si') return false;
+    if (st.fandoms.size && !st.fandoms.has(norm(f.fandom))) return false;
+    if (st.plats.size && !st.plats.has(f.plataforma)) return false;
+    for (const t of st.tags) if (!f.categorias.includes(t)) return false;
+    if (words.length) {
+      const hay = norm([f.titulo, f.autor, f.fandom, f.ship, f.tagsExtra, f.notas, f.categorias.map(k => VIBES[k].n).join(' ')].join(' '));
+      if (!words.every(w => hay.includes(w))) return false;
     }
+    return true;
+  });
+  const counts = { todos: base.length, 'por-leer': 0, leyendo: 0, terminado: 0 };
+  base.forEach(f => counts[f.estado]++);
+  let lista = st.estado === 'todos' ? base.slice() : base.filter(f => f.estado === st.estado);
+  if (prefs.orden === 'antiguos') lista.reverse();
+  else if (prefs.orden === 'titulo') lista.sort((a, b) => a.titulo.localeCompare(b.titulo, 'es', { sensitivity:'base' }));
+  else if (prefs.orden === 'favoritos') lista.sort((a, b) => (b.fav === 'si') - (a.fav === 'si'));
+  return { vis, base, counts, lista };
+}
+const nFiltros = () => (st.fav ? 1 : 0) + st.fandoms.size + st.tags.size + st.plats.size;
+function limpiarFiltros() { st.fav = false; st.fandoms.clear(); st.tags.clear(); st.plats.clear(); }
 
-    function filtrarPorEtiqueta(etiqueta, el) {
-      vibrar();
-      etiquetaFiltroActual = etiqueta;
-      document.querySelectorAll('#filtros-tags .chip').forEach(c => c.classList.remove('active'));
-      el.classList.add('active');
-      renderizar();
-    }
+/* ───────── Pintado principal ───────── */
+function colorFic(f) { return f.fandom ? `var(--f${hash(norm(f.fandom)) % 8})` : 'var(--mute)'; }
 
-    function abrirModalFic() {
-      vibrar();
-      activoId = null;
-      etiquetasSeleccionadasModal.clear();
-      actualizarVisualModalTags();
+function cardHTML(f) {
+  const open = st.abiertos.has(f.id);
+  const blur = f.adulto && prefs.adultos === 'difuminar' && !st.revelados.has(f.id);
+  const url = safeUrl(f.url);
+  const tagsAll = f.categorias.map(k => `<span class="tag">${VIBES[k].s}</span>`);
+  const tags = (open ? tagsAll : tagsAll.slice(0, 3)).join('') + (!open && tagsAll.length > 3 ? `<span class="tag">+${tagsAll.length - 3}</span>` : '');
+  const by = [f.autor, PLATS_S[f.plataforma]].filter(Boolean).join(' · ');
+  return `<article class="card${open ? ' open' : ''}${blur ? ' blur' : ''}" data-id="${esc(f.id)}" style="--c:${colorFic(f)}">
+    <div class="c-body">
+      <div class="c-head">
+        <div class="c-titles">
+          <h3 class="c-title">${esc(f.titulo)}${f.adulto ? '<span class="badge18">+18</span>' : ''}</h3>
+          <p class="c-by">${esc(by)}</p>
+        </div>
+        <div class="c-btns">
+          ${url ? `<a class="cbtn link" data-act="leer" href="${esc(url)}" target="_blank" rel="noopener noreferrer" aria-label="Leer fic">${icon('link', 19)}</a>` : ''}
+          <button class="cbtn fav" data-act="fav" aria-pressed="${f.fav === 'si'}" aria-label="${f.fav === 'si' ? 'Quitar de favoritos' : 'Marcar como favorito'}" style="${f.fav === 'si' ? '' : 'color:var(--mute)'}">${icon('heart', 19, f.fav === 'si')}</button>
+        </div>
+      </div>
+      ${f.fandom || f.ship ? `<p class="c-fandom">${esc(f.fandom)}${f.ship ? `<span>${f.fandom ? ' · ' : ''}${esc(f.ship)}</span>` : ''}</p>` : ''}
+      ${f.notas ? `<p class="c-notes">“${esc(f.notas)}”</p>` : ''}
+      ${f.tagsExtra ? `<p class="c-tropes"><b>Tropes:</b> ${esc(f.tagsExtra)}</p>` : ''}
+      <div class="c-foot">
+        <div class="tags">${tags}</div>
+        <button class="st st-${f.estado}" data-act="estado" aria-label="Estado: ${ESTADOS[f.estado]}. Toca para cambiar">${ESTADOS[f.estado]}</button>
+      </div>
+      <div class="c-actions">
+        ${url ? `<a class="btn primary" data-act="leer" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${icon('link', 17)} Leer</a>` : ''}
+        <button class="btn sec" data-act="editar">${icon('edit', 17)} Editar</button>
+        <button class="btn sec danger" data-act="borrar" aria-label="Eliminar">${icon('trash', 17)}</button>
+      </div>
+    </div>
+    ${blur ? `<button class="veil" data-act="revelar">${icon('lock', 18)} Contenido +18 · toca para ver</button>` : ''}
+  </article>`;
+}
 
-      document.getElementById('modal-fic-titulo').textContent = 'Agregar Fanfic';
-      document.getElementById('fic-titulo').value = '';
-      document.getElementById('fic-autor').value = '';
-      document.getElementById('fic-plataforma').value = 'ao3';
-      document.getElementById('fic-url').value = '';
-      document.getElementById('fic-fandom').value = '';
-      document.getElementById('fic-ship').value = '';
-      document.getElementById('fic-fav').value = 'no';
-      document.getElementById('fic-tags-extra').value = '';
-      document.getElementById('fic-notas').value = '';
+function render() {
+  const { vis, counts, lista } = calcular();
+  // cabecera
+  const leyendo = vis.filter(f => f.estado === 'leyendo').length;
+  $('#subtitulo').textContent = `${vis.length} guardado${vis.length === 1 ? '' : 's'}${leyendo ? ` · ${leyendo} leyendo` : ''}`;
+  $('#btn-priv').innerHTML = icon(prefs.adultos === 'ocultar' ? 'eyeoff' : 'eye');
+  $('#btn-priv').classList.toggle('on', prefs.adultos !== 'ocultar');
+  $('#btn-priv').setAttribute('aria-label', prefs.adultos === 'ocultar' ? 'Fics +18 ocultos. Toca para mostrarlos' : 'Fics +18 visibles. Toca para ocultarlos');
+  // pestañas de estado
+  $$('#seg button').forEach(b => {
+    b.classList.toggle('on', b.dataset.estado === st.estado);
+    const n = counts[b.dataset.estado];
+    b.querySelector('b').textContent = b.dataset.estado === 'todos' ? '' : n;
+  });
+  // filtros activos
+  const nf = nFiltros();
+  $('#btn-filtros').classList.toggle('has', nf > 0);
+  $('#n-filtros').textContent = nf;
+  pintarPills(vis);
+  // vista / orden
+  $$('#view button').forEach(b => b.classList.toggle('on', b.dataset.vista === prefs.vista));
+  $('#lista').className = 'lista ' + (prefs.vista === 'compacta' ? 'compacta' : '');
+  $('#orden').value = prefs.orden;
+  $('#conteo').textContent = `${lista.length} resultado${lista.length === 1 ? '' : 's'}`;
+  // lista
+  const cont = $('#lista');
+  if (!lista.length) {
+    cont.innerHTML = !vis.length
+      ? `<div class="vacio"><div class="big">Tu biblioteca está vacía</div>Guarda aquí los fics que lees para no perderlos.<br><button class="btn primary" data-act="nuevo">${icon('plus', 18)} Agregar el primero</button></div>`
+      : `<div class="vacio"><div class="big">Nada por aquí</div>Ningún fic coincide con la búsqueda o los filtros.<br>${nf || st.q || st.estado !== 'todos' ? `<button class="btn sec" data-act="reset">Limpiar todo</button>` : ''}</div>`;
+  } else cont.innerHTML = lista.map(cardHTML).join('');
+  // aviso de ocultos
+  const av = $('#aviso-ocultos'), oc = ocultosN();
+  const mostrarAviso = prefs.aviso && prefs.adultos === 'ocultar' && oc > 0;
+  av.hidden = !mostrarAviso;
+  if (mostrarAviso) av.innerHTML = `${icon('lock', 15)} ${oc} fic${oc === 1 ? '' : 's'} +18 oculto${oc === 1 ? '' : 's'}`;
+  if (filtrosAbiertos()) pintarFiltros();
+}
 
-      document.getElementById('modal-fic').classList.add('active');
-      setTimeout(() => document.getElementById('fic-titulo').focus(), 150);
-    }
+function pintarPills(vis) {
+  const out = [];
+  const lab = k => (vis.find(f => norm(f.fandom) === k) || {}).fandom || k;
+  const pill = (t, v, txt) => `<button class="pill" data-t="${t}" data-v="${esc(v)}" aria-label="Quitar filtro ${esc(txt)}">${esc(txt)} ${icon('x', 13)}</button>`;
+  if (st.fav) out.push(pill('fav', '', '★ Favoritos'));
+  st.fandoms.forEach(k => out.push(pill('fandom', k, lab(k))));
+  st.tags.forEach(k => out.push(pill('tag', k, VIBES[k].s)));
+  st.plats.forEach(k => out.push(pill('plat', k, PLATS_S[k])));
+  $('#pills').innerHTML = out.join('');
+}
 
-    function editarFic(id) {
-      vibrar();
-      activoId = id;
-      const fic = db.find(x => x.id === id);
+/* ───────── Eventos de la lista ───────── */
+$('#lista').addEventListener('click', e => {
+  const actEl = e.target.closest('[data-act]');
+  const act = actEl && actEl.dataset.act;
+  if (act === 'leer') return;                       // deja abrir el enlace normalmente
+  if (act === 'nuevo') return abrirForm();
+  if (act === 'reset') { limpiarFiltros(); st.q = ''; $('#busqueda').value = ''; $('#search').classList.remove('has'); st.estado = 'todos'; return render(); }
+  const card = e.target.closest('.card'); if (!card) return;
+  const f = db.find(x => x.id === card.dataset.id); if (!f) return;
+  if (act === 'revelar') { st.revelados.add(f.id); return render(); }
+  if (card.classList.contains('blur')) return;
+  if (act === 'fav') { f.fav = f.fav === 'si' ? 'no' : 'si'; vibrar(); guardarDB(); return render(); }
+  if (act === 'estado') { const o = Object.keys(ESTADOS); f.estado = o[(o.indexOf(f.estado) + 1) % o.length]; vibrar(); guardarDB(); return render(); }
+  if (act === 'editar') return abrirForm(f.id);
+  if (act === 'borrar') return borrarFic(f.id);
+  st.abiertos.has(f.id) ? st.abiertos.delete(f.id) : st.abiertos.add(f.id);
+  card.outerHTML = cardHTML(f);
+});
 
-      etiquetasSeleccionadasModal = new Set(fic.categorias || []);
-      actualizarVisualModalTags();
+function borrarFic(id) {
+  const i = db.findIndex(x => x.id === id); if (i < 0) return;
+  const [f] = db.splice(i, 1);
+  st.abiertos.delete(id);
+  guardarDB(); render();
+  toast('Fic eliminado', 'Deshacer', () => { db.splice(Math.min(i, db.length), 0, f); guardarDB(); render(); }, 6000);
+}
 
-      document.getElementById('modal-fic-titulo').textContent = 'Editar Fanfic';
-      document.getElementById('fic-titulo').value = fic.titulo;
-      document.getElementById('fic-autor').value = fic.autor || '';
-      document.getElementById('fic-plataforma').value = fic.plataforma || 'ao3';
-      document.getElementById('fic-url').value = fic.url || '';
-      document.getElementById('fic-fandom').value = fic.fandom || '';
-      document.getElementById('fic-ship').value = fic.ship || '';
-      document.getElementById('fic-fav').value = fic.fav || 'no';
-      document.getElementById('fic-tags-extra').value = fic.tagsExtra || '';
-      document.getElementById('fic-notas').value = fic.notas || '';
+/* ───────── Buscador, pestañas, orden, vista ───────── */
+const inBusq = $('#busqueda');
+inBusq.addEventListener('input', () => { st.q = inBusq.value; $('#search').classList.toggle('has', !!inBusq.value.trim()); render(); });
+$('#btn-limpiar').onclick = () => { inBusq.value = ''; st.q = ''; $('#search').classList.remove('has'); render(); inBusq.focus(); };
+$('#seg').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; vibrar(); st.estado = b.dataset.estado; render(); });
+$('#view').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; prefs.vista = b.dataset.vista; guardarPrefs(); render(); });
+$('#orden').innerHTML = Object.entries(ORDENES).map(([k, v]) => `<option value="${k}">${v}</option>`).join('');
+$('#orden').onchange = e => { prefs.orden = e.target.value; guardarPrefs(); render(); };
+$('#pills').addEventListener('click', e => {
+  const b = e.target.closest('.pill'); if (!b) return;
+  const { t, v } = b.dataset;
+  if (t === 'fav') st.fav = false; else if (t === 'fandom') st.fandoms.delete(v); else if (t === 'tag') st.tags.delete(v); else if (t === 'plat') st.plats.delete(v);
+  render();
+});
+$('#fab').onclick = () => abrirForm();
 
-      document.getElementById('modal-fic').classList.add('active');
-      setTimeout(() => document.getElementById('fic-titulo').focus(), 150);
-    }
+/* ───────── Privacidad +18 ───────── */
+$('#btn-priv').onclick = () => {
+  vibrar();
+  if (prefs.adultos === 'ocultar') { prefs.adultos = 'mostrar'; toast('Fics +18 visibles'); }
+  else { prefs.adultos = 'ocultar'; st.revelados.clear(); toast('Fics +18 ocultos'); }
+  guardarPrefs(); render(); pintarMenu();
+};
+$('#aviso-ocultos').onclick = () => $('#btn-priv').click();
 
-    document.getElementById('btn-guardar-fic').onclick = () => {
-      const titulo = document.getElementById('fic-titulo').value.trim();
-      const url = document.getElementById('fic-url').value.trim();
+/* ───────── Hojas (sheets) ───────── */
+let actual = null;
+const filtrosAbiertos = () => actual === 'sheet-filtros';
+function abrirHoja(id) {
+  if (actual) $('#' + actual).classList.remove('open'); else history.pushState({ hoja:1 }, '');
+  actual = id;
+  const o = $('#' + id); o.classList.add('open'); o.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('locked');
+}
+function ocultarHoja(id) { const o = $('#' + id); o.classList.remove('open'); o.setAttribute('aria-hidden', 'true'); }
+function cerrarHoja(porPop) {
+  if (!actual) return;
+  ocultarHoja(actual); actual = null; document.body.classList.remove('locked');
+  if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+  if (!porPop && history.state && history.state.hoja) history.back();
+}
+window.addEventListener('popstate', () => { if (actual) cerrarHoja(true); });
+$$('.overlay').forEach(o => o.addEventListener('mousedown', e => { if (e.target === o) cerrarHoja(); }));
+document.addEventListener('click', e => { if (e.target.closest('[data-close]')) cerrarHoja(); });
+window.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarHoja(); });
 
-      if (!titulo) return alert('Por favor escribe al menos el título del fic');
+/* Teclado: las hojas se ajustan al área visible para que nada quede tapado */
+function ajustarVV() {
+  const vv = window.visualViewport; if (!vv) return;
+  const r = document.documentElement.style;
+  r.setProperty('--vvh', vv.height + 'px'); r.setProperty('--vvt', vv.offsetTop + 'px');
+  if (actual) { const f = document.activeElement; if (f && f.matches('input,textarea,select') && $('#' + actual).contains(f)) setTimeout(() => f.scrollIntoView({ block:'center', behavior:'smooth' }), 60); }
+}
+if (window.visualViewport) { visualViewport.addEventListener('resize', ajustarVV); visualViewport.addEventListener('scroll', ajustarVV); }
+window.addEventListener('orientationchange', () => setTimeout(ajustarVV, 250));
+ajustarVV();
+document.addEventListener('focusin', e => {
+  if (!e.target.matches('input,textarea,select')) return;
+  document.body.classList.add('typing');
+  if (actual && $('#' + actual).contains(e.target)) setTimeout(() => e.target.scrollIntoView({ block:'center', behavior:'smooth' }), 320);
+});
+document.addEventListener('focusout', () => setTimeout(() => { if (!document.activeElement || !document.activeElement.matches('input,textarea,select')) document.body.classList.remove('typing'); }, 80));
 
-      vibrar();
+/* ───────── Formulario ───────── */
+let editId = null, formVibes = new Set(), formEstado = 'por-leer', platManual = false;
+function pintarFormVibes() {
+  $('#f-vibes').innerHTML = Object.entries(VIBES).map(([k, v]) => `<button type="button" class="chip${formVibes.has(k) ? ' on' : ''}" data-v="${k}">${v.e} ${esc(v.n)}</button>`).join('');
+  $$('#f-estado button').forEach(b => b.classList.toggle('on', b.dataset.v === formEstado));
+}
+function abrirForm(id) {
+  vibrar();
+  editId = id || null;
+  const f = id ? db.find(x => x.id === id) : null;
+  $('#fic-h').textContent = f ? 'Editar fanfic' : 'Agregar fanfic';
+  $('#f-titulo').value = f ? f.titulo : ''; $('#f-url').value = f ? f.url : '';
+  $('#f-autor').value = f ? f.autor : ''; $('#f-fandom').value = f ? f.fandom : ''; $('#f-ship').value = f ? f.ship : '';
+  $('#f-notas').value = f ? f.notas : ''; $('#f-tropes').value = f ? f.tagsExtra : '';
+  $('#f-plat').value = f ? f.plataforma : 'ao3';
+  $('#f-fav').checked = !!f && f.fav === 'si'; $('#f-adulto').checked = !!f && f.adulto;
+  formVibes = new Set(f ? f.categorias : []); formEstado = f ? f.estado : 'por-leer'; platManual = !!f;
+  $$('#sheet-fic .group').forEach(g => g.classList.remove('has-error'));
+  const vis = visibles();
+  const uniq = arr => [...new Set(arr.filter(Boolean))].sort((a, b) => a.localeCompare(b, 'es'));
+  $('#dl-fandom').innerHTML = uniq(vis.map(x => x.fandom)).map(v => `<option value="${esc(v)}">`).join('');
+  $('#dl-ship').innerHTML = uniq(vis.map(x => x.ship)).map(v => `<option value="${esc(v)}">`).join('');
+  $('#sheet-fic details.more').open = false;
+  pintarFormVibes();
+  abrirHoja('sheet-fic');
+  $('#fic-body').scrollTop = 0;
+  if (!f) setTimeout(() => $('#f-titulo').focus(), 280);
+}
+$('#f-vibes').addEventListener('click', e => { const b = e.target.closest('.chip'); if (!b) return; vibrar(); const k = b.dataset.v; formVibes.has(k) ? formVibes.delete(k) : formVibes.add(k); pintarFormVibes(); });
+$('#f-estado').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; formEstado = b.dataset.v; pintarFormVibes(); });
+$('#f-plat').addEventListener('change', () => platManual = true);
+$('#f-url').addEventListener('input', e => { const p = detectarPlat(e.target.value); if (p && !platManual) $('#f-plat').value = p; $('#g-url').classList.remove('has-error'); });
+$('#f-titulo').addEventListener('input', () => $('#g-titulo').classList.remove('has-error'));
 
-      const datos = {
-        titulo: titulo,
-        autor: document.getElementById('fic-autor').value.trim(),
-        plataforma: document.getElementById('fic-plataforma').value,
-        url: url,
-        fandom: document.getElementById('fic-fandom').value.trim(),
-        ship: document.getElementById('fic-ship').value.trim(),
-        fav: document.getElementById('fic-fav').value,
-        categorias: Array.from(etiquetasSeleccionadasModal),
-        tagsExtra: document.getElementById('fic-tags-extra').value.trim(),
-        notas: document.getElementById('fic-notas').value.trim()
-      };
+$('#btn-guardar').onclick = () => {
+  const titulo = $('#f-titulo').value.trim();
+  const urlRaw = $('#f-url').value.trim();
+  if (!titulo) { $('#g-titulo').classList.add('has-error'); $('#f-titulo').focus(); return; }
+  let url = '';
+  if (urlRaw) { url = safeUrl(urlRaw); if (!url) { $('#g-url').classList.add('has-error'); $('#f-url').focus(); return; } }
+  vibrar();
+  const datos = {
+    titulo, url, autor:$('#f-autor').value, plataforma:$('#f-plat').value,
+    fandom:$('#f-fandom').value, ship:$('#f-ship').value, fav:$('#f-fav').checked ? 'si' : 'no',
+    categorias:[...formVibes], tagsExtra:$('#f-tropes').value, notas:$('#f-notas').value,
+    estado:formEstado, adulto:$('#f-adulto').checked
+  };
+  if (editId) { const i = db.findIndex(x => x.id === editId); db[i] = normFic({ ...db[i], ...datos }); }
+  else db.unshift(normFic(datos));
+  guardarDB(); cerrarHoja(); render();
+  toast(datos.adulto && prefs.adultos === 'ocultar' ? 'Guardado · queda oculto por ser +18' : 'Guardado');
+};
 
-      if (activoId) {
-        const fic = db.find(x => x.id === activoId);
-        Object.assign(fic, datos);
-      } else {
-        db.unshift({ id: 'f_' + Date.now(), ...datos });
-      }
+/* ───────── Filtros (hoja) ───────── */
+function contar(arr, fn) { const m = new Map(); arr.forEach(f => fn(f).forEach(k => { const o = m.get(k.key) || { label:k.label, n:0 }; o.n++; m.set(k.key, o); })); return m; }
+function pintarFiltros() {
+  const vis = visibles();
+  const fandoms = contar(vis, f => f.fandom ? [{ key:norm(f.fandom), label:f.fandom }] : []);
+  const tags = contar(vis, f => f.categorias.map(k => ({ key:k, label:VIBES[k].n })));
+  const plats = contar(vis, f => [{ key:f.plataforma, label:PLATS[f.plataforma] }]);
+  const favN = vis.filter(f => f.fav === 'si').length;
+  const chip = (t, key, label, n, on) => `<button class="chip${on ? ' on' : ''}" data-t="${t}" data-v="${esc(key)}">${esc(label)} <em>${n}</em></button>`;
+  const bloque = (titulo, html, ayuda) => html ? `<div class="sec-title">${titulo}</div><div class="chips">${html}</div>${ayuda ? `<div class="hint">${ayuda}</div>` : ''}` : '';
+  const sorted = m => [...m.entries()].sort((a, b) => b[1].n - a[1].n || a[1].label.localeCompare(b[1].label, 'es'));
+  $('#filtros-body').innerHTML =
+    bloque('Favoritos', favN ? chip('fav', '', '★ Solo favoritos', favN, st.fav) : '') +
+    bloque('Vibes', sorted(tags).map(([k, o]) => chip('tag', k, VIBES[k].e + ' ' + VIBES[k].s, o.n, st.tags.has(k))).join(''), st.tags.size > 1 ? 'Muestra los fics que tengan <b>todas</b> las vibes elegidas.' : '') +
+    bloque('Fandom', sorted(fandoms).map(([k, o]) => chip('fandom', k, o.label, o.n, st.fandoms.has(k))).join(''), '') +
+    bloque('Plataforma', sorted(plats).map(([k, o]) => chip('plat', k, o.label, o.n, st.plats.has(k))).join(''), '') ||
+    '<div class="vacio">Cuando agregues fics, aquí aparecerán tus fandoms y vibes para filtrar.</div>';
+  const n = calcular().lista.length;
+  $('#btn-ver').textContent = `Ver ${n} resultado${n === 1 ? '' : 's'}`;
+}
+$('#btn-filtros').onclick = () => { pintarFiltros(); abrirHoja('sheet-filtros'); };
+$('#filtros-body').addEventListener('click', e => {
+  const b = e.target.closest('.chip'); if (!b) return; vibrar();
+  const { t, v } = b.dataset;
+  const tog = (set, x) => set.has(x) ? set.delete(x) : set.add(x);
+  if (t === 'fav') st.fav = !st.fav; else if (t === 'tag') tog(st.tags, v); else if (t === 'fandom') tog(st.fandoms, v); else if (t === 'plat') tog(st.plats, v);
+  render();
+});
+$('#btn-limpiar-filtros').onclick = () => { limpiarFiltros(); render(); };
 
-      cerrarModales();
-      guardar();
-    };
+/* ───────── Ajustes ───────── */
+function pintarMenu() {
+  $$('#m-tema button').forEach(b => b.classList.toggle('on', b.dataset.v === (prefs.tema === 'claro' ? 'claro' : prefs.tema)));
+  $$('#m-adultos button').forEach(b => b.classList.toggle('on', b.dataset.v === prefs.adultos));
+  $$('#m-acentos .sw').forEach(b => { b.setAttribute('aria-pressed', b.dataset.acc === prefs.acento); if (!b.firstChild) b.innerHTML = icon('check', 18); });
+  $('#m-aviso').checked = !!prefs.aviso;
+  const ult = leer(BKEY, null);
+  $('#info-respaldo').textContent = `${db.length} fic${db.length === 1 ? '' : 's'} guardado${db.length === 1 ? '' : 's'} en este navegador. ` +
+    (ult ? `Último respaldo: ${new Date(ult).toLocaleDateString('es-CL', { day:'numeric', month:'long', year:'numeric' })}.` : 'Aún no has hecho un respaldo: te recomiendo uno de vez en cuando.');
+}
+$('#btn-menu').onclick = () => { pintarMenu(); abrirHoja('sheet-menu'); };
+$('#m-tema').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; prefs.tema = b.dataset.v; guardarPrefs(); aplicarTema(); pintarMenu(); });
+$('#m-acentos').addEventListener('click', e => { const b = e.target.closest('.sw'); if (!b) return; prefs.acento = b.dataset.acc; guardarPrefs(); aplicarTema(); pintarMenu(); });
+$('#m-adultos').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; prefs.adultos = b.dataset.v; st.revelados.clear(); guardarPrefs(); pintarMenu(); render(); });
+$('#m-aviso').addEventListener('change', e => { prefs.aviso = e.target.checked; guardarPrefs(); render(); });
 
-    function eliminarFic(id) {
-      vibrar();
-      if (confirm('¿Eliminar este fanfic de tu lista?')) {
-        db = db.filter(x => x.id !== id);
-        guardar();
-      }
-    }
+/* Respaldos (mismo formato de siempre: una lista JSON) */
+$('#btn-exportar').onclick = () => {
+  vibrar();
+  const blob = new Blob([JSON.stringify(db, null, 2)], { type:'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `respaldo-fics-${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  escribir(BKEY, new Date().toISOString()); pintarMenu(); toast('Respaldo descargado');
+};
+$('#btn-importar').onclick = () => $('#file-input').click();
+let pendiente = null;
+$('#file-input').onchange = e => {
+  const file = e.target.files[0]; if (!file) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    try {
+      let data = JSON.parse(ev.target.result);
+      if (data && !Array.isArray(data) && Array.isArray(data.fics)) data = data.fics;
+      if (!Array.isArray(data)) throw new Error('formato');
+      const lista = data.filter(f => f && typeof f === 'object' && String(f.titulo || '').trim()).map(normFic);
+      if (!lista.length) throw new Error('vacío');
+      pendiente = lista;
+      $('#imp-info').innerHTML = `El archivo trae <b>${lista.length}</b> fic${lista.length === 1 ? '' : 's'}. Ahora tienes <b>${db.length}</b>.`;
+      abrirHoja('sheet-import');
+    } catch (err) { toast('Ese archivo no es un respaldo válido'); }
+    e.target.value = '';
+  };
+  r.readAsText(file);
+};
+$('#imp-combinar').onclick = () => {
+  const ids = new Set(db.map(f => f.id)), claves = new Set(db.map(f => norm(f.titulo) + '|' + f.url));
+  let n = 0;
+  pendiente.forEach(f => { if (ids.has(f.id) || claves.has(norm(f.titulo) + '|' + f.url)) return; db.push(f); n++; });
+  pendiente = null; guardarDB(); cerrarHoja(); render(); toast(n ? `Se agregaron ${n} fic${n === 1 ? '' : 's'}` : 'No había fics nuevos');
+};
+$('#imp-reemplazar').onclick = () => { db = pendiente; pendiente = null; guardarDB(); cerrarHoja(); render(); toast('Respaldo cargado'); };
 
-    // Buscador interactivo
-    const inBusq = document.getElementById('busqueda');
-    const btnClr = document.getElementById('btn-limpiar');
+/* ───────── Aviso (toast) ───────── */
+let tTimer;
+function toast(msg, accion, fn, ms = 2600) {
+  const t = $('#toast'), b = $('#toast-btn');
+  $('#toast-msg').textContent = msg;
+  b.hidden = !accion; b.textContent = accion || ''; b.onclick = () => { t.classList.remove('show'); fn && fn(); };
+  t.classList.add('show'); clearTimeout(tTimer); tTimer = setTimeout(() => t.classList.remove('show'), ms);
+}
+function vibrar() { if (navigator.vibrate) try { navigator.vibrate(8); } catch (e) {} }
 
-    inBusq.addEventListener('input', (e) => {
-      btnClr.style.display = e.target.value.trim() ? 'block' : 'none';
-      renderizar();
-    });
-
-    btnClr.onclick = () => {
-      inBusq.value = '';
-      btnClr.style.display = 'none';
-      renderizar();
-    };
-
-    function cerrarModales() {
-      document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
-      activoId = null;
-    }
-
-    function cerrarSiFondo(e) {
-      if (e.target.classList.contains('modal-overlay')) cerrarModales();
-    }
-
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') cerrarModales();
-    });
-
-    // Respaldos JSON
-    document.getElementById('btn-exportar').onclick = () => {
-      vibrar();
-      const blob = new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `respaldo-fics-${new Date().toISOString().slice(0,10)}.json`;
-      a.click();
-    };
-
-    document.getElementById('btn-importar').onclick = () => {
-      vibrar();
-      document.getElementById('file-input').click();
-    };
-
-    document.getElementById('file-input').onchange = (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      const r = new FileReader();
-      r.onload = (ev) => {
-        try {
-          db = JSON.parse(ev.target.result);
-          guardar();
-          alert('¡Fanfics cargados con éxito!');
-        } catch (err) {
-          alert('Archivo no válido.');
-        }
-      };
-      r.readAsText(file);
-    };
-
-    renderizar();
-  </script>
+/* ───────── Inicio ───────── */
+aplicarTema(); pintarMenu(); render();
+})();
+</script>
 </body>
 </html>
