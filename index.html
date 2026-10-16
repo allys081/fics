@@ -124,6 +124,7 @@ a{color:inherit}
 .tags{display:flex;flex-wrap:wrap;gap:5px;min-width:0}
 .tag{background:var(--chip);color:var(--chip-ink);border-radius:8px;padding:3px 8px;font-size:11px;font-weight:600}
 .tag.pub{background:var(--ok-soft);color:var(--ok)}
+.tag.fmt{background:var(--acc-soft);color:var(--acc)}
 .tag.t18{background:color-mix(in srgb,var(--danger) 14%,transparent);color:var(--danger)}
 .st{flex:none;font-size:11px;font-weight:800;border-radius:99px;padding:5px 11px}
 .st-por-leer{background:var(--chip);color:var(--chip-ink)}
@@ -745,22 +746,15 @@ function cardHTML(f) {
 function gridHTML(f) {
   const blur = bloqueado(f);
   const url = safeUrl(f.url);
-  const tagsAll = tagsDe(f);
-  const tags = tagsAll.slice(0, 2).join('') + (tagsAll.length > 2 ? `<span class="tag">+${tagsAll.length - 2}</span>` : '');
+  const fmt = f.categorias.includes('oneshot') ? 'One-shot' : f.categorias.includes('largo') ? 'Historia larga' : '';
   return `<article class="card g${blur ? ' blur' : ''}" data-id="${esc(f.id)}" style="--c:${colorFic(f)}">
     <div class="c-body g-body">
       <div class="g-top">
         <h3 class="g-title">${esc(f.titulo)}${f.adulto ? '<span class="badge18">+18</span>' : ''}</h3>
         <button class="cbtn fav" data-act="fav" aria-pressed="${f.fav === 'si'}" aria-label="${f.fav === 'si' ? 'Quitar de favoritos' : 'Marcar como favorito'}" style="${f.fav === 'si' ? '' : 'color:var(--mute)'}">${icon('heart', 18, f.fav === 'si')}</button>
       </div>
-      <p class="g-by">${esc(PLATS_S[f.plataforma])}</p>
       ${f.ship ? `<p class="g-ship">${esc(f.ship)}</p>` : ''}
-      ${f.fandom ? `<p class="g-fan">${esc(f.fandom)}</p>` : ''}
-      ${f.notas ? `<p class="g-notes">“${esc(f.notas)}”</p>` : ''}
-      <div class="g-meta">
-        <button class="st st-${f.estado}" data-act="estado" aria-label="Estado: ${ESTADOS[f.estado]}. Toca para cambiar">${ESTADOS[f.estado]}</button>
-        ${tags}
-      </div>
+      ${fmt ? `<div class="g-meta"><span class="tag fmt">${fmt}</span></div>` : ''}
       <div class="g-btns">
         ${url ? `<a class="btn primary" data-act="leer" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${icon('link', 15)} Leer</a>` : ''}
         <button class="btn sec" data-act="info">${icon('plus', 15)} Info</button>
