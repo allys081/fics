@@ -22,6 +22,7 @@ document.documentElement.dataset.theme=d?'dark':'light';document.documentElement
   --ok:#3d7a60; --ok-soft:#dcefe6; --danger:#b4412f;
   --f0:#c4623f; --f1:#5f8f7a; --f2:#8a6fb0; --f3:#b98524; --f4:#4f7fb5; --f5:#b9567a; --f6:#6f8f3d; --f7:#a0675a;
   --acc:#c4623f; --acc-soft:#f6e1d6; --on-acc:#fff;
+  --pink:#c2257a; --on-pink:#fff;
   --shadow:0 1px 2px rgba(80,50,30,.06),0 6px 18px rgba(80,50,30,.06);
   --scrim:rgba(30,18,10,.45);
   --serif:'Fraunces','Lora',Georgia,'DejaVu Serif',serif;
@@ -34,6 +35,7 @@ document.documentElement.dataset.theme=d?'dark':'light';document.documentElement
   --ok:#6ee7b7; --ok-soft:rgba(110,231,183,.14); --danger:#ff8a78;
   --f0:#f0916d; --f1:#5eead4; --f2:#c4b5fd; --f3:#fcd34d; --f4:#7cb7ff; --f5:#f9a8d4; --f6:#bef264; --f7:#fdba74;
   --on-acc:#14121a;
+  --pink:#f472b6; --on-pink:#14121a;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px rgba(0,0,0,.25);
   --scrim:rgba(0,0,0,.6);
 }
@@ -151,6 +153,7 @@ a{color:inherit}
 .btn{text-decoration:none;display:inline-flex;align-items:center;gap:7px;height:44px;padding:0 18px;border-radius:13px;font-weight:700;font-size:14px;transition:transform .12s,filter .12s}
 .btn:active{transform:scale(.96)}
 .btn.primary{background:var(--acc);color:var(--on-acc)}
+.btn.save{background:var(--pink);color:var(--on-pink)}
 .btn.sec{background:var(--card);border:1.5px solid var(--line)}
 .btn.danger{color:var(--danger)}
 .btn.block{width:100%;justify-content:center}
@@ -167,7 +170,7 @@ body.typing .fab{transform:translateY(120px);opacity:0;pointer-events:none}
 .sheet-head h2{font-family:var(--serif);font-size:20px;font-weight:700}
 .sheet-body{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:6px 18px 16px;-webkit-overflow-scrolling:touch}
 .sheet-foot{flex:none;display:flex;gap:10px;justify-content:flex-end;padding:12px 18px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--bg)}
-.sheet-foot .btn.primary{flex:1;justify-content:center}
+.sheet-foot .btn.primary,.sheet-foot .btn.save{flex:1;justify-content:center}
 @media (min-width:600px){
   .overlay{align-items:center}
   .sheet{border-radius:24px;max-height:calc(100% - 40px)}
@@ -184,6 +187,8 @@ body.typing .fab{transform:translateY(120px);opacity:0;pointer-events:none}
 .group.has-error .input{border-color:var(--danger)}
 .err{display:none;color:var(--danger);font-size:12px;font-weight:600;margin-top:5px}
 .group.has-error .err{display:block}
+.row2{display:flex;gap:8px;align-items:center}
+.row2 span{color:var(--mute);font-weight:700;font-size:13px}
 .chips{display:flex;flex-wrap:wrap;gap:7px}
 .chip{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:99px;background:var(--card);border:1.5px solid var(--line);font-size:12.5px;font-weight:700;color:var(--chip-ink);transition:all .12s}
 .chip em{font-style:normal;opacity:.65;font-size:11px}
@@ -198,7 +203,7 @@ body.typing .fab{transform:translateY(120px);opacity:0;pointer-events:none}
 .switch-row input::after{content:"";position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .18s}
 .switch-row input:checked{background:var(--acc);border-color:var(--acc)}
 .switch-row input:checked::after{transform:translateX(18px)}
-details.more{margin:6px 0 4px}
+details.more{margin:10px 0 4px;border-top:1px dashed var(--line);padding-top:6px}
 details.more summary{list-style:none;cursor:pointer;font-weight:700;font-size:13px;color:var(--acc);padding:8px 0;display:flex;align-items:center;gap:6px}
 details.more summary::-webkit-details-marker{display:none}
 details.more[open] summary .ic{transform:rotate(180deg)}
@@ -275,15 +280,23 @@ details.more .inner{padding-top:6px}
     <div class="grab"></div>
     <div class="sheet-head"><h2 id="fic-h">Agregar fanfic</h2><button class="ibtn sm" data-close aria-label="Cerrar" data-ic="x"></button></div>
     <div class="sheet-body" id="fic-body">
+
+      <!-- PARTE RÁPIDA -->
+      <div class="group" id="g-url">
+        <label class="label" for="f-url">1. Enlace para leerlo</label>
+        <input class="input" id="f-url" inputmode="url" autocapitalize="off" autocomplete="off" spellcheck="false" placeholder="https://archiveofourown.org/works/…">
+        <div class="hint" id="url-hint" hidden></div>
+        <div class="err">Ese enlace no parece válido.</div>
+      </div>
       <div class="group" id="g-titulo">
-        <label class="label" for="f-titulo">Título <i>*</i></label>
+        <label class="label" for="f-titulo">2. Título <i>*</i></label>
         <input class="input" id="f-titulo" placeholder="Ej: Pasado imperfecto" autocomplete="off" autocapitalize="sentences">
         <div class="err">Escribe al menos el título.</div>
       </div>
-      <div class="group" id="g-url">
-        <label class="label" for="f-url">Enlace para leerlo</label>
-        <input class="input" id="f-url" inputmode="url" autocapitalize="off" autocomplete="off" spellcheck="false" placeholder="https://archiveofourown.org/works/…">
-        <div class="err">Ese enlace no parece válido.</div>
+      <div class="group">
+        <label class="label" for="f-fandom">3. Fandom / Universo</label>
+        <input class="input" id="f-fandom" list="dl-fandom" placeholder="Ej: Kimetsu no Yaiba" autocomplete="off">
+        <datalist id="dl-fandom"></datalist>
       </div>
       <div class="group">
         <label class="label" for="f-ship">Pareja / Personajes (ship)</label>
@@ -291,12 +304,7 @@ details.more .inner{padding-top:6px}
         <datalist id="dl-ship"></datalist>
       </div>
       <div class="group">
-        <label class="label" for="f-fandom">Fandom / Universo</label>
-        <input class="input" id="f-fandom" list="dl-fandom" placeholder="Ej: Kimetsu no Yaiba" autocomplete="off">
-        <datalist id="dl-fandom"></datalist>
-      </div>
-      <div class="group">
-        <span class="label">Vibes (toca para elegir varias)</span>
+        <span class="label">4. Vibes (toca para elegir varias)</span>
         <div class="chips" id="f-vibes"></div>
         <div class="addvibe">
           <input class="input" id="f-nueva-vibe" placeholder="Agregar otra vibe…" maxlength="24" autocomplete="off">
@@ -304,46 +312,55 @@ details.more .inner{padding-top:6px}
         </div>
       </div>
       <div class="group">
-        <span class="label">Estado de lectura</span>
+        <label class="label" for="f-notas">5. “De qué iba” / notas para recordar la trama</label>
+        <textarea class="textarea" id="f-notas" placeholder="Aquel fic donde despierta en una cabaña y encuentra la carta…"></textarea>
+      </div>
+      <div class="group">
+        <span class="label">6. Estado de lectura</span>
         <div class="seg mini" id="f-estado">
           <button type="button" data-v="por-leer">Por leer</button><button type="button" data-v="leyendo">Leyendo</button><button type="button" data-v="terminado">Terminado</button>
         </div>
       </div>
-      <div class="group">
-        <span class="label">¿El fic está terminado (completo)?</span>
-        <div class="seg mini" id="f-pub">
-          <button type="button" data-v="completo">Completo</button><button type="button" data-v="sin-act">Sin actualizar</button>
-        </div>
-        <div id="g-caps" hidden style="margin-top:8px">
-          <input class="input" id="f-caps" type="number" inputmode="numeric" min="0" placeholder="¿Cuántos capítulos tiene?">
-        </div>
-      </div>
-      <div class="group">
-        <label class="label" for="f-notas">“De qué iba” / notas para recordar la trama</label>
-        <textarea class="textarea" id="f-notas" placeholder="Aquel fic donde despierta en una cabaña y encuentra la carta…"></textarea>
-      </div>
-      <label class="switch-row"><span><b>★ Favorito</b><small>Para encontrarlo rápido</small></span><input type="checkbox" id="f-fav"></label>
-      <label class="switch-row"><span><b>Contenido +18</b><small>Se oculta con el modo privado</small></span><input type="checkbox" id="f-adulto"></label>
+      <label class="switch-row"><span><b>⭐ Favorito</b><small>Para encontrarlo rápido</small></span><input type="checkbox" id="f-fav"></label>
+      <label class="switch-row"><span><b>🔞 Contenido +18</b><small>Se oculta con el modo privado</small></span><input type="checkbox" id="f-adulto"></label>
       <label class="switch-row" id="row-cw" hidden><span><b>⚠ CW (contenido fuerte)</b><small>Etiqueta oculta: solo se ve con los +18 visibles</small></span><input type="checkbox" id="f-cw"></label>
+
+      <!-- PARTE DETALLADA -->
       <details class="more">
-        <summary>Más opciones <span data-ic="chev" data-size="16"></span></summary>
+        <summary>Más opciones (detalles) <span data-ic="chev" data-size="16"></span></summary>
         <div class="inner">
           <div class="group">
-            <label class="label" for="f-plat">Plataforma</label>
+            <span class="label">8. ¿El fic está terminado por el autor?</span>
+            <div class="seg mini" id="f-pub">
+              <button type="button" data-v="completo">Completo</button><button type="button" data-v="sin-act">En emisión / Sin actualizar</button>
+            </div>
+          </div>
+          <div class="group" id="g-caps">
+            <span class="label">9. Progreso de lectura (capítulo)</span>
+            <div class="row2">
+              <span>Cap.</span>
+              <input class="input" id="f-cap-act" type="number" inputmode="numeric" min="0" placeholder="Ej: 14">
+              <span>de</span>
+              <input class="input" id="f-cap-tot" type="number" inputmode="numeric" min="0" placeholder="Ej: 35">
+            </div>
+            <div class="err">El capítulo actual no puede ser mayor que el total.</div>
+          </div>
+          <div class="group">
+            <label class="label" for="f-plat">10. Plataforma</label>
             <select class="select" id="f-plat">
               <option value="ao3">AO3</option><option value="ffnet">FanFiction.net</option><option value="wattpad">Wattpad</option><option value="otro">Otro</option>
             </select>
           </div>
           <div class="group">
-            <label class="label" for="f-tropes">Otros tropes (opcional)</label>
-            <input class="input" id="f-tropes" placeholder="Ej: Enemies to lovers, Amnesia" autocomplete="off">
+            <label class="label" for="f-tropes">11. Otros tropes / palabras clave</label>
+            <input class="input" id="f-tropes" placeholder="Ej: Enemies to lovers, Amnesia, Slow burn, Hanahaki" autocomplete="off">
           </div>
         </div>
       </details>
     </div>
     <div class="sheet-foot">
       <button class="btn sec" data-close>Cancelar</button>
-      <button class="btn primary" id="btn-guardar">Guardar</button>
+      <button class="btn save" id="btn-guardar">Guardar fanfic</button>
     </div>
   </div>
 </div>
@@ -436,7 +453,8 @@ const vibe = k => VIBES[k] || { n:String(k).slice(2), s:String(k).slice(2), e:'�
 const PLATS  = { ao3:'AO3', ffnet:'FanFiction.net', wattpad:'Wattpad', otro:'Otro' };
 const PLATS_S= { ao3:'AO3', ffnet:'FF.net', wattpad:'Wattpad', otro:'Web' };
 const ESTADOS = { 'por-leer':'Por leer', leyendo:'Leyendo', terminado:'Terminado' };
-const PUBS = { completo:'Completo', 'sin-act':'Sin actualizar' };
+const PUBS = { completo:'Completo', 'sin-act':'En emisión / Sin actualizar' };
+const PUBS_S = { completo:'Completo', 'sin-act':'En emisión' };
 const ORDENES = { recientes:'Más recientes', antiguos:'Más antiguos', titulo:'Título A–Z', favoritos:'Favoritos primero' };
 
 const I = {
@@ -486,6 +504,7 @@ function detectarPlat(u) {
 }
 function normFic(f) {
   const s = v => typeof v === 'string' ? v.trim() : '';
+  const n = v => String(v ?? '').replace(/\D/g, '').slice(0, 5);
   return {
     id: s(f.id) || 'f_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
     titulo: s(f.titulo), autor: s(f.autor),   // el autor se conserva en los datos aunque ya no se muestre
@@ -498,7 +517,8 @@ function normFic(f) {
     adulto: !!f.adulto,
     cw: !!f.adulto && !!f.cw,
     pub: PUBS[f.pub] ? f.pub : '',
-    caps: f.pub === 'sin-act' ? String(f.caps ?? '').trim() : ''
+    capAct: n(f.capAct),
+    capTot: n(f.capTot !== undefined ? f.capTot : f.caps)   // "caps" es el campo de la versión anterior
   };
 }
 
@@ -562,13 +582,21 @@ function limpiarFiltros() { st.fav = false; st.plats.clear(); st.pubs.clear(); s
 /* ───────── Pintado principal ───────── */
 function colorFic(f) { return f.ship ? `var(--f${hash(norm(f.ship)) % 8})` : 'var(--mute)'; }
 
+function capsTxt(f) {
+  if (f.capAct && f.capTot) return `Cap. ${f.capAct} de ${f.capTot}`;
+  if (f.capAct) return `Cap. ${f.capAct}`;
+  if (f.capTot) return `${f.capTot} cap${f.capTot === '1' ? '' : 's'}`;
+  return '';
+}
+
 function cardHTML(f) {
   const open = st.abiertos.has(f.id);
   const blur = f.adulto && prefs.adultos === 'difuminar' && !st.revelados.has(f.id);
   const url = safeUrl(f.url);
-  const pubTxt = f.pub === 'completo' ? 'Completo' : f.pub === 'sin-act' ? 'Sin actualizar' + (f.caps ? ` · ${esc(f.caps)} cap${f.caps === '1' ? '' : 's'}` : '') : '';
+  const caps = capsTxt(f);
   const tagsAll = [
-    ...(pubTxt ? [`<span class="tag pub">${pubTxt}</span>`] : []),
+    ...(f.pub ? [`<span class="tag pub">${esc(PUBS_S[f.pub])}</span>`] : []),
+    ...(caps ? [`<span class="tag">${esc(caps)}</span>`] : []),
     ...(f.cw ? ['<span class="tag cw">⚠ CW</span>'] : []),
     ...f.categorias.map(k => `<span class="tag">${esc(vibe(k).s)}</span>`)
   ];
@@ -640,7 +668,7 @@ function pintarPills() {
   const out = [];
   const pill = (t, v, txt) => `<button class="pill" data-t="${t}" data-v="${esc(v)}" aria-label="Quitar filtro ${esc(txt)}">${esc(txt)} ${icon('x', 13)}</button>`;
   if (st.fav) out.push(pill('fav', '', '★ Favoritos'));
-  st.pubs.forEach(k => out.push(pill('pub', k, PUBS[k])));
+  st.pubs.forEach(k => out.push(pill('pub', k, PUBS_S[k])));
   st.plats.forEach(k => out.push(pill('plat', k, PLATS_S[k])));
   if (st.soloAdulto) out.push(pill('adulto', '', '+18'));
   if (st.soloCW) out.push(pill('cw', '', '⚠ CW'));
@@ -744,10 +772,14 @@ function pintarFormVibes() {
   $('#f-vibes').innerHTML = [...base, ...extra].map(([k, t, c]) => `<button type="button" class="chip${formVibes.has(k) ? ' on' : ''}" data-v="${esc(k)}">${esc(t)}${c ? ` <span data-del="${esc(k)}" aria-label="Eliminar vibe">✕</span>` : ''}</button>`).join('');
   $$('#f-estado button').forEach(b => b.classList.toggle('on', b.dataset.v === formEstado));
   $$('#f-pub button').forEach(b => b.classList.toggle('on', b.dataset.v === formPub));
-  $('#g-caps').hidden = formPub !== 'sin-act';
 }
 function syncCW() { const a = $('#f-adulto').checked; $('#row-cw').hidden = !a; if (!a) $('#f-cw').checked = false; }
 $('#f-adulto').addEventListener('change', syncCW);
+
+function mostrarDeteccion(url) {
+  const p = detectarPlat(url), h = $('#url-hint');
+  h.hidden = !p; if (p) h.textContent = 'Plataforma detectada: ' + PLATS[p];
+}
 
 function abrirForm(id) {
   vibrar();
@@ -761,7 +793,10 @@ function abrirForm(id) {
   $('#f-fav').checked = !!f && f.fav === 'si'; $('#f-adulto').checked = !!f && f.adulto;
   $('#f-cw').checked = !!f && f.cw; syncCW();
   formVibes = new Set(f ? f.categorias : []); formEstado = f ? f.estado : 'por-leer'; platManual = !!f;
-  formPub = f ? f.pub : ''; $('#f-caps').value = f ? f.caps : ''; $('#f-nueva-vibe').value = '';
+  formPub = f ? f.pub : '';
+  $('#f-cap-act').value = f ? f.capAct : ''; $('#f-cap-tot').value = f ? f.capTot : '';
+  $('#f-nueva-vibe').value = '';
+  $('#url-hint').hidden = true;
   $$('#sheet-fic .group').forEach(g => g.classList.remove('has-error'));
   const vis = visibles();
   const uniq = arr => [...new Set(arr.filter(Boolean))].sort((a, b) => a.localeCompare(b, 'es'));
@@ -771,7 +806,7 @@ function abrirForm(id) {
   pintarFormVibes();
   abrirHoja('sheet-fic');
   $('#fic-body').scrollTop = 0;
-  if (!f) setTimeout(() => $('#f-titulo').focus(), 280);
+  if (!f) setTimeout(() => $('#f-url').focus(), 280);
 }
 $('#f-vibes').addEventListener('click', e => {
   const d = e.target.closest('[data-del]');
@@ -796,8 +831,14 @@ $('#f-nueva-vibe').addEventListener('keydown', e => { if (e.key === 'Enter') { e
 $('#f-estado').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; formEstado = b.dataset.v; pintarFormVibes(); });
 $('#f-pub').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; formPub = formPub === b.dataset.v ? '' : b.dataset.v; pintarFormVibes(); });
 $('#f-plat').addEventListener('change', () => platManual = true);
-$('#f-url').addEventListener('input', e => { const p = detectarPlat(e.target.value); if (p && !platManual) $('#f-plat').value = p; $('#g-url').classList.remove('has-error'); });
+$('#f-url').addEventListener('input', e => {
+  const p = detectarPlat(e.target.value);
+  if (p && !platManual) $('#f-plat').value = p;
+  mostrarDeteccion(e.target.value);
+  $('#g-url').classList.remove('has-error');
+});
 $('#f-titulo').addEventListener('input', () => $('#g-titulo').classList.remove('has-error'));
+['#f-cap-act', '#f-cap-tot'].forEach(s => $(s).addEventListener('input', () => $('#g-caps').classList.remove('has-error')));
 
 $('#btn-guardar').onclick = () => {
   const titulo = $('#f-titulo').value.trim();
@@ -805,6 +846,11 @@ $('#btn-guardar').onclick = () => {
   if (!titulo) { $('#g-titulo').classList.add('has-error'); $('#f-titulo').focus(); return; }
   let url = '';
   if (urlRaw) { url = safeUrl(urlRaw); if (!url) { $('#g-url').classList.add('has-error'); $('#f-url').focus(); return; } }
+  const capAct = $('#f-cap-act').value.trim(), capTot = $('#f-cap-tot').value.trim();
+  if (capAct && capTot && +capAct > +capTot) {
+    $('#sheet-fic details.more').open = true;
+    $('#g-caps').classList.add('has-error'); $('#f-cap-act').focus(); return;
+  }
   vibrar();
   const adulto = $('#f-adulto').checked;
   const datos = {
@@ -812,7 +858,7 @@ $('#btn-guardar').onclick = () => {
     fandom:$('#f-fandom').value, ship:$('#f-ship').value, fav:$('#f-fav').checked ? 'si' : 'no',
     categorias:[...formVibes], tagsExtra:$('#f-tropes').value, notas:$('#f-notas').value,
     estado:formEstado, adulto, cw:adulto && $('#f-cw').checked,
-    pub:formPub, caps:formPub === 'sin-act' ? $('#f-caps').value : ''
+    pub:formPub, capAct, capTot
   };
   if (editId) { const i = db.findIndex(x => x.id === editId); db[i] = normFic({ ...db[i], ...datos }); }
   else db.unshift(normFic(datos));
