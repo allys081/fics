@@ -46,6 +46,7 @@ document.documentElement.dataset.theme=d?'dark':'light';document.documentElement
 [data-theme=dark][data-acc=verde]{--acc:#5eead4;--acc-soft:#173b36}
 
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%}
 body{font-family:var(--sans);font-size:14px;line-height:1.45;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;min-height:100dvh}
 body.locked{overflow:hidden}
@@ -57,7 +58,6 @@ a{color:inherit}
 
 .app{max-width:640px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 10px) 16px calc(110px + env(safe-area-inset-bottom))}
 
-/* Cabecera */
 .top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:6px 0 12px}
 .top h1{font-family:var(--serif);font-size:26px;font-weight:700;letter-spacing:-.4px;line-height:1.1}
 .top p{color:var(--mute);font-size:12px;margin-top:3px}
@@ -67,7 +67,6 @@ a{color:inherit}
 .ibtn.sm{width:34px;height:34px;border-radius:11px}
 .ibtn.on{background:var(--acc-soft);color:var(--acc);border-color:transparent}
 
-/* Buscador */
 .searchbar{position:sticky;top:0;z-index:20;padding:6px 0 10px;background:linear-gradient(var(--bg) 82%,transparent)}
 .search{display:flex;align-items:center;gap:10px;height:46px;padding:0 6px 0 14px;background:var(--card);border:1.5px solid var(--line);border-radius:15px;color:var(--mute);transition:border-color .15s,box-shadow .15s}
 .search:focus-within{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-soft)}
@@ -76,14 +75,12 @@ a{color:inherit}
 .search .clear{width:34px;height:34px;display:none;place-items:center;border-radius:10px;color:var(--mute)}
 .search.has .clear{display:grid}
 
-/* Estados */
 .seg{display:flex;background:var(--chip);border-radius:14px;padding:3px;gap:2px}
 .seg button{flex:1;padding:8px 2px;border-radius:11px;font-size:12.5px;font-weight:600;color:var(--mute);white-space:nowrap;transition:background .15s,color .15s}
 .seg button b{font-weight:700;opacity:.7;margin-left:3px;font-size:11px}
 .seg button.on{background:var(--card);color:var(--acc);box-shadow:0 1px 3px rgba(0,0,0,.14)}
 .seg.mini button{padding:9px 4px}
 
-/* Herramientas */
 .tools{display:flex;gap:8px;align-items:center;margin:12px 0}
 .fbtn{display:flex;align-items:center;gap:7px;height:38px;padding:0 13px;border-radius:12px;background:var(--card);border:1px solid var(--line);font-weight:700;font-size:12.5px;flex:none}
 .fbtn em{font-style:normal;background:var(--acc);color:var(--on-acc);min-width:18px;height:18px;border-radius:99px;display:none;place-items:center;font-size:10.5px;padding:0 5px}
@@ -99,7 +96,6 @@ a{color:inherit}
 .listhead select{appearance:none;-webkit-appearance:none;border:0;background:none;color:var(--ink);font-weight:700;font-size:12px;padding:4px 16px 4px 2px;cursor:pointer;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none' stroke='%23999' stroke-width='1.6'%3E%3Cpath d='M1 1l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 2px center}
 
-/* Tarjetas */
 .lista{display:flex;flex-direction:column;gap:10px}
 .card{position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:13px 10px 12px 18px;box-shadow:var(--shadow);cursor:pointer}
 .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--c,var(--mute))}
@@ -112,14 +108,16 @@ a{color:inherit}
 .cbtn{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;color:var(--mute)}
 .cbtn:active{background:var(--chip)}
 .cbtn.fav{color:var(--acc)}
-.c-fandom{margin-top:6px;font-size:12.5px;font-weight:700;color:var(--c,var(--mute));padding-right:6px}
-.c-fandom span{color:var(--mute);font-weight:500}
+.c-ship{margin-top:6px;font-size:13px;font-weight:800;color:var(--c,var(--mute));padding-right:6px;overflow-wrap:anywhere}
+.c-ship span{color:var(--mute);font-weight:500;font-size:12px}
 .c-notes{margin-top:7px;font-size:12.5px;color:var(--mute);font-style:italic;line-height:1.45;padding-right:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .c-tropes{display:none;margin-top:7px;font-size:12px;color:var(--mute);padding-right:6px}
 .c-tropes b{color:var(--ink)}
 .c-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:10px;padding-right:6px}
 .tags{display:flex;flex-wrap:wrap;gap:5px;min-width:0}
 .tag{background:var(--chip);color:var(--chip-ink);border-radius:8px;padding:3px 8px;font-size:11px;font-weight:600}
+.tag.pub{background:var(--ok-soft);color:var(--ok)}
+.tag.cw{background:transparent;color:var(--danger);border:1.5px solid currentColor;padding:1px 7px}
 .st{flex:none;font-size:11px;font-weight:800;border-radius:99px;padding:5px 11px}
 .st-por-leer{background:var(--chip);color:var(--chip-ink)}
 .st-leyendo{background:var(--acc-soft);color:var(--acc)}
@@ -130,10 +128,9 @@ a{color:inherit}
 .card.open .c-tropes{display:block}
 .card.open .c-actions{display:flex}
 
-/* Vista lista compacta */
 .lista.compacta .card{padding:9px 6px 9px 16px;border-radius:14px;box-shadow:none}
 .lista.compacta .c-title{font-size:14.5px}
-.lista.compacta .c-fandom{margin-top:3px;font-size:12px}
+.lista.compacta .c-ship{margin-top:3px;font-size:12.5px}
 .lista.compacta .cbtn{width:34px;height:34px}
 .lista.compacta .c-btns .link{display:none}
 .lista.compacta .card:not(.open) .c-notes,
@@ -143,7 +140,6 @@ a{color:inherit}
 .lista.compacta .st{padding:3px 9px;font-size:10.5px}
 .lista.compacta .card.open .c-btns .link{display:grid}
 
-/* Difuminado +18 */
 .card.blur .c-body{filter:blur(9px);opacity:.7;pointer-events:none;user-select:none}
 .veil{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:800;font-size:12.5px;color:var(--ink);background:color-mix(in srgb,var(--card) 35%,transparent)}
 
@@ -152,7 +148,6 @@ a{color:inherit}
 .vacio .btn{margin-top:16px}
 .ocultos{margin:16px auto 0;display:flex;align-items:center;gap:7px;color:var(--mute);font-size:12px;font-weight:600;padding:8px 12px;border-radius:99px}
 
-/* Botones */
 .btn{text-decoration:none;display:inline-flex;align-items:center;gap:7px;height:44px;padding:0 18px;border-radius:13px;font-weight:700;font-size:14px;transition:transform .12s,filter .12s}
 .btn:active{transform:scale(.96)}
 .btn.primary{background:var(--acc);color:var(--on-acc)}
@@ -163,7 +158,6 @@ a{color:inherit}
 .fab:active{transform:scale(.95)}
 body.typing .fab{transform:translateY(120px);opacity:0;pointer-events:none}
 
-/* Hojas (bottom sheets) — se ajustan al teclado con visualViewport */
 .overlay{position:fixed;left:0;right:0;top:var(--vvt,0px);height:var(--vvh,100dvh);z-index:100;display:flex;align-items:flex-end;justify-content:center;background:var(--scrim);opacity:0;visibility:hidden;transition:opacity .2s,visibility 0s .2s}
 .overlay.open{opacity:1;visibility:visible;transition:opacity .2s}
 .sheet{width:100%;max-width:520px;max-height:calc(100% - 8px);display:flex;flex-direction:column;background:var(--bg);border-radius:24px 24px 0 0;box-shadow:0 -10px 40px rgba(0,0,0,.25);transform:translateY(40px);transition:transform .26s cubic-bezier(.16,1,.3,1)}
@@ -180,7 +174,6 @@ body.typing .fab{transform:translateY(120px);opacity:0;pointer-events:none}
   .grab{display:none}
 }
 
-/* Formularios */
 .group{margin-bottom:14px}
 .label{display:block;font-size:12px;font-weight:700;color:var(--mute);margin-bottom:6px}
 .label i{color:var(--acc);font-style:normal}
@@ -195,6 +188,9 @@ body.typing .fab{transform:translateY(120px);opacity:0;pointer-events:none}
 .chip{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:99px;background:var(--card);border:1.5px solid var(--line);font-size:12.5px;font-weight:700;color:var(--chip-ink);transition:all .12s}
 .chip em{font-style:normal;opacity:.65;font-size:11px}
 .chip.on{background:var(--acc);border-color:var(--acc);color:var(--on-acc)}
+.chip span[data-del]{margin-left:2px;opacity:.7;padding:0 2px}
+.addvibe{display:flex;gap:8px;margin-top:10px}
+.addvibe .btn{height:auto;padding:0 16px;flex:none}
 .switch-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;background:var(--card);border:1.5px solid var(--line);border-radius:14px;margin-bottom:8px;cursor:pointer}
 .switch-row b{display:block;font-size:13.5px}
 .switch-row small{color:var(--mute);font-size:11.5px}
@@ -216,7 +212,6 @@ details.more .inner{padding-top:6px}
 .sw .ic{opacity:0}.sw[aria-pressed=true] .ic{opacity:1}
 .menu-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 
-/* Aviso */
 .toast{position:fixed;z-index:200;left:50%;bottom:calc(88px + env(safe-area-inset-bottom));transform:translate(-50%,20px);opacity:0;pointer-events:none;display:flex;align-items:center;gap:14px;max-width:calc(100% - 32px);background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:14px;font-size:13px;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,.3);transition:all .25s}
 .toast.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
 .toast button{color:var(--acc);font-weight:800;filter:brightness(1.15)}
@@ -291,8 +286,9 @@ details.more .inner{padding-top:6px}
         <div class="err">Ese enlace no parece válido.</div>
       </div>
       <div class="group">
-        <label class="label" for="f-autor">Autor(a)</label>
-        <input class="input" id="f-autor" placeholder="Ej: MoonWriter" autocomplete="off">
+        <label class="label" for="f-ship">Pareja / Personajes (ship)</label>
+        <input class="input" id="f-ship" list="dl-ship" placeholder="Ej: Giyuu & Tanjiro, Gen" autocomplete="off">
+        <datalist id="dl-ship"></datalist>
       </div>
       <div class="group">
         <label class="label" for="f-fandom">Fandom / Universo</label>
@@ -300,18 +296,26 @@ details.more .inner{padding-top:6px}
         <datalist id="dl-fandom"></datalist>
       </div>
       <div class="group">
-        <label class="label" for="f-ship">Pareja / Personajes (ship)</label>
-        <input class="input" id="f-ship" list="dl-ship" placeholder="Ej: Giyuu & Tanjiro, Gen" autocomplete="off">
-        <datalist id="dl-ship"></datalist>
-      </div>
-      <div class="group">
         <span class="label">Vibes (toca para elegir varias)</span>
         <div class="chips" id="f-vibes"></div>
+        <div class="addvibe">
+          <input class="input" id="f-nueva-vibe" placeholder="Agregar otra vibe…" maxlength="24" autocomplete="off">
+          <button type="button" class="btn sec" id="btn-vibe">Añadir</button>
+        </div>
       </div>
       <div class="group">
         <span class="label">Estado de lectura</span>
         <div class="seg mini" id="f-estado">
-          <button data-v="por-leer">Por leer</button><button data-v="leyendo">Leyendo</button><button data-v="terminado">Terminado</button>
+          <button type="button" data-v="por-leer">Por leer</button><button type="button" data-v="leyendo">Leyendo</button><button type="button" data-v="terminado">Terminado</button>
+        </div>
+      </div>
+      <div class="group">
+        <span class="label">¿El fic está terminado (completo)?</span>
+        <div class="seg mini" id="f-pub">
+          <button type="button" data-v="completo">Completo</button><button type="button" data-v="sin-act">Sin actualizar</button>
+        </div>
+        <div id="g-caps" hidden style="margin-top:8px">
+          <input class="input" id="f-caps" type="number" inputmode="numeric" min="0" placeholder="¿Cuántos capítulos tiene?">
         </div>
       </div>
       <div class="group">
@@ -320,6 +324,7 @@ details.more .inner{padding-top:6px}
       </div>
       <label class="switch-row"><span><b>★ Favorito</b><small>Para encontrarlo rápido</small></span><input type="checkbox" id="f-fav"></label>
       <label class="switch-row"><span><b>Contenido +18</b><small>Se oculta con el modo privado</small></span><input type="checkbox" id="f-adulto"></label>
+      <label class="switch-row" id="row-cw" hidden><span><b>⚠ CW (contenido fuerte)</b><small>Etiqueta oculta: solo se ve con los +18 visibles</small></span><input type="checkbox" id="f-cw"></label>
       <details class="more">
         <summary>Más opciones <span data-ic="chev" data-size="16"></span></summary>
         <div class="inner">
@@ -414,7 +419,7 @@ details.more .inner{padding-top:6px}
 'use strict';
 
 /* ───────── Constantes ───────── */
-const KEY = 'biblioteca_fics';          // misma clave que la versión anterior (tus datos se conservan)
+const KEY = 'biblioteca_fics';          // misma clave que antes (tus datos se conservan)
 const PKEY = 'fics_prefs_v2';
 const BKEY = 'fics_ultimo_respaldo';
 const VIBES = {
@@ -427,9 +432,11 @@ const VIBES = {
   au:         { n:'Universo alterno (AU)',      s:'AU',       e:'✨' },
   humor:      { n:'Comedia / Divertido',        s:'Comedia',  e:'😂' }
 };
+const vibe = k => VIBES[k] || { n:String(k).slice(2), s:String(k).slice(2), e:'🏷️' };   // vibes propias: "c:nombre"
 const PLATS  = { ao3:'AO3', ffnet:'FanFiction.net', wattpad:'Wattpad', otro:'Otro' };
 const PLATS_S= { ao3:'AO3', ffnet:'FF.net', wattpad:'Wattpad', otro:'Web' };
 const ESTADOS = { 'por-leer':'Por leer', leyendo:'Leyendo', terminado:'Terminado' };
+const PUBS = { completo:'Completo', 'sin-act':'Sin actualizar' };
 const ORDENES = { recientes:'Más recientes', antiguos:'Más antiguos', titulo:'Título A–Z', favoritos:'Favoritos primero' };
 
 const I = {
@@ -481,22 +488,27 @@ function normFic(f) {
   const s = v => typeof v === 'string' ? v.trim() : '';
   return {
     id: s(f.id) || 'f_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
-    titulo: s(f.titulo), autor: s(f.autor),
+    titulo: s(f.titulo), autor: s(f.autor),   // el autor se conserva en los datos aunque ya no se muestre
     plataforma: PLATS[f.plataforma] ? f.plataforma : 'ao3',
     url: s(f.url), fandom: s(f.fandom), ship: s(f.ship),
     fav: f.fav === 'si' ? 'si' : 'no',
-    categorias: Array.isArray(f.categorias) ? f.categorias.filter(k => VIBES[k]) : [],
+    categorias: Array.isArray(f.categorias) ? f.categorias.filter(k => typeof k === 'string' && (VIBES[k] || (k.startsWith('c:') && k.length > 2))) : [],
     tagsExtra: s(f.tagsExtra), notas: s(f.notas),
     estado: ESTADOS[f.estado] ? f.estado : 'por-leer',
-    adulto: !!f.adulto
+    adulto: !!f.adulto,
+    cw: !!f.adulto && !!f.cw,
+    pub: PUBS[f.pub] ? f.pub : '',
+    caps: f.pub === 'sin-act' ? String(f.caps ?? '').trim() : ''
   };
 }
 
 /* ───────── Estado ───────── */
 let db = (leer(KEY, []) || []).filter(f => f && typeof f === 'object').map(normFic).filter(f => f.titulo);
-const prefs = Object.assign({ tema:'auto', acento:'terra', vista:'tarjetas', orden:'recientes', adultos:'ocultar', aviso:false }, leer(PKEY, {}));
+const prefs = Object.assign({ tema:'auto', acento:'terra', vista:'tarjetas', orden:'recientes', adultos:'ocultar', aviso:false, vibesCustom:[] }, leer(PKEY, {}));
+if (!Array.isArray(prefs.vibesCustom)) prefs.vibesCustom = [];
 if (prefs.adultos === 'mostrar') prefs.adultos = 'ocultar';   // "mostrar" solo dura la sesión
-const st = { q:'', estado:'todos', fandoms:new Set(), tags:new Set(), plats:new Set(), fav:false, abiertos:new Set(), revelados:new Set() };
+const st = { q:'', estado:'todos', plats:new Set(), pubs:new Set(), fav:false, soloAdulto:false, soloCW:false, abiertos:new Set(), revelados:new Set() };
+const misVibes = () => [...new Set([...prefs.vibesCustom, ...db.flatMap(f => f.categorias).filter(k => k.startsWith('c:'))])];
 const guardarPrefs = () => escribir(PKEY, prefs);
 const guardarDB = () => { if (!escribir(KEY, db)) toast('No pude guardar en este navegador. Haz un respaldo.'); };
 
@@ -522,14 +534,16 @@ const ocultosN = () => db.filter(f => f.adulto).length;
 
 function calcular() {
   const vis = visibles();
+  if (prefs.adultos === 'ocultar') { st.soloAdulto = false; st.soloCW = false; }
   const words = norm(st.q).split(/\s+/).filter(Boolean);
   const base = vis.filter(f => {
     if (st.fav && f.fav !== 'si') return false;
-    if (st.fandoms.size && !st.fandoms.has(norm(f.fandom))) return false;
     if (st.plats.size && !st.plats.has(f.plataforma)) return false;
-    for (const t of st.tags) if (!f.categorias.includes(t)) return false;
+    if (st.pubs.size && !st.pubs.has(f.pub)) return false;
+    if (st.soloAdulto && !f.adulto) return false;
+    if (st.soloCW && !f.cw) return false;
     if (words.length) {
-      const hay = norm([f.titulo, f.autor, f.fandom, f.ship, f.tagsExtra, f.notas, f.categorias.map(k => VIBES[k].n).join(' ')].join(' '));
+      const hay = norm([f.titulo, f.autor, f.fandom, f.ship, f.tagsExtra, f.notas, f.categorias.map(k => vibe(k).n).join(' ')].join(' '));
       if (!words.every(w => hay.includes(w))) return false;
     }
     return true;
@@ -542,19 +556,24 @@ function calcular() {
   else if (prefs.orden === 'favoritos') lista.sort((a, b) => (b.fav === 'si') - (a.fav === 'si'));
   return { vis, base, counts, lista };
 }
-const nFiltros = () => (st.fav ? 1 : 0) + st.fandoms.size + st.tags.size + st.plats.size;
-function limpiarFiltros() { st.fav = false; st.fandoms.clear(); st.tags.clear(); st.plats.clear(); }
+const nFiltros = () => (st.fav ? 1 : 0) + st.plats.size + st.pubs.size + (st.soloAdulto ? 1 : 0) + (st.soloCW ? 1 : 0);
+function limpiarFiltros() { st.fav = false; st.plats.clear(); st.pubs.clear(); st.soloAdulto = false; st.soloCW = false; st.estado = 'todos'; }
 
 /* ───────── Pintado principal ───────── */
-function colorFic(f) { return f.fandom ? `var(--f${hash(norm(f.fandom)) % 8})` : 'var(--mute)'; }
+function colorFic(f) { return f.ship ? `var(--f${hash(norm(f.ship)) % 8})` : 'var(--mute)'; }
 
 function cardHTML(f) {
   const open = st.abiertos.has(f.id);
   const blur = f.adulto && prefs.adultos === 'difuminar' && !st.revelados.has(f.id);
   const url = safeUrl(f.url);
-  const tagsAll = f.categorias.map(k => `<span class="tag">${VIBES[k].s}</span>`);
+  const pubTxt = f.pub === 'completo' ? 'Completo' : f.pub === 'sin-act' ? 'Sin actualizar' + (f.caps ? ` · ${esc(f.caps)} cap${f.caps === '1' ? '' : 's'}` : '') : '';
+  const tagsAll = [
+    ...(pubTxt ? [`<span class="tag pub">${pubTxt}</span>`] : []),
+    ...(f.cw ? ['<span class="tag cw">⚠ CW</span>'] : []),
+    ...f.categorias.map(k => `<span class="tag">${esc(vibe(k).s)}</span>`)
+  ];
   const tags = (open ? tagsAll : tagsAll.slice(0, 3)).join('') + (!open && tagsAll.length > 3 ? `<span class="tag">+${tagsAll.length - 3}</span>` : '');
-  const by = [f.autor, PLATS_S[f.plataforma]].filter(Boolean).join(' · ');
+  const by = PLATS_S[f.plataforma];
   return `<article class="card${open ? ' open' : ''}${blur ? ' blur' : ''}" data-id="${esc(f.id)}" style="--c:${colorFic(f)}">
     <div class="c-body">
       <div class="c-head">
@@ -567,7 +586,7 @@ function cardHTML(f) {
           <button class="cbtn fav" data-act="fav" aria-pressed="${f.fav === 'si'}" aria-label="${f.fav === 'si' ? 'Quitar de favoritos' : 'Marcar como favorito'}" style="${f.fav === 'si' ? '' : 'color:var(--mute)'}">${icon('heart', 19, f.fav === 'si')}</button>
         </div>
       </div>
-      ${f.fandom || f.ship ? `<p class="c-fandom">${esc(f.fandom)}${f.ship ? `<span>${f.fandom ? ' · ' : ''}${esc(f.ship)}</span>` : ''}</p>` : ''}
+      ${f.ship || f.fandom ? `<p class="c-ship">${esc(f.ship)}${f.fandom ? `<span>${f.ship ? ' · ' : ''}${esc(f.fandom)}</span>` : ''}</p>` : ''}
       ${f.notas ? `<p class="c-notes">“${esc(f.notas)}”</p>` : ''}
       ${f.tagsExtra ? `<p class="c-tropes"><b>Tropes:</b> ${esc(f.tagsExtra)}</p>` : ''}
       <div class="c-foot">
@@ -586,36 +605,30 @@ function cardHTML(f) {
 
 function render() {
   const { vis, counts, lista } = calcular();
-  // cabecera
   const leyendo = vis.filter(f => f.estado === 'leyendo').length;
   $('#subtitulo').textContent = `${vis.length} guardado${vis.length === 1 ? '' : 's'}${leyendo ? ` · ${leyendo} leyendo` : ''}`;
   $('#btn-priv').innerHTML = icon(prefs.adultos === 'ocultar' ? 'eyeoff' : 'eye');
   $('#btn-priv').classList.toggle('on', prefs.adultos !== 'ocultar');
   $('#btn-priv').setAttribute('aria-label', prefs.adultos === 'ocultar' ? 'Fics +18 ocultos. Toca para mostrarlos' : 'Fics +18 visibles. Toca para ocultarlos');
-  // pestañas de estado
   $$('#seg button').forEach(b => {
     b.classList.toggle('on', b.dataset.estado === st.estado);
     const n = counts[b.dataset.estado];
     b.querySelector('b').textContent = b.dataset.estado === 'todos' ? '' : n;
   });
-  // filtros activos
   const nf = nFiltros();
   $('#btn-filtros').classList.toggle('has', nf > 0);
   $('#n-filtros').textContent = nf;
-  pintarPills(vis);
-  // vista / orden
+  pintarPills();
   $$('#view button').forEach(b => b.classList.toggle('on', b.dataset.vista === prefs.vista));
   $('#lista').className = 'lista ' + (prefs.vista === 'compacta' ? 'compacta' : '');
   $('#orden').value = prefs.orden;
   $('#conteo').textContent = `${lista.length} resultado${lista.length === 1 ? '' : 's'}`;
-  // lista
   const cont = $('#lista');
   if (!lista.length) {
     cont.innerHTML = !vis.length
       ? `<div class="vacio"><div class="big">Tu biblioteca está vacía</div>Guarda aquí los fics que lees para no perderlos.<br><button class="btn primary" data-act="nuevo">${icon('plus', 18)} Agregar el primero</button></div>`
       : `<div class="vacio"><div class="big">Nada por aquí</div>Ningún fic coincide con la búsqueda o los filtros.<br>${nf || st.q || st.estado !== 'todos' ? `<button class="btn sec" data-act="reset">Limpiar todo</button>` : ''}</div>`;
   } else cont.innerHTML = lista.map(cardHTML).join('');
-  // aviso de ocultos
   const av = $('#aviso-ocultos'), oc = ocultosN();
   const mostrarAviso = prefs.aviso && prefs.adultos === 'ocultar' && oc > 0;
   av.hidden = !mostrarAviso;
@@ -623,14 +636,14 @@ function render() {
   if (filtrosAbiertos()) pintarFiltros();
 }
 
-function pintarPills(vis) {
+function pintarPills() {
   const out = [];
-  const lab = k => (vis.find(f => norm(f.fandom) === k) || {}).fandom || k;
   const pill = (t, v, txt) => `<button class="pill" data-t="${t}" data-v="${esc(v)}" aria-label="Quitar filtro ${esc(txt)}">${esc(txt)} ${icon('x', 13)}</button>`;
   if (st.fav) out.push(pill('fav', '', '★ Favoritos'));
-  st.fandoms.forEach(k => out.push(pill('fandom', k, lab(k))));
-  st.tags.forEach(k => out.push(pill('tag', k, VIBES[k].s)));
+  st.pubs.forEach(k => out.push(pill('pub', k, PUBS[k])));
   st.plats.forEach(k => out.push(pill('plat', k, PLATS_S[k])));
+  if (st.soloAdulto) out.push(pill('adulto', '', '+18'));
+  if (st.soloCW) out.push(pill('cw', '', '⚠ CW'));
   $('#pills').innerHTML = out.join('');
 }
 
@@ -638,9 +651,9 @@ function pintarPills(vis) {
 $('#lista').addEventListener('click', e => {
   const actEl = e.target.closest('[data-act]');
   const act = actEl && actEl.dataset.act;
-  if (act === 'leer') return;                       // deja abrir el enlace normalmente
+  if (act === 'leer') return;
   if (act === 'nuevo') return abrirForm();
-  if (act === 'reset') { limpiarFiltros(); st.q = ''; $('#busqueda').value = ''; $('#search').classList.remove('has'); st.estado = 'todos'; return render(); }
+  if (act === 'reset') { limpiarFiltros(); st.q = ''; $('#busqueda').value = ''; $('#search').classList.remove('has'); return render(); }
   const card = e.target.closest('.card'); if (!card) return;
   const f = db.find(x => x.id === card.dataset.id); if (!f) return;
   if (act === 'revelar') { st.revelados.add(f.id); return render(); }
@@ -672,7 +685,7 @@ $('#orden').onchange = e => { prefs.orden = e.target.value; guardarPrefs(); rend
 $('#pills').addEventListener('click', e => {
   const b = e.target.closest('.pill'); if (!b) return;
   const { t, v } = b.dataset;
-  if (t === 'fav') st.fav = false; else if (t === 'fandom') st.fandoms.delete(v); else if (t === 'tag') st.tags.delete(v); else if (t === 'plat') st.plats.delete(v);
+  if (t === 'fav') st.fav = false; else if (t === 'pub') st.pubs.delete(v); else if (t === 'plat') st.plats.delete(v); else if (t === 'adulto') st.soloAdulto = false; else if (t === 'cw') st.soloCW = false;
   render();
 });
 $('#fab').onclick = () => abrirForm();
@@ -707,7 +720,6 @@ $$('.overlay').forEach(o => o.addEventListener('mousedown', e => { if (e.target 
 document.addEventListener('click', e => { if (e.target.closest('[data-close]')) cerrarHoja(); });
 window.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarHoja(); });
 
-/* Teclado: las hojas se ajustan al área visible para que nada quede tapado */
 function ajustarVV() {
   const vv = window.visualViewport; if (!vv) return;
   const r = document.documentElement.style;
@@ -725,22 +737,31 @@ document.addEventListener('focusin', e => {
 document.addEventListener('focusout', () => setTimeout(() => { if (!document.activeElement || !document.activeElement.matches('input,textarea,select')) document.body.classList.remove('typing'); }, 80));
 
 /* ───────── Formulario ───────── */
-let editId = null, formVibes = new Set(), formEstado = 'por-leer', platManual = false;
+let editId = null, formVibes = new Set(), formEstado = 'por-leer', formPub = '', platManual = false;
 function pintarFormVibes() {
-  $('#f-vibes').innerHTML = Object.entries(VIBES).map(([k, v]) => `<button type="button" class="chip${formVibes.has(k) ? ' on' : ''}" data-v="${k}">${v.e} ${esc(v.n)}</button>`).join('');
+  const base = Object.entries(VIBES).map(([k, v]) => [k, v.e + ' ' + v.n, false]);
+  const extra = misVibes().map(k => [k, '🏷️ ' + k.slice(2), true]);
+  $('#f-vibes').innerHTML = [...base, ...extra].map(([k, t, c]) => `<button type="button" class="chip${formVibes.has(k) ? ' on' : ''}" data-v="${esc(k)}">${esc(t)}${c ? ` <span data-del="${esc(k)}" aria-label="Eliminar vibe">✕</span>` : ''}</button>`).join('');
   $$('#f-estado button').forEach(b => b.classList.toggle('on', b.dataset.v === formEstado));
+  $$('#f-pub button').forEach(b => b.classList.toggle('on', b.dataset.v === formPub));
+  $('#g-caps').hidden = formPub !== 'sin-act';
 }
+function syncCW() { const a = $('#f-adulto').checked; $('#row-cw').hidden = !a; if (!a) $('#f-cw').checked = false; }
+$('#f-adulto').addEventListener('change', syncCW);
+
 function abrirForm(id) {
   vibrar();
   editId = id || null;
   const f = id ? db.find(x => x.id === id) : null;
   $('#fic-h').textContent = f ? 'Editar fanfic' : 'Agregar fanfic';
   $('#f-titulo').value = f ? f.titulo : ''; $('#f-url').value = f ? f.url : '';
-  $('#f-autor').value = f ? f.autor : ''; $('#f-fandom').value = f ? f.fandom : ''; $('#f-ship').value = f ? f.ship : '';
+  $('#f-fandom').value = f ? f.fandom : ''; $('#f-ship').value = f ? f.ship : '';
   $('#f-notas').value = f ? f.notas : ''; $('#f-tropes').value = f ? f.tagsExtra : '';
   $('#f-plat').value = f ? f.plataforma : 'ao3';
   $('#f-fav').checked = !!f && f.fav === 'si'; $('#f-adulto').checked = !!f && f.adulto;
+  $('#f-cw').checked = !!f && f.cw; syncCW();
   formVibes = new Set(f ? f.categorias : []); formEstado = f ? f.estado : 'por-leer'; platManual = !!f;
+  formPub = f ? f.pub : ''; $('#f-caps').value = f ? f.caps : ''; $('#f-nueva-vibe').value = '';
   $$('#sheet-fic .group').forEach(g => g.classList.remove('has-error'));
   const vis = visibles();
   const uniq = arr => [...new Set(arr.filter(Boolean))].sort((a, b) => a.localeCompare(b, 'es'));
@@ -752,8 +773,28 @@ function abrirForm(id) {
   $('#fic-body').scrollTop = 0;
   if (!f) setTimeout(() => $('#f-titulo').focus(), 280);
 }
-$('#f-vibes').addEventListener('click', e => { const b = e.target.closest('.chip'); if (!b) return; vibrar(); const k = b.dataset.v; formVibes.has(k) ? formVibes.delete(k) : formVibes.add(k); pintarFormVibes(); });
+$('#f-vibes').addEventListener('click', e => {
+  const d = e.target.closest('[data-del]');
+  if (d) {
+    const k = d.dataset.del;
+    if (!confirm(`¿Quitar la vibe "${k.slice(2)}" de todos tus fics?`)) return;
+    prefs.vibesCustom = prefs.vibesCustom.filter(x => x !== k);
+    db.forEach(f => f.categorias = f.categorias.filter(x => x !== k));
+    formVibes.delete(k); guardarPrefs(); guardarDB(); pintarFormVibes(); render(); return;
+  }
+  const b = e.target.closest('.chip'); if (!b) return; vibrar();
+  const k = b.dataset.v; formVibes.has(k) ? formVibes.delete(k) : formVibes.add(k); pintarFormVibes();
+});
+function anadirVibe() {
+  const n = $('#f-nueva-vibe').value.trim().slice(0, 24); if (!n) return;
+  const k = misVibes().find(x => norm(x) === norm('c:' + n)) || 'c:' + n;
+  if (!prefs.vibesCustom.includes(k)) prefs.vibesCustom.push(k);
+  formVibes.add(k); $('#f-nueva-vibe').value = ''; guardarPrefs(); pintarFormVibes();
+}
+$('#btn-vibe').onclick = anadirVibe;
+$('#f-nueva-vibe').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); anadirVibe(); } });
 $('#f-estado').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; formEstado = b.dataset.v; pintarFormVibes(); });
+$('#f-pub').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; formPub = formPub === b.dataset.v ? '' : b.dataset.v; pintarFormVibes(); });
 $('#f-plat').addEventListener('change', () => platManual = true);
 $('#f-url').addEventListener('input', e => { const p = detectarPlat(e.target.value); if (p && !platManual) $('#f-plat').value = p; $('#g-url').classList.remove('has-error'); });
 $('#f-titulo').addEventListener('input', () => $('#g-titulo').classList.remove('has-error'));
@@ -765,11 +806,13 @@ $('#btn-guardar').onclick = () => {
   let url = '';
   if (urlRaw) { url = safeUrl(urlRaw); if (!url) { $('#g-url').classList.add('has-error'); $('#f-url').focus(); return; } }
   vibrar();
+  const adulto = $('#f-adulto').checked;
   const datos = {
-    titulo, url, autor:$('#f-autor').value, plataforma:$('#f-plat').value,
+    titulo, url, plataforma:$('#f-plat').value,
     fandom:$('#f-fandom').value, ship:$('#f-ship').value, fav:$('#f-fav').checked ? 'si' : 'no',
     categorias:[...formVibes], tagsExtra:$('#f-tropes').value, notas:$('#f-notas').value,
-    estado:formEstado, adulto:$('#f-adulto').checked
+    estado:formEstado, adulto, cw:adulto && $('#f-cw').checked,
+    pub:formPub, caps:formPub === 'sin-act' ? $('#f-caps').value : ''
   };
   if (editId) { const i = db.findIndex(x => x.id === editId); db[i] = normFic({ ...db[i], ...datos }); }
   else db.unshift(normFic(datos));
@@ -781,19 +824,21 @@ $('#btn-guardar').onclick = () => {
 function contar(arr, fn) { const m = new Map(); arr.forEach(f => fn(f).forEach(k => { const o = m.get(k.key) || { label:k.label, n:0 }; o.n++; m.set(k.key, o); })); return m; }
 function pintarFiltros() {
   const vis = visibles();
-  const fandoms = contar(vis, f => f.fandom ? [{ key:norm(f.fandom), label:f.fandom }] : []);
-  const tags = contar(vis, f => f.categorias.map(k => ({ key:k, label:VIBES[k].n })));
-  const plats = contar(vis, f => [{ key:f.plataforma, label:PLATS[f.plataforma] }]);
-  const favN = vis.filter(f => f.fav === 'si').length;
+  const adultos = prefs.adultos !== 'ocultar';
   const chip = (t, key, label, n, on) => `<button class="chip${on ? ' on' : ''}" data-t="${t}" data-v="${esc(key)}">${esc(label)} <em>${n}</em></button>`;
-  const bloque = (titulo, html, ayuda) => html ? `<div class="sec-title">${titulo}</div><div class="chips">${html}</div>${ayuda ? `<div class="hint">${ayuda}</div>` : ''}` : '';
-  const sorted = m => [...m.entries()].sort((a, b) => b[1].n - a[1].n || a[1].label.localeCompare(b[1].label, 'es'));
+  const bloque = (titulo, html) => html ? `<div class="sec-title">${titulo}</div><div class="chips">${html}</div>` : '';
+  const estados = Object.entries(ESTADOS).map(([k, v]) => chip('estado', k, v, vis.filter(f => f.estado === k).length, st.estado === k)).join('');
+  const pubs = Object.entries(PUBS).map(([k, l]) => chip('pub', k, l, vis.filter(f => f.pub === k).length, st.pubs.has(k))).join('');
+  const plats = contar(vis, f => [{ key:f.plataforma, label:PLATS[f.plataforma] }]);
+  const platsH = [...plats.entries()].sort((a, b) => b[1].n - a[1].n).map(([k, o]) => chip('plat', k, o.label, o.n, st.plats.has(k))).join('');
+  const favN = vis.filter(f => f.fav === 'si').length;
+  const nAd = vis.filter(f => f.adulto).length, nCW = vis.filter(f => f.cw).length;
   $('#filtros-body').innerHTML =
+    bloque('Estado de lectura', estados) +
+    bloque('Estado del fic', pubs) +
+    bloque('Plataforma', platsH) +
     bloque('Favoritos', favN ? chip('fav', '', '★ Solo favoritos', favN, st.fav) : '') +
-    bloque('Vibes', sorted(tags).map(([k, o]) => chip('tag', k, VIBES[k].e + ' ' + VIBES[k].s, o.n, st.tags.has(k))).join(''), st.tags.size > 1 ? 'Muestra los fics que tengan <b>todas</b> las vibes elegidas.' : '') +
-    bloque('Fandom', sorted(fandoms).map(([k, o]) => chip('fandom', k, o.label, o.n, st.fandoms.has(k))).join(''), '') +
-    bloque('Plataforma', sorted(plats).map(([k, o]) => chip('plat', k, o.label, o.n, st.plats.has(k))).join(''), '') ||
-    '<div class="vacio">Cuando agregues fics, aquí aparecerán tus fandoms y vibes para filtrar.</div>';
+    (adultos && nAd ? bloque('+18', chip('adulto', '', 'Solo +18', nAd, st.soloAdulto) + (nCW ? chip('cw', '', '⚠ CW', nCW, st.soloCW) : '')) : '');
   const n = calcular().lista.length;
   $('#btn-ver').textContent = `Ver ${n} resultado${n === 1 ? '' : 's'}`;
 }
@@ -802,14 +847,14 @@ $('#filtros-body').addEventListener('click', e => {
   const b = e.target.closest('.chip'); if (!b) return; vibrar();
   const { t, v } = b.dataset;
   const tog = (set, x) => set.has(x) ? set.delete(x) : set.add(x);
-  if (t === 'fav') st.fav = !st.fav; else if (t === 'tag') tog(st.tags, v); else if (t === 'fandom') tog(st.fandoms, v); else if (t === 'plat') tog(st.plats, v);
+  if (t === 'fav') st.fav = !st.fav; else if (t === 'estado') st.estado = st.estado === v ? 'todos' : v; else if (t === 'pub') tog(st.pubs, v); else if (t === 'plat') tog(st.plats, v); else if (t === 'adulto') st.soloAdulto = !st.soloAdulto; else if (t === 'cw') st.soloCW = !st.soloCW;
   render();
 });
 $('#btn-limpiar-filtros').onclick = () => { limpiarFiltros(); render(); };
 
 /* ───────── Ajustes ───────── */
 function pintarMenu() {
-  $$('#m-tema button').forEach(b => b.classList.toggle('on', b.dataset.v === (prefs.tema === 'claro' ? 'claro' : prefs.tema)));
+  $$('#m-tema button').forEach(b => b.classList.toggle('on', b.dataset.v === prefs.tema));
   $$('#m-adultos button').forEach(b => b.classList.toggle('on', b.dataset.v === prefs.adultos));
   $$('#m-acentos .sw').forEach(b => { b.setAttribute('aria-pressed', b.dataset.acc === prefs.acento); if (!b.firstChild) b.innerHTML = icon('check', 18); });
   $('#m-aviso').checked = !!prefs.aviso;
@@ -823,7 +868,7 @@ $('#m-acentos').addEventListener('click', e => { const b = e.target.closest('.sw
 $('#m-adultos').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; prefs.adultos = b.dataset.v; st.revelados.clear(); guardarPrefs(); pintarMenu(); render(); });
 $('#m-aviso').addEventListener('change', e => { prefs.aviso = e.target.checked; guardarPrefs(); render(); });
 
-/* Respaldos (mismo formato de siempre: una lista JSON) */
+/* Respaldos (una lista JSON, compatible con los de antes) */
 $('#btn-exportar').onclick = () => {
   vibrar();
   const blob = new Blob([JSON.stringify(db, null, 2)], { type:'application/json' });
