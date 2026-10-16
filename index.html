@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="light" data-acc="terra">
+<html lang="es" data-theme="light" data-acc="violeta">
 <head>
 <meta charset="UTF-8">
 <title>Mis Fanfics</title>
@@ -9,7 +9,8 @@
 /* Aplica el tema antes de pintar para evitar el "parpadeo" */
 try{var p=JSON.parse(localStorage.getItem('fics_prefs_v2')||'{}');
 var d=p.tema==='oscuro'||((p.tema||'auto')==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);
-document.documentElement.dataset.theme=d?'dark':'light';document.documentElement.dataset.acc=p.acento||'terra';}catch(e){}
+document.documentElement.dataset.theme=d?'dark':'light';
+document.documentElement.dataset.acc=['violeta','rosa','turquesa','celeste'].indexOf(p.acento)>-1?p.acento:'violeta';}catch(e){}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,8 +21,9 @@ document.documentElement.dataset.theme=d?'dark':'light';document.documentElement
   --bg:#fbf5ee; --card:#fffdf9; --ink:#3b2a22; --mute:#7a685d; --line:#eadfd2;
   --chip:#f1e8dd; --chip-ink:#65534a;
   --ok:#3d7a60; --ok-soft:#dcefe6; --danger:#b4412f;
-  --f0:#c4623f; --f1:#5f8f7a; --f2:#8a6fb0; --f3:#b98524; --f4:#4f7fb5; --f5:#b9567a; --f6:#6f8f3d; --f7:#a0675a;
-  --acc:#c4623f; --acc-soft:#f6e1d6; --on-acc:#fff;
+  /* paleta de parejas: morados, rosados, turquesa y celeste */
+  --f0:#7c5cd6; --f1:#c2417a; --f2:#14877c; --f3:#2a7fc0; --f4:#9b6fd0; --f5:#d4609a; --f6:#2fa89c; --f7:#4a9bd8;
+  --acc:#7c5cd6; --acc-soft:#ece6fb; --on-acc:#fff;
   --pink:#c2257a; --on-pink:#fff;
   --shadow:0 1px 2px rgba(80,50,30,.06),0 6px 18px rgba(80,50,30,.06);
   --scrim:rgba(30,18,10,.45);
@@ -33,7 +35,7 @@ document.documentElement.dataset.theme=d?'dark':'light';document.documentElement
   --bg:#14121a; --card:#1e1b27; --ink:#efeaf7; --mute:#a39cb3; --line:#2d2939;
   --chip:#282434; --chip-ink:#bab2ca;
   --ok:#6ee7b7; --ok-soft:rgba(110,231,183,.14); --danger:#ff8a78;
-  --f0:#f0916d; --f1:#5eead4; --f2:#c4b5fd; --f3:#fcd34d; --f4:#7cb7ff; --f5:#f9a8d4; --f6:#bef264; --f7:#fdba74;
+  --f0:#c4b5fd; --f1:#f9a8d4; --f2:#5eead4; --f3:#7dd3fc; --f4:#a78bfa; --f5:#f472b6; --f6:#2dd4bf; --f7:#38bdf8;
   --on-acc:#14121a;
   --pink:#f472b6; --on-pink:#14121a;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px rgba(0,0,0,.25);
@@ -41,11 +43,12 @@ document.documentElement.dataset.theme=d?'dark':'light';document.documentElement
 }
 [data-acc=violeta]{--acc:#7c5cd6;--acc-soft:#ece6fb}
 [data-acc=rosa]{--acc:#c2417a;--acc-soft:#fbe1ec}
-[data-acc=verde]{--acc:#2f8a76;--acc-soft:#d9f0ea}
-[data-theme=dark][data-acc=terra]{--acc:#f0916d;--acc-soft:#3a2620}
+[data-acc=turquesa]{--acc:#14877c;--acc-soft:#d6f1ee}
+[data-acc=celeste]{--acc:#2a7fc0;--acc-soft:#dcecf8}
 [data-theme=dark][data-acc=violeta]{--acc:#a78bfa;--acc-soft:#2b2445}
 [data-theme=dark][data-acc=rosa]{--acc:#f472b6;--acc-soft:#40202f}
-[data-theme=dark][data-acc=verde]{--acc:#5eead4;--acc-soft:#173b36}
+[data-theme=dark][data-acc=turquesa]{--acc:#5eead4;--acc-soft:#173b36}
+[data-theme=dark][data-acc=celeste]{--acc:#7dd3fc;--acc-soft:#17303f}
 
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 [hidden]{display:none!important}
@@ -99,6 +102,8 @@ a{color:inherit}
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none' stroke='%23999' stroke-width='1.6'%3E%3Cpath d='M1 1l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 2px center}
 
 .lista{display:flex;flex-direction:column;gap:10px}
+.lista.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:stretch}
+.lista.grid .vacio{grid-column:1/-1}
 .card{position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:13px 10px 12px 18px;box-shadow:var(--shadow);cursor:pointer}
 .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--c,var(--mute))}
 .c-head{display:flex;gap:6px;align-items:flex-start}
@@ -130,6 +135,23 @@ a{color:inherit}
 .card.open .c-tropes{display:block}
 .card.open .c-actions{display:flex}
 
+/* ── cuadrícula de 2 columnas ── */
+.lista.grid .card{display:flex;flex-direction:column;padding:11px 8px 10px 15px;border-radius:16px}
+.lista.grid .card::before{width:4px}
+.g-body{display:flex;flex-direction:column;flex:1;min-width:0}
+.g-top{display:flex;gap:2px;align-items:flex-start}
+.g-title{flex:1;min-width:0;font-family:var(--serif);font-size:14px;font-weight:700;line-height:1.28;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;padding-top:3px}
+.g-top .cbtn{width:32px;height:32px;margin-right:-2px;flex:none}
+.g-by{color:var(--mute);font-size:11px;margin-top:2px}
+.g-ship{margin-top:6px;font-size:12px;font-weight:800;color:var(--c,var(--mute));overflow-wrap:anywhere;line-height:1.3}
+.g-fan{font-size:11px;color:var(--mute);margin-top:1px;overflow-wrap:anywhere}
+.g-notes{margin-top:6px;font-size:11.5px;color:var(--mute);font-style:italic;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.g-meta{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-top:8px;padding-right:4px}
+.g-meta .st{padding:4px 9px;font-size:10.5px}
+.g-meta .tag{font-size:10.5px;padding:3px 7px}
+.g-btns{display:flex;gap:6px;margin-top:auto;padding:10px 4px 0 0}
+.g-btns .btn{flex:1;height:34px;padding:0 6px;font-size:12px;justify-content:center;border-radius:11px;gap:5px}
+
 .lista.compacta .card{padding:9px 6px 9px 16px;border-radius:14px;box-shadow:none}
 .lista.compacta .c-title{font-size:14.5px}
 .lista.compacta .c-ship{margin-top:3px;font-size:12.5px}
@@ -143,7 +165,7 @@ a{color:inherit}
 .lista.compacta .card.open .c-btns .link{display:grid}
 
 .card.blur .c-body{filter:blur(9px);opacity:.7;pointer-events:none;user-select:none}
-.veil{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:800;font-size:12.5px;color:var(--ink);background:color-mix(in srgb,var(--card) 35%,transparent)}
+.veil{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:800;font-size:12.5px;color:var(--ink);background:color-mix(in srgb,var(--card) 35%,transparent);text-align:center;padding:0 8px}
 
 .vacio{text-align:center;color:var(--mute);padding:48px 10px;font-size:14px}
 .vacio .big{font-family:var(--serif);font-size:19px;color:var(--ink);font-weight:700;margin-bottom:6px}
@@ -188,13 +210,19 @@ body.typing .fab{transform:translateY(120px);opacity:0;pointer-events:none}
 .err{display:none;color:var(--danger);font-size:12px;font-weight:600;margin-top:5px}
 .group.has-error .err{display:block}
 .row2{display:flex;gap:8px;align-items:center}
+.row2 .input{flex:1;min-width:0}
 .row2 span{color:var(--mute);font-weight:700;font-size:13px}
+.capsbox{background:color-mix(in srgb,var(--acc) 7%,var(--card));border:1.5px solid color-mix(in srgb,var(--acc) 25%,var(--line));border-radius:14px;padding:12px 14px}
 .chips{display:flex;flex-wrap:wrap;gap:7px}
-.chip{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:99px;background:var(--card);border:1.5px solid var(--line);font-size:12.5px;font-weight:700;color:var(--chip-ink);transition:all .12s}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:99px;background:var(--card);border:1.5px solid var(--line);font-size:12.5px;font-weight:700;color:var(--chip-ink);transition:all .12s;text-align:left}
 .chip em{font-style:normal;opacity:.65;font-size:11px}
 .chip.on{background:var(--acc);border-color:var(--acc);color:var(--on-acc)}
 .chip .x{display:inline-grid;place-items:center;margin-left:2px;opacity:.7;padding:2px;margin-right:-4px}
 .chip.nuevo{border-style:dashed;color:var(--acc);border-color:var(--acc)}
+.sugs{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.sugs:empty{display:none}
+.sugs .chip{padding:6px 11px;font-size:12px}
+.sug-l{width:100%;font-size:11px;color:var(--mute);font-weight:700}
 .addrow{display:flex;gap:8px;margin-top:10px}
 .addrow .input{flex:1;min-width:0}
 .addrow .btn{height:auto;padding:0 16px}
@@ -219,6 +247,18 @@ details.more .inner{padding-top:6px}
 .sw[aria-pressed=true]{box-shadow:0 0 0 2.5px var(--ink)}
 .sw .ic{opacity:0}.sw[aria-pressed=true] .ic{opacity:1}
 .menu-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* ── hoja de detalles ── */
+.det-title{font-family:var(--serif);font-size:21px;font-weight:700;line-height:1.25;overflow-wrap:anywhere}
+.det-ship{margin-top:10px;font-weight:800;font-size:14.5px;color:var(--c);overflow-wrap:anywhere}
+.det-ship span{color:var(--mute);font-weight:500;font-size:13px}
+.det-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
+.det-row .st{padding:7px 14px;font-size:12px}
+.det-fav{height:34px;padding:0 13px;font-size:12.5px;border-radius:99px}
+.det-sec{margin-top:18px}
+.det-sec h4{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--mute);margin-bottom:7px}
+.det-sec p{font-size:14px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}
+.det-notes{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:12px;padding:12px 14px;font-style:italic}
 
 .toast{position:fixed;z-index:200;left:50%;bottom:calc(88px + env(safe-area-inset-bottom));transform:translate(-50%,20px);opacity:0;pointer-events:none;display:flex;align-items:center;gap:14px;max-width:calc(100% - 32px);background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:14px;font-size:13px;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,.3);transition:all .25s}
 .toast.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
@@ -261,7 +301,7 @@ details.more .inner{padding-top:6px}
     <div class="pills" id="pills"></div>
     <div class="view" id="view">
       <button data-vista="compacta" aria-label="Vista de lista compacta" data-ic="list"></button>
-      <button data-vista="tarjetas" aria-label="Vista de tarjetas" data-ic="grid"></button>
+      <button data-vista="tarjetas" aria-label="Vista de cuadrícula" data-ic="grid"></button>
     </div>
   </div>
 
@@ -297,13 +337,13 @@ details.more .inner{padding-top:6px}
       </div>
       <div class="group">
         <label class="label" for="f-fandom">3. Fandom / Universo</label>
-        <input class="input" id="f-fandom" list="dl-fandom" placeholder="Ej: Kimetsu no Yaiba" autocomplete="off">
-        <datalist id="dl-fandom"></datalist>
+        <input class="input" id="f-fandom" placeholder="Escribe uno nuevo o elige abajo" autocomplete="off">
+        <div class="sugs" id="s-fandom"></div>
       </div>
       <div class="group">
         <label class="label" for="f-ship">Pareja / Personajes (ship)</label>
-        <input class="input" id="f-ship" list="dl-ship" placeholder="Ej: Giyuu & Tanjiro, Gen" autocomplete="off">
-        <datalist id="dl-ship"></datalist>
+        <input class="input" id="f-ship" placeholder="Escribe una nueva o elige abajo" autocomplete="off">
+        <div class="sugs" id="s-ship"></div>
       </div>
       <div class="group">
         <span class="label">4. Vibes (toca para elegir varias)</span>
@@ -327,6 +367,22 @@ details.more .inner{padding-top:6px}
         </div>
         <div class="hint">En curso = se sigue actualizando. Sin actualizar = pausado o abandonado. Toca de nuevo para quitarlo.</div>
       </div>
+
+      <!-- Aparece con "Historia larga", "En curso" o "Sin actualizar" -->
+      <div class="group capsbox" id="g-capsmain" hidden>
+        <span class="label" id="cm-label">Capítulos</span>
+        <div class="row2">
+          <div class="row2" id="cm-pubw" style="flex:1;min-width:0">
+            <span>Van</span>
+            <input class="input" id="f-cap-pub" type="number" inputmode="numeric" min="0" placeholder="Ej: 12">
+            <span>de</span>
+          </div>
+          <input class="input" id="f-cap-tot" type="number" inputmode="numeric" min="0" placeholder="Ej: 35">
+        </div>
+        <div class="hint" id="cm-hint"></div>
+        <div class="err" id="cm-err">Revisa los capítulos.</div>
+      </div>
+
       <label class="switch-row"><span><b>⭐ Favorito</b><small>Para encontrarlo rápido</small></span><input type="checkbox" id="f-fav"></label>
       <label class="switch-row"><span><b>🔞 Contenido +18</b><small>Se oculta con el modo privado</small></span><input type="checkbox" id="f-adulto"></label>
       <div class="t18box" id="g-t18" hidden>
@@ -339,14 +395,12 @@ details.more .inner{padding-top:6px}
         <summary>Más opciones (detalles) <span data-ic="chev" data-size="16"></span></summary>
         <div class="inner">
           <div class="group" id="g-caps">
-            <span class="label">8. Progreso de lectura (capítulo)</span>
+            <span class="label">8. Progreso de lectura (capítulo por el que vas)</span>
             <div class="row2">
               <span>Cap.</span>
               <input class="input" id="f-cap-act" type="number" inputmode="numeric" min="0" placeholder="Ej: 14">
-              <span>de</span>
-              <input class="input" id="f-cap-tot" type="number" inputmode="numeric" min="0" placeholder="Ej: 35">
             </div>
-            <div class="err">El capítulo actual no puede ser mayor que el total.</div>
+            <div class="err">El capítulo actual no puede ser mayor que el total de capítulos.</div>
           </div>
           <div class="group">
             <label class="label" for="f-plat">9. Plataforma</label>
@@ -365,6 +419,16 @@ details.more .inner{padding-top:6px}
       <button class="btn sec" data-close>Cancelar</button>
       <button class="btn save" id="btn-guardar">Guardar fanfic</button>
     </div>
+  </div>
+</div>
+
+<!-- Hoja: detalles de un fic -->
+<div class="overlay" id="sheet-det" aria-hidden="true">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="det-h">
+    <div class="grab"></div>
+    <div class="sheet-head"><h2 id="det-h">Detalles</h2><button class="ibtn sm" data-close aria-label="Cerrar" data-ic="x"></button></div>
+    <div class="sheet-body" id="det-body"></div>
+    <div class="sheet-foot" id="det-foot"></div>
   </div>
 </div>
 
@@ -393,10 +457,10 @@ details.more .inner{padding-top:6px}
       </div>
       <div class="hint">Automático sigue el modo claro/oscuro de tu celular.</div>
       <div class="swatches" id="m-acentos" style="margin-top:14px">
-        <button class="sw" data-acc="terra" style="background:#c4623f" aria-label="Terracota"></button>
-        <button class="sw" data-acc="violeta" style="background:#7c5cd6" aria-label="Violeta"></button>
-        <button class="sw" data-acc="rosa" style="background:#c2417a" aria-label="Rosa"></button>
-        <button class="sw" data-acc="verde" style="background:#2f8a76" aria-label="Verde"></button>
+        <button class="sw" data-acc="violeta" style="background:#7c5cd6" aria-label="Morado"></button>
+        <button class="sw" data-acc="rosa" style="background:#c2417a" aria-label="Rosado"></button>
+        <button class="sw" data-acc="turquesa" style="background:#14877c" aria-label="Turquesa"></button>
+        <button class="sw" data-acc="celeste" style="background:#2a7fc0" aria-label="Celeste"></button>
       </div>
 
       <div class="sec-title">Fics +18</div>
@@ -442,6 +506,7 @@ details.more .inner{padding-top:6px}
 const KEY = 'biblioteca_fics';          // misma clave que antes (tus datos se conservan)
 const PKEY = 'fics_prefs_v2';
 const BKEY = 'fics_ultimo_respaldo';
+const ACENTOS = ['violeta', 'rosa', 'turquesa', 'celeste'];
 const VIBES = {
   suave:      { n:'Suave / Confort',            s:'Suave',    e:'🌸' },
   angst:      { n:'Angustia / Angst',           s:'Angst',    e:'💔' },
@@ -499,7 +564,7 @@ const icon = (n, size = 20, fill = false) =>
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
-const norm = s => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+const norm = s => String(s ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
 const hash = s => { let h = 0; for (const c of s) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
 function leer(k, def) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : def; } catch (e) { return def; } }
 function escribir(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }
@@ -524,6 +589,7 @@ function normFic(f) {
   if (f.cw && !tags18.includes('c:CW')) tags18.push('c:CW');     // el antiguo "CW" pasa a ser una etiqueta +18 propia
   if (!adulto) tags18 = [];
   const pub = f.pub === 'sin-act' ? 'en-curso' : f.pub;            // valor de la versión anterior
+  const pubOk = PUBS[pub] ? pub : '';
   return {
     id: s(f.id) || 'f_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
     titulo: s(f.titulo), autor: s(f.autor),   // el autor se conserva en los datos aunque ya no se muestre
@@ -535,18 +601,20 @@ function normFic(f) {
     tagsExtra: s(f.tagsExtra), notas: s(f.notas),
     estado: ESTADOS[f.estado] ? f.estado : 'por-leer',
     adulto,
-    pub: PUBS[pub] ? pub : '',
+    pub: pubOk,
     capAct: n(f.capAct),
-    capTot: n(f.capTot !== undefined ? f.capTot : f.caps)   // "caps" es el campo de una versión anterior
+    capTot: n(f.capTot !== undefined ? f.capTot : f.caps),  // "caps" es el campo de una versión anterior
+    capPub: (pubOk === 'en-curso' || pubOk === 'sin-actualizar') ? n(f.capPub) : ''   // capítulos publicados hasta ahora
   };
 }
 
 /* ───────── Estado ───────── */
 let db = (leer(KEY, []) || []).filter(f => f && typeof f === 'object').map(normFic).filter(f => f.titulo);
-const prefs = Object.assign({ tema:'auto', acento:'terra', vista:'tarjetas', orden:'recientes', adultos:'ocultar', aviso:false, vibesCustom:[], t18Custom:[] }, leer(PKEY, {}));
+const prefs = Object.assign({ tema:'auto', acento:'violeta', vista:'tarjetas', orden:'recientes', adultos:'ocultar', aviso:false, vibesCustom:[], t18Custom:[] }, leer(PKEY, {}));
 ['vibesCustom', 't18Custom'].forEach(k => { prefs[k] = Array.isArray(prefs[k]) ? prefs[k].filter(x => typeof x === 'string' && x.startsWith('c:')) : []; });
+if (!ACENTOS.includes(prefs.acento)) prefs.acento = 'violeta';   // los colores anteriores (terracota, verde) pasan a morado
 if (prefs.adultos === 'mostrar') prefs.adultos = 'ocultar';   // "mostrar" solo dura la sesión
-const st = { q:'', estado:'todos', plats:new Set(), pubs:new Set(), t18:new Set(), fav:false, soloAdulto:false, abiertos:new Set(), revelados:new Set() };
+const st = { q:'', estado:'todos', plats:new Set(), pubs:new Set(), fandoms:new Set(), ships:new Set(), t18:new Set(), fav:false, soloAdulto:false, abiertos:new Set(), revelados:new Set() };
 const guardarPrefs = () => escribir(PKEY, prefs);
 const guardarDB = () => { if (!escribir(KEY, db)) toast('No pude guardar en este navegador. Haz un respaldo.'); };
 
@@ -569,6 +637,7 @@ $('#btn-tema').onclick = () => { prefs.tema = esOscuro() ? 'claro' : 'oscuro'; g
 /* ───────── Filtrado ───────── */
 const visibles = () => db.filter(f => !f.adulto || prefs.adultos !== 'ocultar');
 const ocultosN = () => db.filter(f => f.adulto).length;
+const labelDe = (campo, key) => { const f = db.find(x => norm(x[campo]) === key); return f ? f[campo] : key; };
 
 function calcular() {
   const vis = visibles();
@@ -578,6 +647,8 @@ function calcular() {
     if (st.fav && f.fav !== 'si') return false;
     if (st.plats.size && !st.plats.has(f.plataforma)) return false;
     if (st.pubs.size && !st.pubs.has(f.pub)) return false;
+    if (st.fandoms.size && !st.fandoms.has(norm(f.fandom))) return false;
+    if (st.ships.size && !st.ships.has(norm(f.ship))) return false;
     if (st.soloAdulto && !f.adulto) return false;
     for (const t of st.t18) if (!f.tags18.includes(t)) return false;
     if (words.length) {
@@ -595,30 +666,44 @@ function calcular() {
   else if (prefs.orden === 'favoritos') lista.sort((a, b) => (b.fav === 'si') - (a.fav === 'si'));
   return { vis, base, counts, lista };
 }
-const nFiltros = () => (st.fav ? 1 : 0) + st.plats.size + st.pubs.size + st.t18.size + (st.soloAdulto ? 1 : 0);
-function limpiarFiltros() { st.fav = false; st.plats.clear(); st.pubs.clear(); st.t18.clear(); st.soloAdulto = false; st.estado = 'todos'; }
+const nFiltros = () => (st.fav ? 1 : 0) + st.plats.size + st.pubs.size + st.fandoms.size + st.ships.size + st.t18.size + (st.soloAdulto ? 1 : 0);
+function limpiarFiltros() { st.fav = false; st.plats.clear(); st.pubs.clear(); st.fandoms.clear(); st.ships.clear(); st.t18.clear(); st.soloAdulto = false; st.estado = 'todos'; }
 
 /* ───────── Pintado principal ───────── */
-function colorFic(f) { return f.ship ? `var(--f${hash(norm(f.ship)) % 8})` : 'var(--mute)'; }
+function colorFic(f) { const k = f.ship || f.fandom; return k ? `var(--f${hash(norm(k)) % 8})` : 'var(--mute)'; }
 
+/* progreso de lectura: "Cap. 6 de 12" */
 function capsTxt(f) {
-  if (f.capAct && f.capTot) return `Cap. ${f.capAct} de ${f.capTot}`;
+  const tot = f.capTot || f.capPub;
+  if (f.capAct && tot) return `Cap. ${f.capAct} de ${tot}`;
   if (f.capAct) return `Cap. ${f.capAct}`;
+  return '';
+}
+/* capítulos de la obra: "12/13 caps", "8/? caps" o "35 caps" */
+function totTxt(f) {
+  if (f.capPub) return `${f.capPub}/${f.capTot || '?'} caps`;
   if (f.capTot) return `${f.capTot} cap${f.capTot === '1' ? '' : 's'}`;
   return '';
 }
-
-function cardHTML(f) {
-  const open = st.abiertos.has(f.id);
-  const blur = f.adulto && prefs.adultos === 'difuminar' && !st.revelados.has(f.id);
-  const url = safeUrl(f.url);
-  const caps = capsTxt(f);
-  const tagsAll = [
+function tagsDe(f) {
+  const caps = capsTxt(f), tot = (f.capPub || !f.capAct) ? totTxt(f) : '';
+  return [
     ...(f.pub ? [`<span class="tag pub">${esc(PUBS[f.pub])}</span>`] : []),
+    ...(tot ? [`<span class="tag">${esc(tot)}</span>`] : []),
     ...(caps ? [`<span class="tag">${esc(caps)}</span>`] : []),
     ...f.categorias.map(k => `<span class="tag">${esc(tShort('vibes', k))}</span>`),
     ...f.tags18.map(k => `<span class="tag t18">${esc(tShort('t18', k))}</span>`)
   ];
+}
+const bloqueado = f => f.adulto && prefs.adultos === 'difuminar' && !st.revelados.has(f.id);
+const velo = f => bloqueado(f) ? `<button class="veil" data-act="revelar">${icon('lock', 18)} Contenido +18 · toca para ver</button>` : '';
+
+/* vista compacta (la de antes) */
+function cardHTML(f) {
+  const open = st.abiertos.has(f.id);
+  const blur = bloqueado(f);
+  const url = safeUrl(f.url);
+  const tagsAll = tagsDe(f);
   const tags = (open ? tagsAll : tagsAll.slice(0, 3)).join('') + (!open && tagsAll.length > 3 ? `<span class="tag">+${tagsAll.length - 3}</span>` : '');
   const by = PLATS_S[f.plataforma];
   return `<article class="card${open ? ' open' : ''}${blur ? ' blur' : ''}" data-id="${esc(f.id)}" style="--c:${colorFic(f)}">
@@ -646,7 +731,36 @@ function cardHTML(f) {
         <button class="btn sec danger" data-act="borrar" aria-label="Eliminar">${icon('trash', 17)}</button>
       </div>
     </div>
-    ${blur ? `<button class="veil" data-act="revelar">${icon('lock', 18)} Contenido +18 · toca para ver</button>` : ''}
+    ${velo(f)}
+  </article>`;
+}
+
+/* vista cuadrícula: 2 columnas, con "Leer" y "+ Info" */
+function gridHTML(f) {
+  const blur = bloqueado(f);
+  const url = safeUrl(f.url);
+  const tagsAll = tagsDe(f);
+  const tags = tagsAll.slice(0, 2).join('') + (tagsAll.length > 2 ? `<span class="tag">+${tagsAll.length - 2}</span>` : '');
+  return `<article class="card g${blur ? ' blur' : ''}" data-id="${esc(f.id)}" style="--c:${colorFic(f)}">
+    <div class="c-body g-body">
+      <div class="g-top">
+        <h3 class="g-title">${esc(f.titulo)}${f.adulto ? '<span class="badge18">+18</span>' : ''}</h3>
+        <button class="cbtn fav" data-act="fav" aria-pressed="${f.fav === 'si'}" aria-label="${f.fav === 'si' ? 'Quitar de favoritos' : 'Marcar como favorito'}" style="${f.fav === 'si' ? '' : 'color:var(--mute)'}">${icon('heart', 18, f.fav === 'si')}</button>
+      </div>
+      <p class="g-by">${esc(PLATS_S[f.plataforma])}</p>
+      ${f.ship ? `<p class="g-ship">${esc(f.ship)}</p>` : ''}
+      ${f.fandom ? `<p class="g-fan">${esc(f.fandom)}</p>` : ''}
+      ${f.notas ? `<p class="g-notes">“${esc(f.notas)}”</p>` : ''}
+      <div class="g-meta">
+        <button class="st st-${f.estado}" data-act="estado" aria-label="Estado: ${ESTADOS[f.estado]}. Toca para cambiar">${ESTADOS[f.estado]}</button>
+        ${tags}
+      </div>
+      <div class="g-btns">
+        ${url ? `<a class="btn primary" data-act="leer" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${icon('link', 15)} Leer</a>` : ''}
+        <button class="btn sec" data-act="info">${icon('plus', 15)} Info</button>
+      </div>
+    </div>
+    ${velo(f)}
   </article>`;
 }
 
@@ -666,8 +780,9 @@ function render() {
   $('#btn-filtros').classList.toggle('has', nf > 0);
   $('#n-filtros').textContent = nf;
   pintarPills();
+  const compacta = prefs.vista === 'compacta';
   $$('#view button').forEach(b => b.classList.toggle('on', b.dataset.vista === prefs.vista));
-  $('#lista').className = 'lista ' + (prefs.vista === 'compacta' ? 'compacta' : '');
+  $('#lista').className = 'lista ' + (compacta ? 'compacta' : 'grid');
   $('#orden').value = prefs.orden;
   $('#conteo').textContent = `${lista.length} resultado${lista.length === 1 ? '' : 's'}`;
   const cont = $('#lista');
@@ -675,18 +790,21 @@ function render() {
     cont.innerHTML = !vis.length
       ? `<div class="vacio"><div class="big">Tu biblioteca está vacía</div>Guarda aquí los fics que lees para no perderlos.<br><button class="btn primary" data-act="nuevo">${icon('plus', 18)} Agregar el primero</button></div>`
       : `<div class="vacio"><div class="big">Nada por aquí</div>Ningún fic coincide con la búsqueda o los filtros.<br>${nf || st.q || st.estado !== 'todos' ? `<button class="btn sec" data-act="reset">Limpiar todo</button>` : ''}</div>`;
-  } else cont.innerHTML = lista.map(cardHTML).join('');
+  } else cont.innerHTML = lista.map(compacta ? cardHTML : gridHTML).join('');
   const av = $('#aviso-ocultos'), oc = ocultosN();
   const mostrarAviso = prefs.aviso && prefs.adultos === 'ocultar' && oc > 0;
   av.hidden = !mostrarAviso;
   if (mostrarAviso) av.innerHTML = `${icon('lock', 15)} ${oc} fic${oc === 1 ? '' : 's'} +18 oculto${oc === 1 ? '' : 's'}`;
   if (filtrosAbiertos()) pintarFiltros();
+  if (actual === 'sheet-det') pintarDet();
 }
 
 function pintarPills() {
   const out = [];
   const pill = (t, v, txt) => `<button class="pill" data-t="${t}" data-v="${esc(v)}" aria-label="Quitar filtro ${esc(txt)}">${esc(txt)} ${icon('x', 13)}</button>`;
   if (st.fav) out.push(pill('fav', '', '★ Favoritos'));
+  st.fandoms.forEach(k => out.push(pill('fandom', k, labelDe('fandom', k))));
+  st.ships.forEach(k => out.push(pill('ship', k, labelDe('ship', k))));
   st.pubs.forEach(k => out.push(pill('pub', k, PUBS[k])));
   st.plats.forEach(k => out.push(pill('plat', k, PLATS_S[k])));
   if (st.soloAdulto) out.push(pill('adulto', '', '+18'));
@@ -709,6 +827,7 @@ $('#lista').addEventListener('click', e => {
   if (act === 'estado') { const o = Object.keys(ESTADOS); f.estado = o[(o.indexOf(f.estado) + 1) % o.length]; vibrar(); guardarDB(); return render(); }
   if (act === 'editar') return abrirForm(f.id);
   if (act === 'borrar') return borrarFic(f.id);
+  if (card.classList.contains('g')) return abrirDetalle(f.id);     // en la cuadrícula, tocar la tarjeta abre "+ Info"
   st.abiertos.has(f.id) ? st.abiertos.delete(f.id) : st.abiertos.add(f.id);
   card.outerHTML = cardHTML(f);
 });
@@ -732,7 +851,7 @@ $('#orden').onchange = e => { prefs.orden = e.target.value; guardarPrefs(); rend
 $('#pills').addEventListener('click', e => {
   const b = e.target.closest('.pill'); if (!b) return;
   const { t, v } = b.dataset;
-  if (t === 'fav') st.fav = false; else if (t === 'pub') st.pubs.delete(v); else if (t === 'plat') st.plats.delete(v); else if (t === 'adulto') st.soloAdulto = false; else if (t === 't18') st.t18.delete(v);
+  if (t === 'fav') st.fav = false; else if (t === 'pub') st.pubs.delete(v); else if (t === 'plat') st.plats.delete(v); else if (t === 'fandom') st.fandoms.delete(v); else if (t === 'ship') st.ships.delete(v); else if (t === 'adulto') st.soloAdulto = false; else if (t === 't18') st.t18.delete(v);
   render();
 });
 $('#fab').onclick = () => abrirForm();
@@ -783,8 +902,50 @@ document.addEventListener('focusin', e => {
 });
 document.addEventListener('focusout', () => setTimeout(() => { if (!document.activeElement || !document.activeElement.matches('input,textarea,select')) document.body.classList.remove('typing'); }, 80));
 
+/* ───────── Detalles de un fic ───────── */
+let detId = null;
+function abrirDetalle(id) { vibrar(); detId = id; pintarDet(); abrirHoja('sheet-det'); $('#det-body').scrollTop = 0; }
+function pintarDet() {
+  const f = db.find(x => x.id === detId);
+  if (!f) { if (actual === 'sheet-det') cerrarHoja(); return; }
+  const url = safeUrl(f.url);
+  const obra = [f.pub ? PUBS[f.pub] : '', totTxt(f)].filter(Boolean).join(' · ');
+  const lectura = capsTxt(f);
+  const vibes = f.categorias.map(k => `<span class="tag">${tEmo('vibes', k)} ${esc(tLab('vibes', k))}</span>`).join('');
+  const t18 = f.tags18.map(k => `<span class="tag t18">${tEmo('t18', k)} ${esc(tLab('t18', k))}</span>`).join('');
+  const sec = (t, html) => html ? `<div class="det-sec"><h4>${t}</h4>${html}</div>` : '';
+  $('#det-body').innerHTML = `<div style="--c:${colorFic(f)}">
+    <h3 class="det-title">${esc(f.titulo)}${f.adulto ? '<span class="badge18">+18</span>' : ''}</h3>
+    <p class="c-by">${esc(PLATS[f.plataforma])}</p>
+    ${f.ship || f.fandom ? `<p class="det-ship">${esc(f.ship)}${f.fandom ? `<span>${f.ship ? ' · ' : ''}${esc(f.fandom)}</span>` : ''}</p>` : ''}
+    <div class="det-row">
+      <button class="st st-${f.estado}" data-act="d-estado" aria-label="Estado: ${ESTADOS[f.estado]}. Toca para cambiar">${ESTADOS[f.estado]}</button>
+      <button class="btn sec det-fav" data-act="d-fav" aria-pressed="${f.fav === 'si'}" style="${f.fav === 'si' ? 'color:var(--acc)' : ''}">${icon('heart', 16, f.fav === 'si')} ${f.fav === 'si' ? 'Favorito' : 'Marcar favorito'}</button>
+    </div>
+    ${sec('Sobre la obra', obra ? `<p>${esc(obra)}</p>` : '')}
+    ${sec('Tu lectura', lectura ? `<p>${esc(lectura)}</p>` : '')}
+    ${sec('De qué iba', f.notas ? `<p class="det-notes">${esc(f.notas)}</p>` : '')}
+    ${sec('Vibes', vibes ? `<div class="tags">${vibes}</div>` : '')}
+    ${sec('Etiquetas +18', t18 ? `<div class="tags">${t18}</div>` : '')}
+    ${sec('Tropes / palabras clave', f.tagsExtra ? `<p>${esc(f.tagsExtra)}</p>` : '')}
+  </div>`;
+  $('#det-foot').innerHTML =
+    (url ? `<a class="btn primary" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${icon('link', 17)} Leer</a>` : '') +
+    `<button class="btn sec" data-act="d-editar">${icon('edit', 17)} Editar</button>` +
+    `<button class="btn sec danger" data-act="d-borrar" aria-label="Eliminar">${icon('trash', 17)}</button>`;
+}
+$('#sheet-det').addEventListener('click', e => {
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  const f = db.find(x => x.id === detId); if (!f) return;
+  const a = b.dataset.act;
+  if (a === 'd-fav') { f.fav = f.fav === 'si' ? 'no' : 'si'; vibrar(); guardarDB(); render(); }
+  else if (a === 'd-estado') { const o = Object.keys(ESTADOS); f.estado = o[(o.indexOf(f.estado) + 1) % o.length]; vibrar(); guardarDB(); render(); }
+  else if (a === 'd-editar') abrirForm(f.id);
+  else if (a === 'd-borrar') { const id = f.id; cerrarHoja(); borrarFic(id); }
+});
+
 /* ───────── Formulario ───────── */
-let editId = null, formVibes = new Set(), formT18 = new Set(), formEstado = 'por-leer', formPub = '', platManual = false;
+let editId = null, formVibes = new Set(), formT18 = new Set(), formEstado = 'por-leer', formPub = '', platManual = false, capsForced = false;
 const GRUPOS = {
   vibes: { custom:'vibesCustom', campo:'categorias', el:'#f-vibes', set:() => formVibes, row:'#nv-row', inp:'#nv-input' },
   t18:   { custom:'t18Custom',   campo:'tags18',     el:'#f-t18',   set:() => formT18,   row:'#nt-row', inp:'#nt-input' }
@@ -801,6 +962,7 @@ function pintarGrupo(g) {
     const propio = !DEFS[g][k];
     return `<button type="button" class="chip${G.set().has(k) ? ' on' : ''}" data-v="${esc(k)}">${tEmo(g, k)} ${esc(tLab(g, k))}${propio ? `<span class="x" data-del="${esc(k)}" role="button" aria-label="Quitar de la lista">${icon('x', 13)}</span>` : ''}</button>`;
   }).join('') + `<button type="button" class="chip nuevo" data-nuevo="1">${icon('plus', 14)} Nueva</button>`;
+  if (g === 'vibes') pintarCaps();
 }
 function quitarPropio(g, k) {
   if (!confirm(`¿Quitar "${tLab(g, k)}" de la lista y de todos tus fics?`)) return;
@@ -831,12 +993,74 @@ Object.keys(GRUPOS).forEach(g => {
   $(G.row + ' button').onclick = agregar;
   $(G.inp).addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); agregar(); } });
 });
+
+/* Capítulos: aparece con "Historia larga", "En curso" o "Sin actualizar" */
+function pintarCaps() {
+  const ong = formPub === 'en-curso' || formPub === 'sin-actualizar';
+  $('#g-capsmain').hidden = !(ong || formVibes.has('largo') || capsForced);
+  $('#cm-pubw').hidden = !ong;
+  $('#cm-label').textContent = ong ? 'Capítulos de la obra' : 'Total de capítulos';
+  $('#f-cap-tot').placeholder = ong ? '? (vacío)' : 'Ej: 35';
+  $('#cm-hint').textContent = ong
+    ? 'Si dice 13 capítulos pero solo hay 12: van 12 de 13. Si dice 8/?, pon 8 y deja el total vacío (se verá 8/?).'
+    : 'Cuántos capítulos tiene en total.';
+}
 function pintarEstados() {
   $$('#f-estado button').forEach(b => b.classList.toggle('on', b.dataset.v === formEstado));
   $$('#f-pub button').forEach(b => b.classList.toggle('on', b.dataset.v === formPub));
   $('#g-t18').hidden = !$('#f-adulto').checked;
+  pintarCaps();
 }
 $('#f-adulto').addEventListener('change', pintarEstados);
+
+/* Sugerencias de fandom y ship: tocas y se rellena */
+function sugerir() {
+  const vis = visibles();
+  const fIn = $('#f-fandom').value, sIn = $('#f-ship').value;
+  const fq = norm(fIn), sq = norm(sIn);
+  const cuenta = (arr, campo) => {
+    const m = new Map();
+    arr.forEach(f => { const v = f[campo]; if (!v) return; const k = norm(v); const o = m.get(k) || { label:v, n:0 }; o.n++; m.set(k, o); });
+    return m;
+  };
+  const orden = (a, b) => b[1].n - a[1].n || a[1].label.localeCompare(b[1].label, 'es');
+  const chips = (m, q, actual, limite) => [...m.entries()].filter(([k]) => !q || k.includes(q)).sort(orden).slice(0, limite)
+    .map(([k, o]) => `<button type="button" class="chip${k === actual ? ' on' : ''}" data-v="${esc(o.label)}">${esc(o.label)}</button>`).join('');
+
+  const fm = cuenta(vis, 'fandom');
+  const fh = chips(fm, fq, fq, 12);
+  $('#s-fandom').innerHTML = fh ? `<span class="sug-l">Ya añadidos · toca para elegir</span>${fh}` : '';
+
+  const delFandom = fq && fm.has(fq) ? vis.filter(f => norm(f.fandom) === fq) : [];
+  const sm = cuenta(vis, 'ship');
+  let sh = '';
+  if (delFandom.length) {
+    const propios = cuenta(delFandom, 'ship');
+    const a = chips(propios, sq, sq, 12);
+    const resto = new Map([...sm].filter(([k]) => !propios.has(k)));
+    const b = chips(resto, sq, sq, Math.max(0, 12 - propios.size));
+    sh = a + (sq || !b ? '' : b);
+    if (sq) sh = a + b;
+  } else sh = chips(sm, sq, sq, 12);
+  $('#s-ship').innerHTML = sh ? `<span class="sug-l">Ya añadidas · toca para elegir</span>${sh}` : '';
+}
+$('#s-fandom').addEventListener('click', e => {
+  const b = e.target.closest('.chip'); if (!b) return; vibrar();
+  $('#f-fandom').value = b.dataset.v; sugerir();
+});
+$('#s-ship').addEventListener('click', e => {
+  const b = e.target.closest('.chip'); if (!b) return; vibrar();
+  $('#f-ship').value = b.dataset.v;
+  if (!$('#f-fandom').value.trim()) {                      // si no hay fandom, usa el más común de esa pareja
+    const m = new Map();
+    visibles().filter(f => norm(f.ship) === norm(b.dataset.v) && f.fandom).forEach(f => m.set(f.fandom, (m.get(f.fandom) || 0) + 1));
+    const top = [...m.entries()].sort((a, c) => c[1] - a[1])[0];
+    if (top) $('#f-fandom').value = top[0];
+  }
+  sugerir();
+});
+$('#f-fandom').addEventListener('input', sugerir);
+$('#f-ship').addEventListener('input', sugerir);
 
 function mostrarDeteccion(url) {
   const p = detectarPlat(url), h = $('#url-hint');
@@ -855,16 +1079,13 @@ function abrirForm(id) {
   $('#f-fav').checked = !!f && f.fav === 'si'; $('#f-adulto').checked = !!f && f.adulto;
   formVibes = new Set(f ? f.categorias : []); formT18 = new Set(f ? f.tags18 : []);
   formEstado = f ? f.estado : 'por-leer'; formPub = f ? f.pub : ''; platManual = !!f;
-  $('#f-cap-act').value = f ? f.capAct : ''; $('#f-cap-tot').value = f ? f.capTot : '';
+  $('#f-cap-act').value = f ? f.capAct : ''; $('#f-cap-tot').value = f ? f.capTot : ''; $('#f-cap-pub').value = f ? f.capPub : '';
+  capsForced = !!(f && f.capTot);
   $('#url-hint').hidden = true;
   $$('#sheet-fic .group').forEach(g => g.classList.remove('has-error'));
-  const vis = visibles();
-  const uniq = arr => [...new Set(arr.filter(Boolean))].sort((a, b) => a.localeCompare(b, 'es'));
-  $('#dl-fandom').innerHTML = uniq(vis.map(x => x.fandom)).map(v => `<option value="${esc(v)}">`).join('');
-  $('#dl-ship').innerHTML = uniq(vis.map(x => x.ship)).map(v => `<option value="${esc(v)}">`).join('');
   $('#sheet-fic details.more').open = false;
   $('#nv-row').hidden = true; $('#nt-row').hidden = true; $('#nv-input').value = ''; $('#nt-input').value = '';
-  pintarGrupo('vibes'); pintarGrupo('t18'); pintarEstados();
+  pintarGrupo('vibes'); pintarGrupo('t18'); pintarEstados(); sugerir();
   abrirHoja('sheet-fic');
   $('#fic-body').scrollTop = 0;
   if (!f) setTimeout(() => $('#f-url').focus(), 280);
@@ -879,7 +1100,8 @@ $('#f-url').addEventListener('input', e => {
   $('#g-url').classList.remove('has-error');
 });
 $('#f-titulo').addEventListener('input', () => $('#g-titulo').classList.remove('has-error'));
-['#f-cap-act', '#f-cap-tot'].forEach(s => $(s).addEventListener('input', () => $('#g-caps').classList.remove('has-error')));
+['#f-cap-pub', '#f-cap-tot'].forEach(s => $(s).addEventListener('input', () => $('#g-capsmain').classList.remove('has-error')));
+$('#f-cap-act').addEventListener('input', () => $('#g-caps').classList.remove('has-error'));
 
 $('#btn-guardar').onclick = () => {
   const titulo = $('#f-titulo').value.trim();
@@ -887,8 +1109,15 @@ $('#btn-guardar').onclick = () => {
   if (!titulo) { $('#g-titulo').classList.add('has-error'); $('#f-titulo').focus(); return; }
   let url = '';
   if (urlRaw) { url = safeUrl(urlRaw); if (!url) { $('#g-url').classList.add('has-error'); $('#f-url').focus(); return; } }
+  const ong = formPub === 'en-curso' || formPub === 'sin-actualizar';
   const capAct = $('#f-cap-act').value.trim(), capTot = $('#f-cap-tot').value.trim();
-  if (capAct && capTot && +capAct > +capTot) {
+  const capPub = ong ? $('#f-cap-pub').value.trim() : '';
+  if (capPub && capTot && +capPub > +capTot) {
+    $('#cm-err').textContent = 'Los capítulos publicados no pueden ser más que el total.';
+    $('#g-capsmain').classList.add('has-error'); $('#f-cap-pub').focus(); return;
+  }
+  const maxCap = Math.max(+capTot || 0, +capPub || 0);
+  if (capAct && maxCap && +capAct > maxCap) {
     $('#sheet-fic details.more').open = true;
     $('#g-caps').classList.add('has-error'); $('#f-cap-act').focus(); return;
   }
@@ -899,7 +1128,7 @@ $('#btn-guardar').onclick = () => {
     fandom:$('#f-fandom').value, ship:$('#f-ship').value, fav:$('#f-fav').checked ? 'si' : 'no',
     categorias:[...formVibes], tags18: adulto ? [...formT18] : [], tagsExtra:$('#f-tropes').value, notas:$('#f-notas').value,
     estado:formEstado, adulto, cw:false,
-    pub:formPub, capAct, capTot
+    pub:formPub, capAct, capTot, capPub
   };
   if (editId) { const i = db.findIndex(x => x.id === editId); db[i] = normFic({ ...db[i], ...datos }); }
   else db.unshift(normFic(datos));
@@ -914,8 +1143,13 @@ function pintarFiltros() {
   const adultos = prefs.adultos !== 'ocultar';
   const chip = (t, key, label, n, on) => `<button class="chip${on ? ' on' : ''}" data-t="${t}" data-v="${esc(key)}">${esc(label)} <em>${n}</em></button>`;
   const bloque = (titulo, html) => html ? `<div class="sec-title">${titulo}</div><div class="chips">${html}</div>` : '';
+  const porNombre = ([, a], [, b]) => b.n - a.n || a.label.localeCompare(b.label, 'es');
   const estados = Object.entries(ESTADOS).map(([k, v]) => chip('estado', k, v, vis.filter(f => f.estado === k).length, st.estado === k)).join('');
   const pubs = Object.entries(PUBS).map(([k, l]) => chip('pub', k, l, vis.filter(f => f.pub === k).length, st.pubs.has(k))).join('');
+  const fan = contar(vis, f => f.fandom ? [{ key:norm(f.fandom), label:f.fandom }] : []);
+  const fanH = [...fan.entries()].sort(porNombre).map(([k, o]) => chip('fandom', k, o.label, o.n, st.fandoms.has(k))).join('');
+  const shp = contar(vis, f => f.ship ? [{ key:norm(f.ship), label:f.ship }] : []);
+  const shpH = [...shp.entries()].sort(porNombre).map(([k, o]) => chip('ship', k, o.label, o.n, st.ships.has(k))).join('');
   const plats = contar(vis, f => [{ key:f.plataforma, label:PLATS[f.plataforma] }]);
   const platsH = [...plats.entries()].sort((a, b) => b[1].n - a[1].n).map(([k, o]) => chip('plat', k, o.label, o.n, st.plats.has(k))).join('');
   const favN = vis.filter(f => f.fav === 'si').length;
@@ -926,6 +1160,8 @@ function pintarFiltros() {
   $('#filtros-body').innerHTML =
     bloque('Estado de lectura', estados) +
     bloque('¿Terminado?', pubs) +
+    bloque('Fandom / Universo', fanH) +
+    bloque('Pareja / Ship', shpH) +
     bloque('Plataforma', platsH) +
     bloque('Favoritos', favN ? chip('fav', '', '★ Solo favoritos', favN, st.fav) : '') +
     (adultos && ad.length ? bloque('+18', chip('adulto', '', '🔞 Solo +18', ad.length, st.soloAdulto) + t18H) : '');
@@ -937,7 +1173,7 @@ $('#filtros-body').addEventListener('click', e => {
   const b = e.target.closest('.chip'); if (!b) return; vibrar();
   const { t, v } = b.dataset;
   const tog = (set, x) => set.has(x) ? set.delete(x) : set.add(x);
-  if (t === 'fav') st.fav = !st.fav; else if (t === 'estado') st.estado = st.estado === v ? 'todos' : v; else if (t === 'pub') tog(st.pubs, v); else if (t === 'plat') tog(st.plats, v); else if (t === 'adulto') st.soloAdulto = !st.soloAdulto; else if (t === 't18') tog(st.t18, v);
+  if (t === 'fav') st.fav = !st.fav; else if (t === 'estado') st.estado = st.estado === v ? 'todos' : v; else if (t === 'pub') tog(st.pubs, v); else if (t === 'plat') tog(st.plats, v); else if (t === 'fandom') tog(st.fandoms, v); else if (t === 'ship') tog(st.ships, v); else if (t === 'adulto') st.soloAdulto = !st.soloAdulto; else if (t === 't18') tog(st.t18, v);
   render();
 });
 $('#btn-limpiar-filtros').onclick = () => { limpiarFiltros(); render(); };
