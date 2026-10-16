@@ -213,6 +213,8 @@ body.typing .fab{transform:translateY(120px);opacity:0;pointer-events:none}
 .row2 .input{flex:1;min-width:0}
 .row2 span{color:var(--mute);font-weight:700;font-size:13px}
 .capsbox{background:color-mix(in srgb,var(--acc) 7%,var(--card));border:1.5px solid color-mix(in srgb,var(--acc) 25%,var(--line));border-radius:14px;padding:12px 14px}
+.group .capsbox{margin-top:12px}
+#g-capsmain{margin-bottom:0}
 .chips{display:flex;flex-wrap:wrap;gap:7px}
 .chip{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:99px;background:var(--card);border:1.5px solid var(--line);font-size:12.5px;font-weight:700;color:var(--chip-ink);transition:all .12s;text-align:left}
 .chip em{font-style:normal;opacity:.65;font-size:11px}
@@ -349,6 +351,12 @@ details.more .inner{padding-top:6px}
         <span class="label">4. Vibes (toca para elegir varias)</span>
         <div class="chips" id="f-vibes"></div>
         <div class="addrow" id="nv-row" hidden><input class="input" id="nv-input" placeholder="Nombre de tu vibe" maxlength="24" autocomplete="off" enterkeyhint="done"><button type="button" class="btn primary">Agregar</button></div>
+        <!-- Aparece al elegir "Historia larga" -->
+        <div class="capsbox" id="g-total" hidden>
+          <label class="label" for="f-cap-tot">Total de capítulos</label>
+          <input class="input" id="f-cap-tot" type="number" inputmode="numeric" min="0" placeholder="Ej: 35">
+          <div class="hint" id="tot-hint"></div>
+        </div>
       </div>
       <div class="group">
         <label class="label" for="f-notas">5. “De qué iba” / notas para recordar la trama</label>
@@ -360,27 +368,25 @@ details.more .inner{padding-top:6px}
           <button type="button" data-v="por-leer">Por leer</button><button type="button" data-v="leyendo">Leyendo</button><button type="button" data-v="terminado">Terminado</button>
         </div>
       </div>
-      <div class="group">
+      <div class="group" id="g-pubgroup" hidden>
         <span class="label">7. ¿El fic está terminado?</span>
         <div class="seg mini" id="f-pub">
           <button type="button" data-v="completo">Completo</button><button type="button" data-v="en-curso">En curso</button><button type="button" data-v="sin-actualizar">Sin actualizar</button>
         </div>
         <div class="hint">En curso = se sigue actualizando. Sin actualizar = pausado o abandonado. Toca de nuevo para quitarlo.</div>
-      </div>
 
-      <!-- Aparece con "Historia larga", "En curso" o "Sin actualizar" -->
-      <div class="group capsbox" id="g-capsmain" hidden>
-        <span class="label" id="cm-label">Capítulos</span>
-        <div class="row2">
-          <div class="row2" id="cm-pubw" style="flex:1;min-width:0">
+        <!-- Aparece con "En curso" o "Sin actualizar" -->
+        <div class="group capsbox" id="g-capsmain" hidden>
+          <span class="label">Capítulos de la obra</span>
+          <div class="row2">
             <span>Van</span>
             <input class="input" id="f-cap-pub" type="number" inputmode="numeric" min="0" placeholder="Ej: 12">
             <span>de</span>
+            <input class="input" id="f-cap-tot2" type="number" inputmode="numeric" min="0" placeholder="? (vacío)">
           </div>
-          <input class="input" id="f-cap-tot" type="number" inputmode="numeric" min="0" placeholder="Ej: 35">
+          <div class="hint">Si dice 13 capítulos pero solo hay 12: van 12 de 13. Si dice 8/?, pon 8 y deja el total vacío (se verá 8/?). El total es el mismo de arriba, en Vibes.</div>
+          <div class="err" id="cm-err">Revisa los capítulos.</div>
         </div>
-        <div class="hint" id="cm-hint"></div>
-        <div class="err" id="cm-err">Revisa los capítulos.</div>
       </div>
 
       <label class="switch-row"><span><b>⭐ Favorito</b><small>Para encontrarlo rápido</small></span><input type="checkbox" id="f-fav"></label>
@@ -945,7 +951,7 @@ $('#sheet-det').addEventListener('click', e => {
 });
 
 /* ───────── Formulario ───────── */
-let editId = null, formVibes = new Set(), formT18 = new Set(), formEstado = 'por-leer', formPub = '', platManual = false, capsForced = false;
+let editId = null, formVibes = new Set(), formT18 = new Set(), formEstado = 'por-leer', formPub = '', platManual = false;
 const GRUPOS = {
   vibes: { custom:'vibesCustom', campo:'categorias', el:'#f-vibes', set:() => formVibes, row:'#nv-row', inp:'#nv-input' },
   t18:   { custom:'t18Custom',   campo:'tags18',     el:'#f-t18',   set:() => formT18,   row:'#nt-row', inp:'#nt-input' }
@@ -978,7 +984,9 @@ Object.keys(GRUPOS).forEach(g => {
     if (del) { e.stopPropagation(); return quitarPropio(g, del.dataset.del); }
     if (e.target.closest('[data-nuevo]')) { const r = $(G.row); r.hidden = !r.hidden; if (!r.hidden) $(G.inp).focus(); return; }
     const b = e.target.closest('.chip'); if (!b) return; vibrar();
-    const k = b.dataset.v; G.set().has(k) ? G.set().delete(k) : G.set().add(k); pintarGrupo(g);
+    const k = b.dataset.v; G.set().has(k) ? G.set().delete(k) : G.set().add(k);
+    if (g === 'vibes' && G.set().has(k)) { if (k === 'largo') G.set().delete('oneshot'); else if (k === 'oneshot') G.set().delete('largo'); }
+    pintarGrupo(g);
   });
   const agregar = () => {
     const v = $(G.inp).value.trim().replace(/\s+/g, ' ').slice(0, 30); if (!v) return;
@@ -994,15 +1002,15 @@ Object.keys(GRUPOS).forEach(g => {
   $(G.inp).addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); agregar(); } });
 });
 
-/* Capítulos: aparece con "Historia larga", "En curso" o "Sin actualizar" */
+/* Capítulos: el total aparece con "Historia larga" (en Vibes); el apartado 7 también */
 function pintarCaps() {
-  const ong = formPub === 'en-curso' || formPub === 'sin-actualizar';
-  $('#g-capsmain').hidden = !(ong || formVibes.has('largo') || capsForced);
-  $('#cm-pubw').hidden = !ong;
-  $('#cm-label').textContent = ong ? 'Capítulos de la obra' : 'Total de capítulos';
-  $('#f-cap-tot').placeholder = ong ? '? (vacío)' : 'Ej: 35';
-  $('#cm-hint').textContent = ong
-    ? 'Si dice 13 capítulos pero solo hay 12: van 12 de 13. Si dice 8/?, pon 8 y deja el total vacío (se verá 8/?).'
+  const largo = formVibes.has('largo');
+  const ong = largo && (formPub === 'en-curso' || formPub === 'sin-actualizar');
+  $('#g-total').hidden = !largo;
+  $('#g-pubgroup').hidden = !largo;
+  $('#g-capsmain').hidden = !ong;
+  $('#tot-hint').textContent = ong
+    ? 'Cuántos capítulos dice que tendrá. Si dice 8/?, déjalo vacío.'
     : 'Cuántos capítulos tiene en total.';
 }
 function pintarEstados() {
@@ -1079,8 +1087,9 @@ function abrirForm(id) {
   $('#f-fav').checked = !!f && f.fav === 'si'; $('#f-adulto').checked = !!f && f.adulto;
   formVibes = new Set(f ? f.categorias : []); formT18 = new Set(f ? f.tags18 : []);
   formEstado = f ? f.estado : 'por-leer'; formPub = f ? f.pub : ''; platManual = !!f;
-  $('#f-cap-act').value = f ? f.capAct : ''; $('#f-cap-tot').value = f ? f.capTot : ''; $('#f-cap-pub').value = f ? f.capPub : '';
-  capsForced = !!(f && f.capTot);
+  $('#f-cap-act').value = f ? f.capAct : ''; $('#f-cap-tot').value = $('#f-cap-tot2').value = f ? f.capTot : ''; $('#f-cap-pub').value = f ? f.capPub : '';
+  if (formVibes.has('largo') && formVibes.has('oneshot')) formVibes.delete('oneshot');
+  if (f && !formVibes.has('oneshot') && (f.pub || f.capPub || +f.capTot > 1)) formVibes.add('largo');   // fics antiguos con datos de capítulos
   $('#url-hint').hidden = true;
   $$('#sheet-fic .group').forEach(g => g.classList.remove('has-error'));
   $('#sheet-fic details.more').open = false;
@@ -1100,7 +1109,9 @@ $('#f-url').addEventListener('input', e => {
   $('#g-url').classList.remove('has-error');
 });
 $('#f-titulo').addEventListener('input', () => $('#g-titulo').classList.remove('has-error'));
-['#f-cap-pub', '#f-cap-tot'].forEach(s => $(s).addEventListener('input', () => $('#g-capsmain').classList.remove('has-error')));
+['#f-cap-pub', '#f-cap-tot', '#f-cap-tot2'].forEach(s => $(s).addEventListener('input', () => $('#g-capsmain').classList.remove('has-error')));
+$('#f-cap-tot').addEventListener('input', e => { $('#f-cap-tot2').value = e.target.value; });
+$('#f-cap-tot2').addEventListener('input', e => { $('#f-cap-tot').value = e.target.value; });
 $('#f-cap-act').addEventListener('input', () => $('#g-caps').classList.remove('has-error'));
 
 $('#btn-guardar').onclick = () => {
@@ -1109,8 +1120,10 @@ $('#btn-guardar').onclick = () => {
   if (!titulo) { $('#g-titulo').classList.add('has-error'); $('#f-titulo').focus(); return; }
   let url = '';
   if (urlRaw) { url = safeUrl(urlRaw); if (!url) { $('#g-url').classList.add('has-error'); $('#f-url').focus(); return; } }
-  const ong = formPub === 'en-curso' || formPub === 'sin-actualizar';
-  const capAct = $('#f-cap-act').value.trim(), capTot = $('#f-cap-tot').value.trim();
+  const largo = formVibes.has('largo');
+  const pubV = largo ? formPub : '';                           // "¿Terminado?" solo existe en historias largas
+  const ong = pubV === 'en-curso' || pubV === 'sin-actualizar';
+  const capAct = $('#f-cap-act').value.trim(), capTot = largo ? $('#f-cap-tot').value.trim() : '';
   const capPub = ong ? $('#f-cap-pub').value.trim() : '';
   if (capPub && capTot && +capPub > +capTot) {
     $('#cm-err').textContent = 'Los capítulos publicados no pueden ser más que el total.';
@@ -1128,7 +1141,7 @@ $('#btn-guardar').onclick = () => {
     fandom:$('#f-fandom').value, ship:$('#f-ship').value, fav:$('#f-fav').checked ? 'si' : 'no',
     categorias:[...formVibes], tags18: adulto ? [...formT18] : [], tagsExtra:$('#f-tropes').value, notas:$('#f-notas').value,
     estado:formEstado, adulto, cw:false,
-    pub:formPub, capAct, capTot, capPub
+    pub:pubV, capAct, capTot, capPub
   };
   if (editId) { const i = db.findIndex(x => x.id === editId); db[i] = normFic({ ...db[i], ...datos }); }
   else db.unshift(normFic(datos));
