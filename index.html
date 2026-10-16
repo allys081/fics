@@ -119,7 +119,7 @@ a{color:inherit}
 .tags{display:flex;flex-wrap:wrap;gap:5px;min-width:0}
 .tag{background:var(--chip);color:var(--chip-ink);border-radius:8px;padding:3px 8px;font-size:11px;font-weight:600}
 .tag.pub{background:var(--ok-soft);color:var(--ok)}
-.tag.cw{background:transparent;color:var(--danger);border:1.5px solid currentColor;padding:1px 7px}
+.tag.t18{background:color-mix(in srgb,var(--danger) 14%,transparent);color:var(--danger)}
 .st{flex:none;font-size:11px;font-weight:800;border-radius:99px;padding:5px 11px}
 .st-por-leer{background:var(--chip);color:var(--chip-ink)}
 .st-leyendo{background:var(--acc-soft);color:var(--acc)}
@@ -193,9 +193,12 @@ body.typing .fab{transform:translateY(120px);opacity:0;pointer-events:none}
 .chip{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:99px;background:var(--card);border:1.5px solid var(--line);font-size:12.5px;font-weight:700;color:var(--chip-ink);transition:all .12s}
 .chip em{font-style:normal;opacity:.65;font-size:11px}
 .chip.on{background:var(--acc);border-color:var(--acc);color:var(--on-acc)}
-.chip span[data-del]{margin-left:2px;opacity:.7;padding:0 2px}
-.addvibe{display:flex;gap:8px;margin-top:10px}
-.addvibe .btn{height:auto;padding:0 16px;flex:none}
+.chip .x{display:inline-grid;place-items:center;margin-left:2px;opacity:.7;padding:2px;margin-right:-4px}
+.chip.nuevo{border-style:dashed;color:var(--acc);border-color:var(--acc)}
+.addrow{display:flex;gap:8px;margin-top:10px}
+.addrow .input{flex:1;min-width:0}
+.addrow .btn{height:auto;padding:0 16px}
+.t18box{background:color-mix(in srgb,var(--danger) 7%,var(--card));border:1.5px solid color-mix(in srgb,var(--danger) 25%,var(--line));border-radius:14px;padding:12px 14px;margin:2px 0 12px}
 .switch-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;background:var(--card);border:1.5px solid var(--line);border-radius:14px;margin-bottom:8px;cursor:pointer}
 .switch-row b{display:block;font-size:13.5px}
 .switch-row small{color:var(--mute);font-size:11.5px}
@@ -281,7 +284,6 @@ details.more .inner{padding-top:6px}
     <div class="sheet-head"><h2 id="fic-h">Agregar fanfic</h2><button class="ibtn sm" data-close aria-label="Cerrar" data-ic="x"></button></div>
     <div class="sheet-body" id="fic-body">
 
-      <!-- PARTE RÁPIDA -->
       <div class="group" id="g-url">
         <label class="label" for="f-url">1. Enlace para leerlo</label>
         <input class="input" id="f-url" inputmode="url" autocapitalize="off" autocomplete="off" spellcheck="false" placeholder="https://archiveofourown.org/works/…">
@@ -306,10 +308,7 @@ details.more .inner{padding-top:6px}
       <div class="group">
         <span class="label">4. Vibes (toca para elegir varias)</span>
         <div class="chips" id="f-vibes"></div>
-        <div class="addvibe">
-          <input class="input" id="f-nueva-vibe" placeholder="Agregar otra vibe…" maxlength="24" autocomplete="off">
-          <button type="button" class="btn sec" id="btn-vibe">Añadir</button>
-        </div>
+        <div class="addrow" id="nv-row" hidden><input class="input" id="nv-input" placeholder="Nombre de tu vibe" maxlength="24" autocomplete="off" enterkeyhint="done"><button type="button" class="btn primary">Agregar</button></div>
       </div>
       <div class="group">
         <label class="label" for="f-notas">5. “De qué iba” / notas para recordar la trama</label>
@@ -321,22 +320,26 @@ details.more .inner{padding-top:6px}
           <button type="button" data-v="por-leer">Por leer</button><button type="button" data-v="leyendo">Leyendo</button><button type="button" data-v="terminado">Terminado</button>
         </div>
       </div>
+      <div class="group">
+        <span class="label">7. ¿El fic está terminado?</span>
+        <div class="seg mini" id="f-pub">
+          <button type="button" data-v="completo">Completo</button><button type="button" data-v="en-curso">En curso</button><button type="button" data-v="sin-actualizar">Sin actualizar</button>
+        </div>
+        <div class="hint">En curso = se sigue actualizando. Sin actualizar = pausado o abandonado. Toca de nuevo para quitarlo.</div>
+      </div>
       <label class="switch-row"><span><b>⭐ Favorito</b><small>Para encontrarlo rápido</small></span><input type="checkbox" id="f-fav"></label>
       <label class="switch-row"><span><b>🔞 Contenido +18</b><small>Se oculta con el modo privado</small></span><input type="checkbox" id="f-adulto"></label>
-      <label class="switch-row" id="row-cw" hidden><span><b>⚠ CW (contenido fuerte)</b><small>Etiqueta oculta: solo se ve con los +18 visibles</small></span><input type="checkbox" id="f-cw"></label>
+      <div class="t18box" id="g-t18" hidden>
+        <span class="label">Etiquetas +18 (solo se ven cuando los +18 están visibles)</span>
+        <div class="chips" id="f-t18"></div>
+        <div class="addrow" id="nt-row" hidden><input class="input" id="nt-input" placeholder="Nombre de la etiqueta" maxlength="30" autocomplete="off" enterkeyhint="done"><button type="button" class="btn primary">Agregar</button></div>
+      </div>
 
-      <!-- PARTE DETALLADA -->
       <details class="more">
         <summary>Más opciones (detalles) <span data-ic="chev" data-size="16"></span></summary>
         <div class="inner">
-          <div class="group">
-            <span class="label">8. ¿El fic está terminado por el autor?</span>
-            <div class="seg mini" id="f-pub">
-              <button type="button" data-v="completo">Completo</button><button type="button" data-v="sin-act">En emisión / Sin actualizar</button>
-            </div>
-          </div>
           <div class="group" id="g-caps">
-            <span class="label">9. Progreso de lectura (capítulo)</span>
+            <span class="label">8. Progreso de lectura (capítulo)</span>
             <div class="row2">
               <span>Cap.</span>
               <input class="input" id="f-cap-act" type="number" inputmode="numeric" min="0" placeholder="Ej: 14">
@@ -346,13 +349,13 @@ details.more .inner{padding-top:6px}
             <div class="err">El capítulo actual no puede ser mayor que el total.</div>
           </div>
           <div class="group">
-            <label class="label" for="f-plat">10. Plataforma</label>
+            <label class="label" for="f-plat">9. Plataforma</label>
             <select class="select" id="f-plat">
               <option value="ao3">AO3</option><option value="ffnet">FanFiction.net</option><option value="wattpad">Wattpad</option><option value="otro">Otro</option>
             </select>
           </div>
           <div class="group">
-            <label class="label" for="f-tropes">11. Otros tropes / palabras clave</label>
+            <label class="label" for="f-tropes">10. Otros tropes / palabras clave</label>
             <input class="input" id="f-tropes" placeholder="Ej: Enemies to lovers, Amnesia, Slow burn, Hanahaki" autocomplete="off">
           </div>
         </div>
@@ -449,12 +452,22 @@ const VIBES = {
   au:         { n:'Universo alterno (AU)',      s:'AU',       e:'✨' },
   humor:      { n:'Comedia / Divertido',        s:'Comedia',  e:'😂' }
 };
-const vibe = k => VIBES[k] || { n:String(k).slice(2), s:String(k).slice(2), e:'🏷️' };   // vibes propias: "c:nombre"
+const T18 = {
+  smut:   { n:'Explícito (smut)',  s:'Smut',      e:'🔥' },
+  noncon: { n:'Non-con (rape)',    s:'Non-con',   e:'🚫' },
+  dubcon: { n:'Dub-con',           s:'Dub-con',   e:'⚠️' },
+  gore:   { n:'Violencia gráfica', s:'Violencia', e:'🩸' }
+};
+const DEFS = { vibes: VIBES, t18: T18 };
+/* las etiquetas propias se guardan como "c:nombre" */
+const tLab = (g, k) => DEFS[g][k] ? DEFS[g][k].n : String(k).slice(2);
+const tShort = (g, k) => DEFS[g][k] ? DEFS[g][k].s : String(k).slice(2);
+const tEmo = (g, k) => DEFS[g][k] ? DEFS[g][k].e : '🏷️';
+const validTag = (g, k) => typeof k === 'string' && (!!DEFS[g][k] || (k.startsWith('c:') && k.length > 2));
 const PLATS  = { ao3:'AO3', ffnet:'FanFiction.net', wattpad:'Wattpad', otro:'Otro' };
 const PLATS_S= { ao3:'AO3', ffnet:'FF.net', wattpad:'Wattpad', otro:'Web' };
 const ESTADOS = { 'por-leer':'Por leer', leyendo:'Leyendo', terminado:'Terminado' };
-const PUBS = { completo:'Completo', 'sin-act':'En emisión / Sin actualizar' };
-const PUBS_S = { completo:'Completo', 'sin-act':'En emisión' };
+const PUBS = { completo:'Completo', 'en-curso':'En curso', 'sin-actualizar':'Sin actualizar' };
 const ORDENES = { recientes:'Más recientes', antiguos:'Más antiguos', titulo:'Título A–Z', favoritos:'Favoritos primero' };
 
 const I = {
@@ -505,30 +518,35 @@ function detectarPlat(u) {
 function normFic(f) {
   const s = v => typeof v === 'string' ? v.trim() : '';
   const n = v => String(v ?? '').replace(/\D/g, '').slice(0, 5);
+  const uniq = a => [...new Set(a)];
+  const adulto = !!f.adulto;
+  let tags18 = Array.isArray(f.tags18) ? uniq(f.tags18.filter(k => validTag('t18', k))) : [];
+  if (f.cw && !tags18.includes('c:CW')) tags18.push('c:CW');     // el antiguo "CW" pasa a ser una etiqueta +18 propia
+  if (!adulto) tags18 = [];
+  const pub = f.pub === 'sin-act' ? 'en-curso' : f.pub;            // valor de la versión anterior
   return {
     id: s(f.id) || 'f_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
     titulo: s(f.titulo), autor: s(f.autor),   // el autor se conserva en los datos aunque ya no se muestre
     plataforma: PLATS[f.plataforma] ? f.plataforma : 'ao3',
     url: s(f.url), fandom: s(f.fandom), ship: s(f.ship),
     fav: f.fav === 'si' ? 'si' : 'no',
-    categorias: Array.isArray(f.categorias) ? f.categorias.filter(k => typeof k === 'string' && (VIBES[k] || (k.startsWith('c:') && k.length > 2))) : [],
+    categorias: Array.isArray(f.categorias) ? uniq(f.categorias.filter(k => validTag('vibes', k))) : [],
+    tags18,
     tagsExtra: s(f.tagsExtra), notas: s(f.notas),
     estado: ESTADOS[f.estado] ? f.estado : 'por-leer',
-    adulto: !!f.adulto,
-    cw: !!f.adulto && !!f.cw,
-    pub: PUBS[f.pub] ? f.pub : '',
+    adulto,
+    pub: PUBS[pub] ? pub : '',
     capAct: n(f.capAct),
-    capTot: n(f.capTot !== undefined ? f.capTot : f.caps)   // "caps" es el campo de la versión anterior
+    capTot: n(f.capTot !== undefined ? f.capTot : f.caps)   // "caps" es el campo de una versión anterior
   };
 }
 
 /* ───────── Estado ───────── */
 let db = (leer(KEY, []) || []).filter(f => f && typeof f === 'object').map(normFic).filter(f => f.titulo);
-const prefs = Object.assign({ tema:'auto', acento:'terra', vista:'tarjetas', orden:'recientes', adultos:'ocultar', aviso:false, vibesCustom:[] }, leer(PKEY, {}));
-if (!Array.isArray(prefs.vibesCustom)) prefs.vibesCustom = [];
+const prefs = Object.assign({ tema:'auto', acento:'terra', vista:'tarjetas', orden:'recientes', adultos:'ocultar', aviso:false, vibesCustom:[], t18Custom:[] }, leer(PKEY, {}));
+['vibesCustom', 't18Custom'].forEach(k => { prefs[k] = Array.isArray(prefs[k]) ? prefs[k].filter(x => typeof x === 'string' && x.startsWith('c:')) : []; });
 if (prefs.adultos === 'mostrar') prefs.adultos = 'ocultar';   // "mostrar" solo dura la sesión
-const st = { q:'', estado:'todos', plats:new Set(), pubs:new Set(), fav:false, soloAdulto:false, soloCW:false, abiertos:new Set(), revelados:new Set() };
-const misVibes = () => [...new Set([...prefs.vibesCustom, ...db.flatMap(f => f.categorias).filter(k => k.startsWith('c:'))])];
+const st = { q:'', estado:'todos', plats:new Set(), pubs:new Set(), t18:new Set(), fav:false, soloAdulto:false, abiertos:new Set(), revelados:new Set() };
 const guardarPrefs = () => escribir(PKEY, prefs);
 const guardarDB = () => { if (!escribir(KEY, db)) toast('No pude guardar en este navegador. Haz un respaldo.'); };
 
@@ -554,16 +572,17 @@ const ocultosN = () => db.filter(f => f.adulto).length;
 
 function calcular() {
   const vis = visibles();
-  if (prefs.adultos === 'ocultar') { st.soloAdulto = false; st.soloCW = false; }
+  if (prefs.adultos === 'ocultar') { st.soloAdulto = false; st.t18.clear(); }
   const words = norm(st.q).split(/\s+/).filter(Boolean);
   const base = vis.filter(f => {
     if (st.fav && f.fav !== 'si') return false;
     if (st.plats.size && !st.plats.has(f.plataforma)) return false;
     if (st.pubs.size && !st.pubs.has(f.pub)) return false;
     if (st.soloAdulto && !f.adulto) return false;
-    if (st.soloCW && !f.cw) return false;
+    for (const t of st.t18) if (!f.tags18.includes(t)) return false;
     if (words.length) {
-      const hay = norm([f.titulo, f.autor, f.fandom, f.ship, f.tagsExtra, f.notas, f.categorias.map(k => vibe(k).n).join(' ')].join(' '));
+      const hay = norm([f.titulo, f.autor, f.fandom, f.ship, f.tagsExtra, f.notas, f.pub ? PUBS[f.pub] : '',
+        f.categorias.map(k => tLab('vibes', k)).join(' '), f.tags18.map(k => tLab('t18', k)).join(' ')].join(' '));
       if (!words.every(w => hay.includes(w))) return false;
     }
     return true;
@@ -576,8 +595,8 @@ function calcular() {
   else if (prefs.orden === 'favoritos') lista.sort((a, b) => (b.fav === 'si') - (a.fav === 'si'));
   return { vis, base, counts, lista };
 }
-const nFiltros = () => (st.fav ? 1 : 0) + st.plats.size + st.pubs.size + (st.soloAdulto ? 1 : 0) + (st.soloCW ? 1 : 0);
-function limpiarFiltros() { st.fav = false; st.plats.clear(); st.pubs.clear(); st.soloAdulto = false; st.soloCW = false; st.estado = 'todos'; }
+const nFiltros = () => (st.fav ? 1 : 0) + st.plats.size + st.pubs.size + st.t18.size + (st.soloAdulto ? 1 : 0);
+function limpiarFiltros() { st.fav = false; st.plats.clear(); st.pubs.clear(); st.t18.clear(); st.soloAdulto = false; st.estado = 'todos'; }
 
 /* ───────── Pintado principal ───────── */
 function colorFic(f) { return f.ship ? `var(--f${hash(norm(f.ship)) % 8})` : 'var(--mute)'; }
@@ -595,10 +614,10 @@ function cardHTML(f) {
   const url = safeUrl(f.url);
   const caps = capsTxt(f);
   const tagsAll = [
-    ...(f.pub ? [`<span class="tag pub">${esc(PUBS_S[f.pub])}</span>`] : []),
+    ...(f.pub ? [`<span class="tag pub">${esc(PUBS[f.pub])}</span>`] : []),
     ...(caps ? [`<span class="tag">${esc(caps)}</span>`] : []),
-    ...(f.cw ? ['<span class="tag cw">⚠ CW</span>'] : []),
-    ...f.categorias.map(k => `<span class="tag">${esc(vibe(k).s)}</span>`)
+    ...f.categorias.map(k => `<span class="tag">${esc(tShort('vibes', k))}</span>`),
+    ...f.tags18.map(k => `<span class="tag t18">${esc(tShort('t18', k))}</span>`)
   ];
   const tags = (open ? tagsAll : tagsAll.slice(0, 3)).join('') + (!open && tagsAll.length > 3 ? `<span class="tag">+${tagsAll.length - 3}</span>` : '');
   const by = PLATS_S[f.plataforma];
@@ -668,10 +687,10 @@ function pintarPills() {
   const out = [];
   const pill = (t, v, txt) => `<button class="pill" data-t="${t}" data-v="${esc(v)}" aria-label="Quitar filtro ${esc(txt)}">${esc(txt)} ${icon('x', 13)}</button>`;
   if (st.fav) out.push(pill('fav', '', '★ Favoritos'));
-  st.pubs.forEach(k => out.push(pill('pub', k, PUBS_S[k])));
+  st.pubs.forEach(k => out.push(pill('pub', k, PUBS[k])));
   st.plats.forEach(k => out.push(pill('plat', k, PLATS_S[k])));
   if (st.soloAdulto) out.push(pill('adulto', '', '+18'));
-  if (st.soloCW) out.push(pill('cw', '', '⚠ CW'));
+  st.t18.forEach(k => out.push(pill('t18', k, tShort('t18', k))));
   $('#pills').innerHTML = out.join('');
 }
 
@@ -713,7 +732,7 @@ $('#orden').onchange = e => { prefs.orden = e.target.value; guardarPrefs(); rend
 $('#pills').addEventListener('click', e => {
   const b = e.target.closest('.pill'); if (!b) return;
   const { t, v } = b.dataset;
-  if (t === 'fav') st.fav = false; else if (t === 'pub') st.pubs.delete(v); else if (t === 'plat') st.plats.delete(v); else if (t === 'adulto') st.soloAdulto = false; else if (t === 'cw') st.soloCW = false;
+  if (t === 'fav') st.fav = false; else if (t === 'pub') st.pubs.delete(v); else if (t === 'plat') st.plats.delete(v); else if (t === 'adulto') st.soloAdulto = false; else if (t === 't18') st.t18.delete(v);
   render();
 });
 $('#fab').onclick = () => abrirForm();
@@ -765,16 +784,59 @@ document.addEventListener('focusin', e => {
 document.addEventListener('focusout', () => setTimeout(() => { if (!document.activeElement || !document.activeElement.matches('input,textarea,select')) document.body.classList.remove('typing'); }, 80));
 
 /* ───────── Formulario ───────── */
-let editId = null, formVibes = new Set(), formEstado = 'por-leer', formPub = '', platManual = false;
-function pintarFormVibes() {
-  const base = Object.entries(VIBES).map(([k, v]) => [k, v.e + ' ' + v.n, false]);
-  const extra = misVibes().map(k => [k, '🏷️ ' + k.slice(2), true]);
-  $('#f-vibes').innerHTML = [...base, ...extra].map(([k, t, c]) => `<button type="button" class="chip${formVibes.has(k) ? ' on' : ''}" data-v="${esc(k)}">${esc(t)}${c ? ` <span data-del="${esc(k)}" aria-label="Eliminar vibe">✕</span>` : ''}</button>`).join('');
+let editId = null, formVibes = new Set(), formT18 = new Set(), formEstado = 'por-leer', formPub = '', platManual = false;
+const GRUPOS = {
+  vibes: { custom:'vibesCustom', campo:'categorias', el:'#f-vibes', set:() => formVibes, row:'#nv-row', inp:'#nv-input' },
+  t18:   { custom:'t18Custom',   campo:'tags18',     el:'#f-t18',   set:() => formT18,   row:'#nt-row', inp:'#nt-input' }
+};
+function opciones(g) {                                   // por defecto + las tuyas + las que ya usas
+  const G = GRUPOS[g], extra = new Set(prefs[G.custom]);
+  visibles().forEach(f => f[G.campo].forEach(k => { if (k.startsWith('c:')) extra.add(k); }));
+  G.set().forEach(k => { if (k.startsWith('c:')) extra.add(k); });
+  return [...Object.keys(DEFS[g]), ...[...extra].filter(k => !DEFS[g][k])];
+}
+function pintarGrupo(g) {
+  const G = GRUPOS[g];
+  $(G.el).innerHTML = opciones(g).map(k => {
+    const propio = !DEFS[g][k];
+    return `<button type="button" class="chip${G.set().has(k) ? ' on' : ''}" data-v="${esc(k)}">${tEmo(g, k)} ${esc(tLab(g, k))}${propio ? `<span class="x" data-del="${esc(k)}" role="button" aria-label="Quitar de la lista">${icon('x', 13)}</span>` : ''}</button>`;
+  }).join('') + `<button type="button" class="chip nuevo" data-nuevo="1">${icon('plus', 14)} Nueva</button>`;
+}
+function quitarPropio(g, k) {
+  if (!confirm(`¿Quitar "${tLab(g, k)}" de la lista y de todos tus fics?`)) return;
+  const G = GRUPOS[g];
+  prefs[G.custom] = prefs[G.custom].filter(x => x !== k); guardarPrefs();
+  db.forEach(f => { f[G.campo] = f[G.campo].filter(x => x !== k); });
+  G.set().delete(k); guardarDB(); pintarGrupo(g); render();
+}
+Object.keys(GRUPOS).forEach(g => {
+  const G = GRUPOS[g];
+  $(G.el).addEventListener('click', e => {
+    const del = e.target.closest('[data-del]');
+    if (del) { e.stopPropagation(); return quitarPropio(g, del.dataset.del); }
+    if (e.target.closest('[data-nuevo]')) { const r = $(G.row); r.hidden = !r.hidden; if (!r.hidden) $(G.inp).focus(); return; }
+    const b = e.target.closest('.chip'); if (!b) return; vibrar();
+    const k = b.dataset.v; G.set().has(k) ? G.set().delete(k) : G.set().add(k); pintarGrupo(g);
+  });
+  const agregar = () => {
+    const v = $(G.inp).value.trim().replace(/\s+/g, ' ').slice(0, 30); if (!v) return;
+    const nv = norm(v);
+    let k = Object.keys(DEFS[g]).find(d => norm(DEFS[g][d].n) === nv || norm(DEFS[g][d].s) === nv);
+    if (!k) {
+      k = opciones(g).find(o => !DEFS[g][o] && norm(tLab(g, o)) === nv) || 'c:' + v;
+      if (!prefs[G.custom].includes(k)) { prefs[G.custom].push(k); guardarPrefs(); }
+    }
+    G.set().add(k); $(G.inp).value = ''; $(G.row).hidden = true; pintarGrupo(g);
+  };
+  $(G.row + ' button').onclick = agregar;
+  $(G.inp).addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); agregar(); } });
+});
+function pintarEstados() {
   $$('#f-estado button').forEach(b => b.classList.toggle('on', b.dataset.v === formEstado));
   $$('#f-pub button').forEach(b => b.classList.toggle('on', b.dataset.v === formPub));
+  $('#g-t18').hidden = !$('#f-adulto').checked;
 }
-function syncCW() { const a = $('#f-adulto').checked; $('#row-cw').hidden = !a; if (!a) $('#f-cw').checked = false; }
-$('#f-adulto').addEventListener('change', syncCW);
+$('#f-adulto').addEventListener('change', pintarEstados);
 
 function mostrarDeteccion(url) {
   const p = detectarPlat(url), h = $('#url-hint');
@@ -791,11 +853,9 @@ function abrirForm(id) {
   $('#f-notas').value = f ? f.notas : ''; $('#f-tropes').value = f ? f.tagsExtra : '';
   $('#f-plat').value = f ? f.plataforma : 'ao3';
   $('#f-fav').checked = !!f && f.fav === 'si'; $('#f-adulto').checked = !!f && f.adulto;
-  $('#f-cw').checked = !!f && f.cw; syncCW();
-  formVibes = new Set(f ? f.categorias : []); formEstado = f ? f.estado : 'por-leer'; platManual = !!f;
-  formPub = f ? f.pub : '';
+  formVibes = new Set(f ? f.categorias : []); formT18 = new Set(f ? f.tags18 : []);
+  formEstado = f ? f.estado : 'por-leer'; formPub = f ? f.pub : ''; platManual = !!f;
   $('#f-cap-act').value = f ? f.capAct : ''; $('#f-cap-tot').value = f ? f.capTot : '';
-  $('#f-nueva-vibe').value = '';
   $('#url-hint').hidden = true;
   $$('#sheet-fic .group').forEach(g => g.classList.remove('has-error'));
   const vis = visibles();
@@ -803,33 +863,14 @@ function abrirForm(id) {
   $('#dl-fandom').innerHTML = uniq(vis.map(x => x.fandom)).map(v => `<option value="${esc(v)}">`).join('');
   $('#dl-ship').innerHTML = uniq(vis.map(x => x.ship)).map(v => `<option value="${esc(v)}">`).join('');
   $('#sheet-fic details.more').open = false;
-  pintarFormVibes();
+  $('#nv-row').hidden = true; $('#nt-row').hidden = true; $('#nv-input').value = ''; $('#nt-input').value = '';
+  pintarGrupo('vibes'); pintarGrupo('t18'); pintarEstados();
   abrirHoja('sheet-fic');
   $('#fic-body').scrollTop = 0;
   if (!f) setTimeout(() => $('#f-url').focus(), 280);
 }
-$('#f-vibes').addEventListener('click', e => {
-  const d = e.target.closest('[data-del]');
-  if (d) {
-    const k = d.dataset.del;
-    if (!confirm(`¿Quitar la vibe "${k.slice(2)}" de todos tus fics?`)) return;
-    prefs.vibesCustom = prefs.vibesCustom.filter(x => x !== k);
-    db.forEach(f => f.categorias = f.categorias.filter(x => x !== k));
-    formVibes.delete(k); guardarPrefs(); guardarDB(); pintarFormVibes(); render(); return;
-  }
-  const b = e.target.closest('.chip'); if (!b) return; vibrar();
-  const k = b.dataset.v; formVibes.has(k) ? formVibes.delete(k) : formVibes.add(k); pintarFormVibes();
-});
-function anadirVibe() {
-  const n = $('#f-nueva-vibe').value.trim().slice(0, 24); if (!n) return;
-  const k = misVibes().find(x => norm(x) === norm('c:' + n)) || 'c:' + n;
-  if (!prefs.vibesCustom.includes(k)) prefs.vibesCustom.push(k);
-  formVibes.add(k); $('#f-nueva-vibe').value = ''; guardarPrefs(); pintarFormVibes();
-}
-$('#btn-vibe').onclick = anadirVibe;
-$('#f-nueva-vibe').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); anadirVibe(); } });
-$('#f-estado').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; formEstado = b.dataset.v; pintarFormVibes(); });
-$('#f-pub').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; formPub = formPub === b.dataset.v ? '' : b.dataset.v; pintarFormVibes(); });
+$('#f-estado').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; formEstado = b.dataset.v; pintarEstados(); });
+$('#f-pub').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; formPub = formPub === b.dataset.v ? '' : b.dataset.v; pintarEstados(); });
 $('#f-plat').addEventListener('change', () => platManual = true);
 $('#f-url').addEventListener('input', e => {
   const p = detectarPlat(e.target.value);
@@ -856,8 +897,8 @@ $('#btn-guardar').onclick = () => {
   const datos = {
     titulo, url, plataforma:$('#f-plat').value,
     fandom:$('#f-fandom').value, ship:$('#f-ship').value, fav:$('#f-fav').checked ? 'si' : 'no',
-    categorias:[...formVibes], tagsExtra:$('#f-tropes').value, notas:$('#f-notas').value,
-    estado:formEstado, adulto, cw:adulto && $('#f-cw').checked,
+    categorias:[...formVibes], tags18: adulto ? [...formT18] : [], tagsExtra:$('#f-tropes').value, notas:$('#f-notas').value,
+    estado:formEstado, adulto, cw:false,
     pub:formPub, capAct, capTot
   };
   if (editId) { const i = db.findIndex(x => x.id === editId); db[i] = normFic({ ...db[i], ...datos }); }
@@ -878,13 +919,16 @@ function pintarFiltros() {
   const plats = contar(vis, f => [{ key:f.plataforma, label:PLATS[f.plataforma] }]);
   const platsH = [...plats.entries()].sort((a, b) => b[1].n - a[1].n).map(([k, o]) => chip('plat', k, o.label, o.n, st.plats.has(k))).join('');
   const favN = vis.filter(f => f.fav === 'si').length;
-  const nAd = vis.filter(f => f.adulto).length, nCW = vis.filter(f => f.cw).length;
+  const ad = vis.filter(f => f.adulto);
+  const t18 = contar(ad, f => f.tags18.map(k => ({ key:k, label:k })));
+  const t18H = [...t18.entries()].sort((a, b) => b[1].n - a[1].n || tLab('t18', a[0]).localeCompare(tLab('t18', b[0]), 'es'))
+    .map(([k, o]) => chip('t18', k, tEmo('t18', k) + ' ' + tShort('t18', k), o.n, st.t18.has(k))).join('');
   $('#filtros-body').innerHTML =
     bloque('Estado de lectura', estados) +
-    bloque('Estado del fic', pubs) +
+    bloque('¿Terminado?', pubs) +
     bloque('Plataforma', platsH) +
     bloque('Favoritos', favN ? chip('fav', '', '★ Solo favoritos', favN, st.fav) : '') +
-    (adultos && nAd ? bloque('+18', chip('adulto', '', 'Solo +18', nAd, st.soloAdulto) + (nCW ? chip('cw', '', '⚠ CW', nCW, st.soloCW) : '')) : '');
+    (adultos && ad.length ? bloque('+18', chip('adulto', '', '🔞 Solo +18', ad.length, st.soloAdulto) + t18H) : '');
   const n = calcular().lista.length;
   $('#btn-ver').textContent = `Ver ${n} resultado${n === 1 ? '' : 's'}`;
 }
@@ -893,7 +937,7 @@ $('#filtros-body').addEventListener('click', e => {
   const b = e.target.closest('.chip'); if (!b) return; vibrar();
   const { t, v } = b.dataset;
   const tog = (set, x) => set.has(x) ? set.delete(x) : set.add(x);
-  if (t === 'fav') st.fav = !st.fav; else if (t === 'estado') st.estado = st.estado === v ? 'todos' : v; else if (t === 'pub') tog(st.pubs, v); else if (t === 'plat') tog(st.plats, v); else if (t === 'adulto') st.soloAdulto = !st.soloAdulto; else if (t === 'cw') st.soloCW = !st.soloCW;
+  if (t === 'fav') st.fav = !st.fav; else if (t === 'estado') st.estado = st.estado === v ? 'todos' : v; else if (t === 'pub') tog(st.pubs, v); else if (t === 'plat') tog(st.plats, v); else if (t === 'adulto') st.soloAdulto = !st.soloAdulto; else if (t === 't18') tog(st.t18, v);
   render();
 });
 $('#btn-limpiar-filtros').onclick = () => { limpiarFiltros(); render(); };
