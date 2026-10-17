@@ -23,7 +23,7 @@ document.documentElement.dataset.acc=['violeta','rosa','turquesa','celeste'].ind
   --ok:#3d7a60; --ok-soft:#dcefe6; --danger:#b4412f;
   /* paleta de parejas: morados, rosados, turquesa y celeste */
   --f0:#7c5cd6; --f1:#c2417a; --f2:#14877c; --f3:#2a7fc0; --f4:#9b6fd0; --f5:#d4609a; --f6:#2fa89c; --f7:#4a9bd8;
-  --acc:#7c5cd6; --acc-soft:#ece6fb; --on-acc:#fff;
+  --acc:#7c5cd6; --acc-soft:#ece6fb; --on-acc:#fff; --star:#e8a317;
   --pink:#c2257a; --on-pink:#fff;
   --shadow:0 1px 2px rgba(80,50,30,.06),0 6px 18px rgba(80,50,30,.06);
   --scrim:rgba(30,18,10,.45);
@@ -36,7 +36,7 @@ document.documentElement.dataset.acc=['violeta','rosa','turquesa','celeste'].ind
   --chip:#282434; --chip-ink:#bab2ca;
   --ok:#6ee7b7; --ok-soft:rgba(110,231,183,.14); --danger:#ff8a78;
   --f0:#c4b5fd; --f1:#f9a8d4; --f2:#5eead4; --f3:#7dd3fc; --f4:#a78bfa; --f5:#f472b6; --f6:#2dd4bf; --f7:#38bdf8;
-  --on-acc:#14121a;
+  --on-acc:#14121a; --star:#fbbf24;
   --pink:#f472b6; --on-pink:#14121a;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px rgba(0,0,0,.25);
   --scrim:rgba(0,0,0,.6);
@@ -124,14 +124,23 @@ a{color:inherit}
 .tags{display:flex;flex-wrap:wrap;gap:5px;min-width:0}
 .tag{background:var(--chip);color:var(--chip-ink);border-radius:8px;padding:3px 8px;font-size:11px;font-weight:600}
 .tag.pub{background:var(--ok-soft);color:var(--ok)}
-.tag.rate{background:var(--acc-soft);color:var(--acc);font-weight:700}
+.tag.rate{background:var(--chip);color:var(--ink);font-weight:700}
+.star{color:var(--star)}
+.plat{display:inline-flex;align-items:center;border-radius:99px;padding:3px 10px;font-size:10.5px;font-weight:800;letter-spacing:.3px;line-height:1.3;white-space:nowrap;color:var(--pc,var(--mute));background:color-mix(in srgb,var(--pc,var(--mute)) 13%,var(--card));border:1px solid color-mix(in srgb,var(--pc,var(--mute)) 28%,transparent)}
+.plat.ao3{--pc:#a93226}.plat.ffnet{--pc:#2a6fb5}.plat.wattpad{--pc:#c4630f}.plat.otro{--pc:var(--mute)}
+[data-theme=dark] .plat.ao3{--pc:#ff8a78}[data-theme=dark] .plat.ffnet{--pc:#7cb7ff}[data-theme=dark] .plat.wattpad{--pc:#fdba74}
+.cswrap{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.csw{width:36px;height:36px;border-radius:50%;border:3px solid var(--bg);box-shadow:0 0 0 2px var(--line);display:grid;place-items:center;color:var(--on-acc)}
+.csw[aria-pressed=true]{box-shadow:0 0 0 2.5px var(--ink)}
+.csw .ic{opacity:0}.csw[aria-pressed=true] .ic{opacity:1}
+.cswrap .chip{padding:8px 14px}
 .rate-box{margin-top:10px;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:10px 12px}
 .rate-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
 .rate-head .label{margin:0}
-.rate-head b{font-size:13px;color:var(--acc)}
+.rate-head b{font-size:13px;color:var(--ink)}
 .stars{display:flex;gap:2px}
 .stars button{flex:1;min-width:0;height:36px;display:grid;place-items:center;color:var(--mute);opacity:.55}
-.stars button.on{color:var(--acc);opacity:1}
+.stars button.on{color:var(--star);opacity:1}
 .tag.fmt{background:var(--acc-soft);color:var(--acc)}
 .tag.t18{background:color-mix(in srgb,var(--danger) 14%,transparent);color:var(--danger)}
 .st{flex:none;font-size:11px;font-weight:800;border-radius:99px;padding:5px 11px}
@@ -355,6 +364,11 @@ details.more .inner{padding-top:6px}
         <label class="label" for="f-ship">Pareja / Personajes (ship)</label>
         <input class="input" id="f-ship" placeholder="Escribe una nueva o elige abajo" autocomplete="off">
         <div class="sugs" id="s-ship"></div>
+      </div>
+      <div class="group">
+        <span class="label">Color de la barrita lateral</span>
+        <div class="cswrap" id="f-color"></div>
+        <div class="hint">Elige el color que quieras para este fic. “Auto” lo calcula solo según el ship.</div>
       </div>
       <div class="group">
         <span class="label">4. Vibes (toca para elegir varias)</span>
@@ -622,6 +636,7 @@ function normFic(f) {
     estado: ESTADOS[f.estado] ? f.estado : 'por-leer',
     adulto,
     rating: Math.min(10, Math.max(0, parseInt(f.rating, 10) || 0)),
+    color: /^[0-7]$/.test(String(f.color ?? '')) ? String(f.color) : '',   // '' = automático
     pub: pubOk,
     capAct: n(f.capAct),
     capTot: n(f.capTot !== undefined ? f.capTot : f.caps),  // "caps" es el campo de una versión anterior
@@ -691,9 +706,10 @@ const nFiltros = () => (st.fav ? 1 : 0) + st.plats.size + st.pubs.size + st.fand
 function limpiarFiltros() { st.fav = false; st.plats.clear(); st.pubs.clear(); st.fandoms.clear(); st.ships.clear(); st.t18.clear(); st.soloAdulto = false; st.estado = 'todos'; }
 
 /* ───────── Pintado principal ───────── */
-function colorFic(f) { const k = f.ship || f.fandom; return k ? `var(--f${hash(norm(k)) % 8})` : 'var(--mute)'; }
+function colorFic(f) { if (/^[0-7]$/.test(f.color)) return `var(--f${f.color})`; const k = f.ship || f.fandom; return k ? `var(--f${hash(norm(k)) % 8})` : 'var(--mute)'; }
 
-const ratingTxt = r => `${r}/10 ★`;
+const ratingHTML = r => `${r}/10 <span class="star">★</span>`;
+const platPill = (f, largo) => `<span class="plat ${f.plataforma}">${esc(largo ? PLATS[f.plataforma] : PLATS_S[f.plataforma])}</span>`;
 
 /* progreso de lectura: "Cap. 6 de 12" */
 function capsTxt(f) {
@@ -711,7 +727,7 @@ function totTxt(f) {
 function tagsDe(f) {
   const caps = capsTxt(f), tot = (f.capPub || !f.capAct) ? totTxt(f) : '';
   return [
-    ...(f.rating ? [`<span class="tag rate">${ratingTxt(f.rating)}</span>`] : []),
+    ...(f.rating ? [`<span class="tag rate">${ratingHTML(f.rating)}</span>`] : []),
     ...(f.pub ? [`<span class="tag pub">${esc(PUBS[f.pub])}</span>`] : []),
     ...(tot ? [`<span class="tag">${esc(tot)}</span>`] : []),
     ...(caps ? [`<span class="tag">${esc(caps)}</span>`] : []),
@@ -735,7 +751,7 @@ function cardHTML(f) {
       <div class="c-head">
         <div class="c-titles">
           <h3 class="c-title">${esc(f.titulo)}${f.adulto ? '<span class="badge18">+18</span>' : ''}</h3>
-          <p class="c-by">${esc(by)}</p>
+          <p class="c-by">${platPill(f)}</p>
         </div>
         <div class="c-btns">
           ${url ? `<a class="cbtn link" data-act="leer" href="${esc(url)}" target="_blank" rel="noopener noreferrer" aria-label="Leer fic">${icon('link', 19)}</a>` : ''}
@@ -771,7 +787,7 @@ function gridHTML(f) {
         <button class="cbtn fav" data-act="fav" aria-pressed="${f.fav === 'si'}" aria-label="${f.fav === 'si' ? 'Quitar de favoritos' : 'Marcar como favorito'}" style="${f.fav === 'si' ? '' : 'color:var(--mute)'}">${icon('heart', 18, f.fav === 'si')}</button>
       </div>
       ${f.ship ? `<p class="g-ship">${esc(f.ship)}</p>` : ''}
-      ${fmt || f.rating ? `<div class="g-meta">${fmt ? `<span class="tag fmt">${fmt}</span>` : ''}${f.rating ? `<span class="tag rate">${ratingTxt(f.rating)}</span>` : ''}</div>` : ''}
+      <div class="g-meta">${fmt ? `<span class="tag fmt">${fmt}</span>` : ''}${f.rating ? `<span class="tag rate">${ratingHTML(f.rating)}</span>` : ''}${platPill(f)}</div>
       <div class="g-btns">
         ${url ? `<a class="btn primary" data-act="leer" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${icon('link', 15)} Leer</a>` : ''}
         <button class="btn sec" data-act="info">${icon('plus', 15)} Info</button>
@@ -933,14 +949,14 @@ function pintarDet() {
   const sec = (t, html) => html ? `<div class="det-sec"><h4>${t}</h4>${html}</div>` : '';
   $('#det-body').innerHTML = `<div style="--c:${colorFic(f)}">
     <h3 class="det-title">${esc(f.titulo)}${f.adulto ? '<span class="badge18">+18</span>' : ''}</h3>
-    <p class="c-by">${esc(PLATS[f.plataforma])}</p>
+    <p class="c-by">${platPill(f, true)}</p>
     ${f.ship || f.fandom ? `<p class="det-ship">${esc(f.ship)}${f.fandom ? `<span>${f.ship ? ' · ' : ''}${esc(f.fandom)}</span>` : ''}</p>` : ''}
     <div class="det-row">
       <button class="st st-${f.estado}" data-act="d-estado" aria-label="Estado: ${ESTADOS[f.estado]}. Toca para cambiar">${ESTADOS[f.estado]}</button>
       <button class="btn sec det-fav" data-act="d-fav" aria-pressed="${f.fav === 'si'}" style="${f.fav === 'si' ? 'color:var(--acc)' : ''}">${icon('heart', 16, f.fav === 'si')} ${f.fav === 'si' ? 'Favorito' : 'Marcar favorito'}</button>
     </div>
     ${sec('Sobre la obra', obra ? `<p>${esc(obra)}</p>` : '')}
-    ${sec('Calificación', f.rating ? `<p>${ratingTxt(f.rating)}</p>` : '')}
+    ${sec('Calificación', f.rating ? `<p>${ratingHTML(f.rating)}</p>` : '')}
     ${sec('Tu lectura', lectura ? `<p>${esc(lectura)}</p>` : '')}
     ${sec('De qué iba', f.notas ? `<p class="det-notes">${esc(f.notas)}</p>` : '')}
     ${sec('Vibes', vibes ? `<div class="tags">${vibes}</div>` : '')}
@@ -963,7 +979,7 @@ $('#sheet-det').addEventListener('click', e => {
 });
 
 /* ───────── Formulario ───────── */
-let editId = null, formVibes = new Set(), formT18 = new Set(), formEstado = 'por-leer', formPub = '', platManual = false, formRating = 0;
+let editId = null, formVibes = new Set(), formT18 = new Set(), formEstado = 'por-leer', formPub = '', platManual = false, formRating = 0, formColor = '';
 const GRUPOS = {
   vibes: { custom:'vibesCustom', campo:'categorias', el:'#f-vibes', set:() => formVibes, row:'#nv-row', inp:'#nv-input' },
   t18:   { custom:'t18Custom',   campo:'tags18',     el:'#f-t18',   set:() => formT18,   row:'#nt-row', inp:'#nt-input' }
@@ -1028,10 +1044,15 @@ function pintarCaps() {
 function pintarRating() {
   $('#f-stars').innerHTML = Array.from({ length:10 }, (_, i) =>
     `<button type="button" class="${i < formRating ? 'on' : ''}" data-n="${i + 1}" aria-label="${i + 1} de 10">${icon('star', 22, i < formRating)}</button>`).join('');
-  $('#rate-out').textContent = formRating ? ratingTxt(formRating) : 'Sin calificar';
+  $('#rate-out').innerHTML = formRating ? ratingHTML(formRating) : 'Sin calificar';
 }
+function pintarColor() {
+  $('#f-color').innerHTML = `<button type="button" class="chip${formColor === '' ? ' on' : ''}" data-c="">Auto</button>` +
+    Array.from({ length:8 }, (_, i) => `<button type="button" class="csw" data-c="${i}" style="background:var(--f${i})" aria-pressed="${formColor === String(i)}" aria-label="Color ${i + 1}">${icon('check', 16)}</button>`).join('');
+}
+$('#f-color').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; vibrar(); formColor = b.dataset.c; pintarColor(); });
 function pintarEstados() {
-  pintarRating();
+  pintarRating(); pintarColor();
   $$('#f-estado button').forEach(b => b.classList.toggle('on', b.dataset.v === formEstado));
   $$('#f-pub button').forEach(b => b.classList.toggle('on', b.dataset.v === formPub));
   $('#g-t18').hidden = !$('#f-adulto').checked;
@@ -1104,7 +1125,7 @@ function abrirForm(id) {
   $('#f-plat').value = f ? f.plataforma : 'ao3';
   $('#f-fav').checked = !!f && f.fav === 'si'; $('#f-adulto').checked = !!f && f.adulto;
   formVibes = new Set(f ? f.categorias : []); formT18 = new Set(f ? f.tags18 : []);
-  formEstado = f ? f.estado : 'por-leer'; formPub = f ? f.pub : ''; platManual = !!f; formRating = f ? f.rating : 0;
+  formEstado = f ? f.estado : 'por-leer'; formPub = f ? f.pub : ''; platManual = !!f; formRating = f ? f.rating : 0; formColor = f ? f.color : '';
   $('#f-cap-act').value = f ? f.capAct : ''; $('#f-cap-tot').value = $('#f-cap-tot2').value = f ? f.capTot : ''; $('#f-cap-pub').value = f ? f.capPub : '';
   if (formVibes.has('largo') && formVibes.has('oneshot')) formVibes.delete('oneshot');
   if (f && !formVibes.has('oneshot') && (f.pub || f.capPub || +f.capTot > 1)) formVibes.add('largo');   // fics antiguos con datos de capítulos
@@ -1160,7 +1181,7 @@ $('#btn-guardar').onclick = () => {
     fandom:$('#f-fandom').value, ship:$('#f-ship').value, fav:$('#f-fav').checked ? 'si' : 'no',
     categorias:[...formVibes], tags18: adulto ? [...formT18] : [], tagsExtra:$('#f-tropes').value, notas:$('#f-notas').value,
     estado:formEstado, adulto, cw:false,
-    pub:pubV, capAct, capTot, capPub, rating:formRating
+    pub:pubV, capAct, capTot, capPub, rating:formRating, color:formColor
   };
   if (editId) { const i = db.findIndex(x => x.id === editId); db[i] = normFic({ ...db[i], ...datos }); }
   else db.unshift(normFic(datos));
