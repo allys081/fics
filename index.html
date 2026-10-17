@@ -219,6 +219,7 @@ body.typing .fab{transform:translateY(120px);opacity:0;pointer-events:none}
 .sheet-head{display:flex;justify-content:space-between;align-items:center;padding:10px 18px 6px;flex:none}
 .sheet-head h2{font-family:var(--serif);font-size:20px;font-weight:700}
 .sheet-body{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:6px 18px 16px;-webkit-overflow-scrolling:touch}
+body.typing .sheet-body{padding-bottom:220px}
 .sheet-foot{flex:none;display:flex;gap:10px;justify-content:flex-end;padding:12px 18px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--bg)}
 .sheet-foot .btn.primary,.sheet-foot .btn.save{flex:1;justify-content:center}
 @media (min-width:600px){
@@ -542,6 +543,20 @@ details.more .inner{padding-top:6px}
         <button class="btn sec block danger" id="imp-reemplazar">Reemplazar todo</button>
       </div>
       <div class="hint">“Combinar” agrega solo los que no tienes. “Reemplazar” borra los actuales y deja únicamente los del archivo.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Aviso: cambios sin guardar -->
+<div class="overlay" id="dlg-salir" style="z-index:150" aria-hidden="true">
+  <div class="sheet" role="alertdialog" aria-modal="true" aria-labelledby="salir-h">
+    <div class="grab"></div>
+    <div class="sheet-head"><h2 id="salir-h">¿Guardar los cambios?</h2></div>
+    <div class="sheet-body"><p>Tienes cambios sin guardar en este fanfic.</p></div>
+    <div class="sheet-foot" style="flex-direction:column">
+      <button class="btn save block" id="salir-guardar" style="flex:none">Guardar fanfic</button>
+      <button class="btn sec danger block" id="salir-descartar" style="flex:none">Salir sin guardar</button>
+      <button class="btn sec block" id="salir-seguir" style="flex:none">Seguir editando</button>
     </div>
   </div>
 </div>
@@ -932,16 +947,36 @@ function cerrarHoja(porPop) {
   if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
   if (!porPop && history.state && history.state.hoja) history.back();
 }
-window.addEventListener('popstate', () => { if (actual) cerrarHoja(true); });
-$$('.overlay').forEach(o => o.addEventListener('mousedown', e => { if (e.target === o) cerrarHoja(); }));
-document.addEventListener('click', e => { if (e.target.closest('[data-close]')) cerrarHoja(); });
-window.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarHoja(); });
+function formSnap() {
+  return JSON.stringify([['#f-url','#f-titulo','#f-fandom','#f-ship','#f-notas','#f-tropes','#f-plat','#f-cap-act','#f-cap-tot','#f-cap-pub'].map(i => $(i).value),
+    [...formVibes].sort(), [...formT18].sort(), formEstado, formPub, formRating, formColor, $('#f-fav').checked, $('#f-adulto').checked]);
+}
+const formSucio = () => actual === 'sheet-fic' && formSnap() !== formBase;
+function mostrarSalir() { const d = $('#dlg-salir'); d.classList.add('open'); d.setAttribute('aria-hidden', 'false'); }
+function cerrarSalir() { const d = $('#dlg-salir'); d.classList.remove('open'); d.setAttribute('aria-hidden', 'true'); }
+function intentarCerrar() { if (formSucio()) mostrarSalir(); else cerrarHoja(); }
+window.addEventListener('popstate', () => {
+  if (!actual) return;
+  if (formSucio()) { history.pushState({ hoja:1 }, ''); mostrarSalir(); return; }   // el botón "atrás" pregunta antes de salir
+  cerrarHoja(true);
+});
+$('#salir-seguir').onclick = cerrarSalir;
+$('#salir-descartar').onclick = () => { cerrarSalir(); cerrarHoja(); };
+$('#salir-guardar').onclick = () => { cerrarSalir(); $('#btn-guardar').click(); };
+$$('.overlay').forEach(o => o.addEventListener('mousedown', e => { if (e.target === o) (o.id === 'dlg-salir' ? cerrarSalir() : intentarCerrar()); }));
+document.addEventListener('click', e => { if (e.target.closest('[data-close]')) intentarCerrar(); });
+window.addEventListener('keydown', e => { if (e.key === 'Escape') ($('#dlg-salir').classList.contains('open') ? cerrarSalir() : intentarCerrar()); });
 
+function centrar(el) {                                   // sube el campo para que quede arriba, visible sobre el teclado
+  const sb = el.closest('.sheet-body'); if (!sb) return;
+  const r = el.getBoundingClientRect(), b = sb.getBoundingClientRect();
+  sb.scrollTo({ top: Math.max(0, sb.scrollTop + (r.top - b.top) - 64), behavior:'smooth' });
+}
 function ajustarVV() {
   const vv = window.visualViewport; if (!vv) return;
   const r = document.documentElement.style;
   r.setProperty('--vvh', vv.height + 'px'); r.setProperty('--vvt', vv.offsetTop + 'px');
-  if (actual) { const f = document.activeElement; if (f && f.matches('input,textarea,select') && $('#' + actual).contains(f)) setTimeout(() => f.scrollIntoView({ block:'center', behavior:'smooth' }), 60); }
+  if (actual) { const f = document.activeElement; if (f && f.matches('input,textarea,select') && $('#' + actual).contains(f)) setTimeout(() => centrar(f), 60); }
 }
 if (window.visualViewport) { visualViewport.addEventListener('resize', ajustarVV); visualViewport.addEventListener('scroll', ajustarVV); }
 window.addEventListener('orientationchange', () => setTimeout(ajustarVV, 250));
@@ -949,7 +984,7 @@ ajustarVV();
 document.addEventListener('focusin', e => {
   if (!e.target.matches('input,textarea,select')) return;
   document.body.classList.add('typing');
-  if (actual && $('#' + actual).contains(e.target)) setTimeout(() => e.target.scrollIntoView({ block:'center', behavior:'smooth' }), 320);
+  if (actual && $('#' + actual).contains(e.target)) setTimeout(() => centrar(e.target), 320);
 });
 document.addEventListener('focusout', () => setTimeout(() => { if (!document.activeElement || !document.activeElement.matches('input,textarea,select')) document.body.classList.remove('typing'); }, 80));
 
@@ -997,7 +1032,7 @@ $('#sheet-det').addEventListener('click', e => {
 });
 
 /* ───────── Formulario ───────── */
-let editId = null, formVibes = new Set(), formT18 = new Set(), formEstado = 'por-leer', formPub = '', platManual = false, formRating = 0, formColor = '';
+let editId = null, formVibes = new Set(), formT18 = new Set(), formEstado = 'por-leer', formPub = '', platManual = false, formRating = 0, formColor = '', formBase = '';
 const GRUPOS = {
   vibes: { custom:'vibesCustom', campo:'categorias', el:'#f-vibes', set:() => formVibes, row:'#nv-row', inp:'#nv-input' },
   t18:   { custom:'t18Custom',   campo:'tags18',     el:'#f-t18',   set:() => formT18,   row:'#nt-row', inp:'#nt-input' }
@@ -1194,6 +1229,7 @@ function abrirForm(id) {
   $('#sheet-fic details.more').open = false;
   $('#nv-row').hidden = true; $('#nt-row').hidden = true; $('#nv-input').value = ''; $('#nt-input').value = '';
   pintarGrupo('vibes'); pintarGrupo('t18'); pintarEstados(); sugerir();
+  formBase = formSnap();
   abrirHoja('sheet-fic');
   $('#fic-body').scrollTop = 0;
   if (!f) setTimeout(() => $('#f-url').focus(), 280);
@@ -1213,6 +1249,14 @@ $('#f-titulo').addEventListener('input', () => $('#g-titulo').classList.remove('
 $('#f-cap-tot').addEventListener('input', e => { $('#f-cap-tot2').value = e.target.value; });
 $('#f-cap-tot2').addEventListener('input', e => { $('#f-cap-tot').value = e.target.value; });
 $('#f-cap-act').addEventListener('input', () => $('#g-caps').classList.remove('has-error'));
+$$('#fic-body input.input').forEach(i => { if (!i.enterKeyHint) i.enterKeyHint = 'next'; });
+$('#fic-body').addEventListener('keydown', e => {          // "Sig." / Enter: pasa al siguiente campo y baja solo
+  if (e.key !== 'Enter' || e.defaultPrevented || e.target.tagName !== 'INPUT' || e.target.id === 'cp-hex') return;
+  e.preventDefault();
+  const campos = $$('#fic-body input.input, #fic-body textarea').filter(x => x.id !== 'cp-hex' && x.offsetParent !== null);
+  const sig = campos[campos.indexOf(e.target) + 1];
+  if (sig) sig.focus(); else e.target.blur();
+});
 
 $('#btn-guardar').onclick = () => {
   const titulo = $('#f-titulo').value.trim();
