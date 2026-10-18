@@ -25,7 +25,7 @@ document.documentElement.dataset.acc=['violeta','rosa','turquesa','celeste'].ind
   /* paleta de parejas: morados, rosados, turquesa y celeste */
   --f0:#7c5cd6; --f1:#c2417a; --f2:#14877c; --f3:#2a7fc0; --f4:#9b6fd0; --f5:#d4609a; --f6:#2fa89c; --f7:#4a9bd8;
   --acc:#7c5cd6; --acc-soft:#ece6fb; --on-acc:#fff; --star:#e8a317;
-  --pink:#c2257a; --on-pink:#fff;
+  --pink:#c2257a; --on-pink:#fff; --sel:#6b625c; --on-sel:#fff; --adult:#8c2236;
   --shadow:0 1px 2px rgba(80,50,30,.06),0 6px 18px rgba(80,50,30,.06);
   --scrim:rgba(30,18,10,.45);
   --serif:'Fraunces','Lora',Georgia,'DejaVu Serif',serif;
@@ -38,7 +38,7 @@ document.documentElement.dataset.acc=['violeta','rosa','turquesa','celeste'].ind
   --ok:#6ee7b7; --ok-soft:rgba(110,231,183,.14); --danger:#ff8a78;
   --f0:#c4b5fd; --f1:#f9a8d4; --f2:#5eead4; --f3:#7dd3fc; --f4:#a78bfa; --f5:#f472b6; --f6:#2dd4bf; --f7:#38bdf8;
   --on-acc:#14121a; --star:#fbbf24;
-  --pink:#f472b6; --on-pink:#14121a;
+  --pink:#f472b6; --on-pink:#14121a; --sel:#4a4658; --on-sel:#efeaf7; --adult:#ffb4b4;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px rgba(0,0,0,.25);
   --scrim:rgba(0,0,0,.6);
 }
@@ -89,11 +89,11 @@ a{color:inherit}
 
 .tools{display:flex;gap:8px;align-items:center;margin:12px 0}
 .fbtn{display:flex;align-items:center;gap:7px;height:38px;padding:0 13px;border-radius:12px;background:var(--card);border:1px solid var(--line);font-weight:700;font-size:12.5px;flex:none}
-.fbtn em{font-style:normal;background:var(--acc);color:var(--on-acc);min-width:18px;height:18px;border-radius:99px;display:none;place-items:center;font-size:10.5px;padding:0 5px}
+.fbtn em{font-style:normal;background:var(--sel);color:var(--on-sel);min-width:18px;height:18px;border-radius:99px;display:none;place-items:center;font-size:10.5px;padding:0 5px}
 .fbtn.has em{display:grid}
 .pills{display:flex;gap:6px;overflow-x:auto;flex:1;scrollbar-width:none;min-width:0}
 .pills::-webkit-scrollbar{display:none}
-.pill{flex:none;display:inline-flex;align-items:center;gap:5px;background:var(--acc-soft);color:var(--acc);border-radius:99px;padding:7px 8px 7px 11px;font-size:12px;font-weight:700;white-space:nowrap}
+.pill{flex:none;display:inline-flex;align-items:center;gap:5px;background:var(--chip);color:var(--ink);border:1px solid var(--line);border-radius:99px;padding:6px 8px 6px 11px;font-size:12px;font-weight:700;white-space:nowrap}
 .view{display:flex;flex:none;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-left:auto}
 .view button{width:36px;height:36px;display:grid;place-items:center;color:var(--mute)}
 .view button.on{background:var(--acc-soft);color:var(--acc)}
@@ -109,39 +109,40 @@ a{color:inherit}
 .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--c,var(--mute))}
 .c-head{display:flex;gap:6px;align-items:flex-start}
 .c-titles{flex:1;min-width:0;padding-top:2px}
-.c-title{font-family:var(--serif);font-size:16px;font-weight:700;line-height:1.25;letter-spacing:-.1px;overflow-wrap:anywhere}
+.c-title{font-family:var(--serif);font-size:16px;font-weight:700;line-height:1.25;letter-spacing:-.1px;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card.open .c-title{display:block}
 .c-by{color:var(--mute);font-size:12px;margin-top:3px;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
-.badge18{display:inline-block;vertical-align:2px;margin-left:6px;font:800 10px var(--sans);letter-spacing:.3px;color:var(--danger);border:1.5px solid currentColor;border-radius:6px;padding:0 4px}
+.badge18{display:inline-block;font:800 10px/1.5 var(--sans);letter-spacing:.3px;color:var(--adult);border:1.5px solid currentColor;border-radius:6px;padding:0 5px}
 .c-btns{display:flex;flex:none}
 .cbtn{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;color:var(--mute)}
 .cbtn:active{background:var(--chip)}
-.cbtn.fav{color:var(--acc)}
-.c-ship{margin-top:6px;font-size:13px;font-weight:800;color:var(--c,var(--mute));padding-right:6px;overflow-wrap:anywhere}
-.c-ship span{color:var(--mute);font-weight:500;font-size:12px}
-.c-notes{margin-top:7px;font-size:12.5px;color:var(--mute);font-style:italic;line-height:1.45;padding-right:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cbtn.fav{color:var(--adult)}
+.c-ship{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding-right:6px}
+.shipchip{display:inline-block;max-width:100%;background:color-mix(in srgb,var(--c,var(--mute)) 52%,#2a2630);color:#fff;border-radius:99px;padding:3px 11px;font-size:12.5px;font-weight:700;line-height:1.35;overflow-wrap:anywhere}
+.fan{border:1px solid var(--line);border-radius:99px;padding:2px 9px;font-size:11px;color:var(--mute);line-height:1.35}
+.c-notes{margin:8px 6px 0 0;padding:8px 11px;background:color-mix(in srgb,var(--ink) 4%,transparent);border:1px solid var(--line);border-radius:10px;font-size:12.5px;color:var(--mute);font-style:italic;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .c-tropes{display:none;margin-top:7px;font-size:12px;color:var(--mute);padding-right:6px}
 .c-tropes b{color:var(--ink)}
 .c-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:10px;padding-right:6px}
 .tags{display:flex;flex-wrap:wrap;gap:5px;min-width:0}
 .tag{background:var(--chip);color:var(--chip-ink);border-radius:8px;padding:3px 8px;font-size:11px;font-weight:600}
-.tag.pub{background:var(--ok-soft);color:var(--ok)}
 .tag.rate{background:var(--chip);color:var(--ink);font-weight:700}
 .star{color:var(--star)}
-.plat{display:inline-flex;align-items:center;border-radius:99px;padding:3px 10px;font-size:10.5px;font-weight:800;letter-spacing:.3px;line-height:1.3;white-space:nowrap;color:var(--pc,var(--mute));background:color-mix(in srgb,var(--pc,var(--mute)) 13%,var(--card));border:1px solid color-mix(in srgb,var(--pc,var(--mute)) 28%,transparent)}
-.plat.ao3{--pc:#a93226}.plat.ffnet{--pc:#2a6fb5}.plat.wattpad{--pc:#c4630f}.plat.otro{--pc:var(--mute)}
-[data-theme=dark] .plat.ao3{--pc:#ff8a78}[data-theme=dark] .plat.ffnet{--pc:#7cb7ff}[data-theme=dark] .plat.wattpad{--pc:#fdba74}
+.tag.fmt{color:#111}
+[data-theme=dark] .tag.fmt{color:#fff}
+.plat{display:inline-flex;align-items:center;border-radius:99px;padding:3px 10px;font-size:10.5px;font-weight:800;letter-spacing:.3px;line-height:1.3;white-space:nowrap;color:var(--chip-ink);background:var(--chip);border:1px solid var(--line)}
 .cswrap{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .csw{width:36px;height:36px;border-radius:50%;border:3px solid var(--bg);box-shadow:0 0 0 2px var(--line);display:grid;place-items:center;color:var(--on-acc)}
 .csw[aria-pressed=true]{box-shadow:0 0 0 2.5px var(--ink)}
 .csw .ic{opacity:0}.csw[aria-pressed=true] .ic{opacity:1}
 .cpick{margin-top:12px;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:10px}
-.sv{position:relative;height:150px;border-radius:10px;touch-action:none;cursor:crosshair;background:linear-gradient(to top,#000,transparent),linear-gradient(to right,#fff,hsl(var(--h,140) 100% 50%))}
+.sv{position:relative;height:110px;border-radius:10px;touch-action:none;cursor:crosshair;background:linear-gradient(to top,#000,transparent),linear-gradient(to right,#fff,hsl(var(--h,140) 100% 50%))}
 .sv i{position:absolute;width:22px;height:22px;border:2px solid #fff;border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 0 1px rgba(0,0,0,.45);pointer-events:none}
-.hue{-webkit-appearance:none;appearance:none;width:100%;height:14px;border-radius:99px;margin:14px 0 12px;background:linear-gradient(to right,#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00);outline:0}
+.hue{-webkit-appearance:none;appearance:none;width:100%;height:14px;border-radius:99px;margin:12px 0 10px;background:linear-gradient(to right,#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00);outline:0}
 .hue::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:#fff;border:2px solid rgba(0,0,0,.35);box-shadow:0 1px 4px rgba(0,0,0,.4)}
 .hue::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#fff;border:2px solid rgba(0,0,0,.35)}
 .hexrow{display:flex;gap:10px;align-items:center}
-.hexrow .prev{width:44px;height:44px;border-radius:12px;flex:none;border:1px solid var(--line)}
+.hexrow .prev{width:38px;height:38px;border-radius:12px;flex:none;border:1px solid var(--line)}
 .hexrow .input{font-family:monospace;text-transform:lowercase}
 .cswrap .chip{padding:8px 14px}
 .rate-box{margin-top:10px;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:10px 12px}
@@ -151,14 +152,13 @@ a{color:inherit}
 .stars{display:flex;gap:2px}
 .stars button{flex:1;min-width:0;height:36px;display:grid;place-items:center;color:var(--mute);opacity:.55}
 .stars button.on{color:var(--star);opacity:1}
-.tag.fmt{background:var(--acc-soft);color:var(--acc)}
-.tag.t18{background:color-mix(in srgb,var(--danger) 14%,transparent);color:var(--danger)}
-.st{flex:none;font-size:11px;font-weight:800;border-radius:99px;padding:5px 11px}
-.st-por-leer{background:var(--chip);color:var(--chip-ink)}
-.st-leyendo{background:var(--acc-soft);color:var(--acc)}
-.st-terminado{background:var(--ok-soft);color:var(--ok)}
+.st{flex:none;font-size:11px;font-weight:800;border-radius:99px;padding:5px 11px;border:1px solid transparent}
+.st-por-leer{background:transparent;border-color:var(--line);color:var(--mute)}
+.st-leyendo{background:var(--chip);border-color:var(--mute);color:var(--ink)}
+.st-terminado{background:var(--chip);color:var(--chip-ink)}
 .c-actions{display:none;gap:8px;margin-top:12px;padding:12px 6px 0 0;border-top:1px dashed var(--line)}
-.c-actions .btn{flex:1;justify-content:center;padding:10px 8px;font-size:12.5px}
+.c-actions .btn{flex:1;justify-content:center;padding:0 8px;height:34px;font-size:12px}
+.g-btns .btn.primary,.c-actions .btn.primary{background:var(--chip);color:var(--ink);border:1px solid var(--line)}
 .card.open .c-notes{display:block;-webkit-line-clamp:unset}
 .card.open .c-tropes{display:block}
 .card.open .c-actions{display:flex}
@@ -168,17 +168,18 @@ a{color:inherit}
 .lista.grid .card::before{width:4px}
 .g-body{display:flex;flex-direction:column;flex:1;min-width:0}
 .g-top{display:flex;gap:2px;align-items:flex-start}
-.g-title{flex:1;min-width:0;font-family:var(--serif);font-size:14px;font-weight:700;line-height:1.28;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;padding-top:3px}
+.g-title{flex:1;min-width:0;font-family:var(--serif);font-size:14px;font-weight:700;line-height:1.28;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;padding-top:3px}
 .g-top .cbtn{width:32px;height:32px;margin-right:-2px;flex:none}
 .g-by{color:var(--mute);font-size:11px;margin-top:2px}
-.g-ship{margin-top:6px;font-size:12px;font-weight:800;color:var(--c,var(--mute));overflow-wrap:anywhere;line-height:1.3}
+.g-ship{margin-top:7px;line-height:1.3}
+.g-ship .shipchip{font-size:12px;padding:2px 10px}
 .g-fan{font-size:11px;color:var(--mute);margin-top:1px;overflow-wrap:anywhere}
 .g-notes{margin-top:6px;font-size:11.5px;color:var(--mute);font-style:italic;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .g-meta{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-top:8px;padding-right:4px}
 .g-meta .st{padding:4px 9px;font-size:10.5px}
 .g-meta .tag{font-size:10.5px;padding:3px 7px}
 .g-btns{display:flex;gap:6px;margin-top:auto;padding:10px 4px 0 0}
-.g-btns .btn{flex:1;height:34px;padding:0 6px;font-size:12px;justify-content:center;border-radius:11px;gap:5px}
+.g-btns .btn{flex:1;height:32px;padding:0 6px;font-size:12px;justify-content:center;border-radius:11px;gap:5px}
 
 .lista.compacta .card{padding:9px 6px 9px 16px;border-radius:14px;box-shadow:none}
 .lista.compacta .c-title{font-size:14.5px}
@@ -250,6 +251,7 @@ body.typing .sheet-body{padding-bottom:220px}
 .chip.on{background:var(--acc);border-color:var(--acc);color:var(--on-acc)}
 .chip .x{display:inline-grid;place-items:center;margin-left:2px;opacity:.7;padding:2px;margin-right:-4px}
 .chip.nuevo{border-style:dashed;color:var(--acc);border-color:var(--acc)}
+#filtros-body .chip.on{background:var(--sel);border-color:var(--sel);color:var(--on-sel)}
 .sugs{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .sugs:empty{display:none}
 .sugs .chip{padding:6px 11px;font-size:12px}
@@ -281,8 +283,8 @@ details.more .inner{padding-top:6px}
 
 /* ── hoja de detalles ── */
 .det-title{font-family:var(--serif);font-size:21px;font-weight:700;line-height:1.25;overflow-wrap:anywhere}
-.det-ship{margin-top:10px;font-weight:800;font-size:14.5px;color:var(--c);overflow-wrap:anywhere}
-.det-ship span{color:var(--mute);font-weight:500;font-size:13px}
+.det-ship{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.det-ship .shipchip{font-size:13.5px;padding:4px 13px}
 .det-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
 .det-row .st{padding:7px 14px;font-size:12px}
 .det-fav{height:34px;padding:0 13px;font-size:12.5px;border-radius:99px}
@@ -395,6 +397,14 @@ details.more .inner{padding-top:6px}
           <label class="label" for="f-cap-tot">Total de capítulos</label>
           <input class="input" id="f-cap-tot" type="number" inputmode="numeric" min="0" placeholder="Ej: 35">
           <div class="hint" id="tot-hint"></div>
+        </div>
+        <!-- Aparece al elegir "Saga" -->
+        <div class="capsbox" id="g-saga" hidden>
+          <label class="label" for="f-saga-obras">¿Cuántas obras son?</label>
+          <input class="input" id="f-saga-obras" type="number" inputmode="numeric" min="0" placeholder="Ej: 3">
+          <label class="label" for="f-saga-caps" style="margin-top:10px">¿De cuántos capítulos en total? (opcional)</label>
+          <input class="input" id="f-saga-caps" type="number" inputmode="numeric" min="0" placeholder="Ej: 60">
+          <div class="hint">Suma los capítulos de todas las obras de la saga.</div>
         </div>
       </div>
       <div class="group">
@@ -575,6 +585,7 @@ const VIBES = {
   angst:      { n:'Angustia / Angst',           s:'Angst',    e:'💔' },
   dark:       { n:'Oscuro / Heavy',             s:'Oscuro',   e:'⚠️' },
   largo:      { n:'Historia larga',             s:'Larga',    e:'📖' },
+  saga:       { n:'Saga / Serie',               s:'Saga',     e:'📚' },
   oneshot:    { n:'One-shot (1 capítulo)',      s:'One-shot', e:'⚡' },
   timetravel: { n:'Viaje en el tiempo / Fix-it',s:'Fix-it',   e:'⏳' },
   au:         { n:'Universo alterno (AU)',      s:'AU',       e:'✨' },
@@ -654,13 +665,14 @@ function normFic(f) {
   if (!adulto) tags18 = [];
   const pub = f.pub === 'sin-act' ? 'en-curso' : f.pub;            // valor de la versión anterior
   const pubOk = PUBS[pub] ? pub : '';
+  const categorias = Array.isArray(f.categorias) ? uniq(f.categorias.filter(k => validTag('vibes', k))) : [];
   return {
     id: s(f.id) || 'f_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
     titulo: s(f.titulo), autor: s(f.autor),   // el autor se conserva en los datos aunque ya no se muestre
     plataforma: PLATS[f.plataforma] ? f.plataforma : 'ao3',
     url: s(f.url), fandom: s(f.fandom), ship: s(f.ship),
     fav: f.fav === 'si' ? 'si' : 'no',
-    categorias: Array.isArray(f.categorias) ? uniq(f.categorias.filter(k => validTag('vibes', k))) : [],
+    categorias,
     tags18,
     tagsExtra: s(f.tagsExtra), notas: s(f.notas),
     estado: ESTADOS[f.estado] ? f.estado : 'por-leer',
@@ -670,7 +682,9 @@ function normFic(f) {
     pub: pubOk,
     capAct: n(f.capAct),
     capTot: n(f.capTot !== undefined ? f.capTot : f.caps),  // "caps" es el campo de una versión anterior
-    capPub: (pubOk === 'en-curso' || pubOk === 'sin-actualizar') ? n(f.capPub) : ''   // capítulos publicados hasta ahora
+    capPub: (pubOk === 'en-curso' || pubOk === 'sin-actualizar') ? n(f.capPub) : '',   // capítulos publicados hasta ahora
+    sagaObras: categorias.includes('saga') ? n(f.sagaObras) : '',
+    sagaCaps: categorias.includes('saga') ? n(f.sagaCaps) : ''
   };
 }
 
@@ -678,6 +692,7 @@ function normFic(f) {
 let db = (leer(KEY, []) || []).filter(f => f && typeof f === 'object').map(normFic).filter(f => f.titulo);
 const prefs = Object.assign({ tema:'auto', acento:'violeta', vista:'tarjetas', orden:'recientes', adultos:'ocultar', aviso:false, vibesCustom:[], t18Custom:[] }, leer(PKEY, {}));
 ['vibesCustom', 't18Custom'].forEach(k => { prefs[k] = Array.isArray(prefs[k]) ? prefs[k].filter(x => typeof x === 'string' && x.startsWith('c:')) : []; });
+prefs.coloresRec = Array.isArray(prefs.coloresRec) ? prefs.coloresRec.filter(c => /^#[0-9a-f]{6}$/.test(c)).slice(0, 5) : [];   // últimos colores personalizados
 if (!ACENTOS.includes(prefs.acento)) prefs.acento = 'violeta';   // los colores anteriores (terracota, verde) pasan a morado
 if (prefs.adultos === 'mostrar') prefs.adultos = 'ocultar';   // "mostrar" solo dura la sesión
 const st = { q:'', estado:'todos', plats:new Set(), pubs:new Set(), fandoms:new Set(), ships:new Set(), t18:new Set(), fav:false, soloAdulto:false, abiertos:new Set(), revelados:new Set() };
@@ -744,6 +759,9 @@ function colorFic(f) {
 
 const ratingHTML = r => `${r}/10 <span class="star">★</span>`;
 const platPill = (f, largo) => `<span class="plat ${f.plataforma}">${esc(largo ? PLATS[f.plataforma] : PLATS_S[f.plataforma])}</span>`;
+const shipChip = f => f.ship ? `<span class="shipchip">${esc(f.ship)}</span>` : '';
+const adultoTag = f => f.adulto ? '<span class="badge18">+18</span>' : '';
+const shipRow = (f, cls) => f.ship || f.fandom ? `<p class="${cls}">${shipChip(f)}${f.fandom ? `<span class="fan">${esc(f.fandom)}</span>` : ''}</p>` : '';
 
 /* progreso de lectura: "Cap. 6 de 12" */
 function capsTxt(f) {
@@ -758,6 +776,12 @@ function totTxt(f) {
   if (f.capTot) return `${f.capTot} cap${f.capTot === '1' ? '' : 's'}`;
   return '';
 }
+function sagaTxt(f) {
+  if (!f.categorias.includes('saga')) return '';
+  const o = f.sagaObras ? `${f.sagaObras} obra${f.sagaObras === '1' ? '' : 's'}` : '';
+  const c = f.sagaCaps ? `${f.sagaCaps} cap${f.sagaCaps === '1' ? '' : 's'}` : '';
+  return [o, c].filter(Boolean).join(' · ');
+}
 function tagsDe(f) {
   const caps = capsTxt(f), tot = (f.capPub || !f.capAct) ? totTxt(f) : '';
   return [
@@ -765,7 +789,8 @@ function tagsDe(f) {
     ...(f.pub ? [`<span class="tag pub">${esc(PUBS[f.pub])}</span>`] : []),
     ...(tot ? [`<span class="tag">${esc(tot)}</span>`] : []),
     ...(caps ? [`<span class="tag">${esc(caps)}</span>`] : []),
-    ...f.categorias.map(k => `<span class="tag">${esc(tShort('vibes', k))}</span>`),
+    ...(sagaTxt(f) ? [`<span class="tag">${esc(sagaTxt(f))}</span>`] : []),
+    ...f.categorias.map(k => `<span class="tag${k === 'largo' || k === 'oneshot' || k === 'saga' ? ' fmt' : ''}">${esc(tShort('vibes', k))}</span>`),
     ...f.tags18.map(k => `<span class="tag t18">${esc(tShort('t18', k))}</span>`)
   ];
 }
@@ -783,15 +808,15 @@ function cardHTML(f) {
     <div class="c-body">
       <div class="c-head">
         <div class="c-titles">
-          <h3 class="c-title">${esc(f.titulo)}${f.adulto ? '<span class="badge18">+18</span>' : ''}</h3>
-          <p class="c-by">${platPill(f)}${f.rating ? `<span class="tag rate">${ratingHTML(f.rating)}</span>` : ''}</p>
+          <h3 class="c-title">${esc(f.titulo)}</h3>
+          <p class="c-by">${platPill(f)}${adultoTag(f)}${f.rating ? `<span class="tag rate">${ratingHTML(f.rating)}</span>` : ''}</p>
         </div>
         <div class="c-btns">
           ${url ? `<a class="cbtn link" data-act="leer" href="${esc(url)}" target="_blank" rel="noopener noreferrer" aria-label="Leer fic">${icon('link', 19)}</a>` : ''}
           <button class="cbtn fav" data-act="fav" aria-pressed="${f.fav === 'si'}" aria-label="${f.fav === 'si' ? 'Quitar de favoritos' : 'Marcar como favorito'}" style="${f.fav === 'si' ? '' : 'color:var(--mute)'}">${icon('heart', 19, f.fav === 'si')}</button>
         </div>
       </div>
-      ${f.ship || f.fandom ? `<p class="c-ship">${esc(f.ship)}${f.fandom ? `<span>${f.ship ? ' · ' : ''}${esc(f.fandom)}</span>` : ''}</p>` : ''}
+      ${shipRow(f, 'c-ship')}
       ${f.notas ? `<p class="c-notes">“${esc(f.notas)}”</p>` : ''}
       ${f.tagsExtra ? `<p class="c-tropes"><b>Tropes:</b> ${esc(f.tagsExtra)}</p>` : ''}
       <div class="c-foot">
@@ -812,15 +837,16 @@ function cardHTML(f) {
 function gridHTML(f) {
   const blur = bloqueado(f);
   const url = safeUrl(f.url);
-  const fmt = f.categorias.includes('oneshot') ? 'One-shot' : f.categorias.includes('largo') ? 'Historia larga' : '';
+  const fmts = [f.categorias.includes('oneshot') ? 'One-shot' : '', f.categorias.includes('largo') ? 'Historia larga' : '',
+    f.categorias.includes('saga') ? 'Saga' + (f.sagaObras ? ` · ${f.sagaObras} obra${f.sagaObras === '1' ? '' : 's'}` : '') : ''].filter(Boolean);
   return `<article class="card g${blur ? ' blur' : ''}" data-id="${esc(f.id)}" style="--c:${colorFic(f)}">
     <div class="c-body g-body">
       <div class="g-top">
-        <h3 class="g-title">${esc(f.titulo)}${f.adulto ? '<span class="badge18">+18</span>' : ''}</h3>
+        <h3 class="g-title">${esc(f.titulo)}</h3>
         <button class="cbtn fav" data-act="fav" aria-pressed="${f.fav === 'si'}" aria-label="${f.fav === 'si' ? 'Quitar de favoritos' : 'Marcar como favorito'}" style="${f.fav === 'si' ? '' : 'color:var(--mute)'}">${icon('heart', 18, f.fav === 'si')}</button>
       </div>
-      ${f.ship ? `<p class="g-ship">${esc(f.ship)}</p>` : ''}
-      <div class="g-meta">${fmt ? `<span class="tag fmt">${fmt}</span>` : ''}${f.rating ? `<span class="tag rate">${ratingHTML(f.rating)}</span>` : ''}${platPill(f)}</div>
+      ${f.ship ? `<p class="g-ship">${shipChip(f)}</p>` : ''}
+      <div class="g-meta">${fmts.map(t => `<span class="tag fmt">${esc(t)}</span>`).join('')}${f.rating ? `<span class="tag rate">${ratingHTML(f.rating)}</span>` : ''}${platPill(f)}${adultoTag(f)}</div>
       <div class="g-btns">
         ${url ? `<a class="btn primary" data-act="leer" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${icon('link', 15)} Leer</a>` : ''}
         <button class="btn sec" data-act="info">${icon('plus', 15)} Info</button>
@@ -948,7 +974,7 @@ function cerrarHoja(porPop) {
   if (!porPop && history.state && history.state.hoja) history.back();
 }
 function formSnap() {
-  return JSON.stringify([['#f-url','#f-titulo','#f-fandom','#f-ship','#f-notas','#f-tropes','#f-plat','#f-cap-act','#f-cap-tot','#f-cap-pub'].map(i => $(i).value),
+  return JSON.stringify([['#f-url','#f-titulo','#f-fandom','#f-ship','#f-notas','#f-tropes','#f-plat','#f-cap-act','#f-cap-tot','#f-cap-pub','#f-saga-obras','#f-saga-caps'].map(i => $(i).value),
     [...formVibes].sort(), [...formT18].sort(), formEstado, formPub, formRating, formColor, $('#f-fav').checked, $('#f-adulto').checked]);
 }
 const formSucio = () => actual === 'sheet-fic' && formSnap() !== formBase;
@@ -995,18 +1021,18 @@ function pintarDet() {
   const f = db.find(x => x.id === detId);
   if (!f) { if (actual === 'sheet-det') cerrarHoja(); return; }
   const url = safeUrl(f.url);
-  const obra = [f.pub ? PUBS[f.pub] : '', totTxt(f)].filter(Boolean).join(' · ');
+  const obra = [f.pub ? PUBS[f.pub] : '', totTxt(f), sagaTxt(f) ? 'Saga: ' + sagaTxt(f) : ''].filter(Boolean).join(' · ');
   const lectura = capsTxt(f);
   const vibes = f.categorias.map(k => `<span class="tag">${tEmo('vibes', k)} ${esc(tLab('vibes', k))}</span>`).join('');
   const t18 = f.tags18.map(k => `<span class="tag t18">${tEmo('t18', k)} ${esc(tLab('t18', k))}</span>`).join('');
   const sec = (t, html) => html ? `<div class="det-sec"><h4>${t}</h4>${html}</div>` : '';
   $('#det-body').innerHTML = `<div style="--c:${colorFic(f)}">
-    <h3 class="det-title">${esc(f.titulo)}${f.adulto ? '<span class="badge18">+18</span>' : ''}</h3>
-    <p class="c-by">${platPill(f, true)}</p>
-    ${f.ship || f.fandom ? `<p class="det-ship">${esc(f.ship)}${f.fandom ? `<span>${f.ship ? ' · ' : ''}${esc(f.fandom)}</span>` : ''}</p>` : ''}
+    <h3 class="det-title">${esc(f.titulo)}</h3>
+    <p class="c-by">${platPill(f, true)}${adultoTag(f)}</p>
+    ${shipRow(f, 'det-ship')}
     <div class="det-row">
       <button class="st st-${f.estado}" data-act="d-estado" aria-label="Estado: ${ESTADOS[f.estado]}. Toca para cambiar">${ESTADOS[f.estado]}</button>
-      <button class="btn sec det-fav" data-act="d-fav" aria-pressed="${f.fav === 'si'}" style="${f.fav === 'si' ? 'color:var(--acc)' : ''}">${icon('heart', 16, f.fav === 'si')} ${f.fav === 'si' ? 'Favorito' : 'Marcar favorito'}</button>
+      <button class="btn sec det-fav" data-act="d-fav" aria-pressed="${f.fav === 'si'}" style="${f.fav === 'si' ? 'color:var(--adult)' : ''}">${icon('heart', 16, f.fav === 'si')} ${f.fav === 'si' ? 'Favorito' : 'Marcar favorito'}</button>
     </div>
     ${sec('Sobre la obra', obra ? `<p>${esc(obra)}</p>` : '')}
     ${sec('Calificación', f.rating ? `<p>${ratingHTML(f.rating)}</p>` : '')}
@@ -1047,7 +1073,7 @@ function pintarGrupo(g) {
   const G = GRUPOS[g];
   $(G.el).innerHTML = opciones(g).map(k => {
     const propio = !DEFS[g][k];
-    return `<button type="button" class="chip${G.set().has(k) ? ' on' : ''}" data-v="${esc(k)}">${tEmo(g, k)} ${esc(tLab(g, k))}${propio ? `<span class="x" data-del="${esc(k)}" role="button" aria-label="Quitar de la lista">${icon('x', 13)}</span>` : ''}</button>`;
+    return `<button type="button" class="chip${G.set().has(k) ? ' on' : ''}" data-v="${esc(k)}">${g === 'vibes' ? '' : tEmo(g, k) + ' '}${esc(tLab(g, k))}${propio ? `<span class="x" data-del="${esc(k)}" role="button" aria-label="Quitar de la lista">${icon('x', 13)}</span>` : ''}</button>`;
   }).join('') + `<button type="button" class="chip nuevo" data-nuevo="1">${icon('plus', 14)} Nueva</button>`;
   if (g === 'vibes') pintarCaps();
 }
@@ -1088,6 +1114,7 @@ function pintarCaps() {
   const largo = formVibes.has('largo');
   const ong = largo && (formPub === 'en-curso' || formPub === 'sin-actualizar');
   $('#g-total').hidden = !largo;
+  $('#g-saga').hidden = !formVibes.has('saga');
   $('#g-pubgroup').hidden = !largo;
   $('#g-capsmain').hidden = !ong;
   $('#tot-hint').textContent = ong
@@ -1116,34 +1143,42 @@ function pintarPicker(saltarHex) {
   $('#cp-dot').style.left = cp.s * 100 + '%'; $('#cp-dot').style.top = (1 - cp.v) * 100 + '%';
   $('#cp-hue').value = cp.h; $('#cp-prev').style.background = hx;
   if (!saltarHex) $('#cp-hex').value = hx;
-  const sw = $('.csw[data-c=custom]'); if (sw) sw.style.background = hx;
   return hx;
 }
-function pintarColor() {
-  const custom = esHex(formColor);
+let cpAbierto = false;
+function pintarSw() {
+  const rec = prefs.coloresRec, custom = esHex(formColor), enRec = custom && rec.includes(formColor.toLowerCase());
+  const sw = (c, bg, on, lab) => `<button type="button" class="csw" data-c="${c}" style="background:${bg}" aria-pressed="${on}" aria-label="${lab}">${icon('check', 16)}</button>`;
   $('#f-color').innerHTML = `<button type="button" class="chip${formColor === '' ? ' on' : ''}" data-c="">Auto</button>` +
-    Array.from({ length:2 }, (_, i) => `<button type="button" class="csw" data-c="${i}" style="background:var(--f${i})" aria-pressed="${formColor === String(i)}" aria-label="Color ${i + 1}">${icon('check', 16)}</button>`).join('') +
-    `<button type="button" class="csw" data-c="custom" style="background:${custom ? formColor : 'conic-gradient(#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00)'}" aria-pressed="${custom}" aria-label="Color personalizado">${icon('check', 16)}</button>`;
-  $('#cpick').hidden = !custom;
-  if (custom) { cp = hex2hsv(formColor); pintarPicker(); }
+    [0, 1].map(i => sw(i, `var(--f${i})`, formColor === String(i), 'Color ' + (i + 1))).join('') +
+    rec.map(c => sw(c, c, formColor.toLowerCase() === c, 'Color ' + c)).join('') +
+    sw('custom', custom && !enRec ? formColor : 'conic-gradient(#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00)', custom && !enRec, 'Color personalizado');
+}
+function pintarColor() {
+  pintarSw();
+  const abre = cpAbierto && esHex(formColor);
+  $('#cpick').hidden = !abre;
+  if (abre) { cp = hex2hsv(formColor); pintarPicker(); }
 }
 $('#f-color').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return; vibrar();
-  formColor = b.dataset.c === 'custom' ? (esHex(formColor) ? formColor : '#32a852') : b.dataset.c;
+  const c = b.dataset.c;
+  if (c === 'custom') { const nuevo = !esHex(formColor); if (nuevo) formColor = '#32a852'; cpAbierto = nuevo ? true : !cpAbierto; }
+  else { formColor = c; cpAbierto = false; }
   pintarColor();
 });
 const svMove = e => {
   const r = $('#cp-sv').getBoundingClientRect();
   cp.s = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
   cp.v = 1 - Math.min(1, Math.max(0, (e.clientY - r.top) / r.height));
-  formColor = pintarPicker();
+  formColor = pintarPicker(); pintarSw();
 };
 $('#cp-sv').addEventListener('pointerdown', e => { e.currentTarget.setPointerCapture(e.pointerId); svMove(e); });
 $('#cp-sv').addEventListener('pointermove', e => { if (e.currentTarget.hasPointerCapture(e.pointerId)) svMove(e); });
-$('#cp-hue').addEventListener('input', e => { cp.h = +e.target.value; formColor = pintarPicker(); });
+$('#cp-hue').addEventListener('input', e => { cp.h = +e.target.value; formColor = pintarPicker(); pintarSw(); });
 $('#cp-hex').addEventListener('input', e => {
   let v = e.target.value.trim(); if (v && v[0] !== '#') v = '#' + v;
-  if (esHex(v)) { cp = hex2hsv(v.toLowerCase()); formColor = v.toLowerCase(); pintarPicker(true); }
+  if (esHex(v)) { cp = hex2hsv(v.toLowerCase()); formColor = v.toLowerCase(); pintarPicker(true); pintarSw(); }
 });
 
 function pintarEstados() {
@@ -1173,17 +1208,11 @@ function sugerir() {
   const fh = chips(fm, fq, fq, 12);
   $('#s-fandom').innerHTML = fh ? `<span class="sug-l">Ya añadidos · toca para elegir</span>${fh}` : '';
 
-  const delFandom = fq && fm.has(fq) ? vis.filter(f => norm(f.fandom) === fq) : [];
   const sm = cuenta(vis, 'ship');
   let sh = '';
-  if (delFandom.length) {
-    const propios = cuenta(delFandom, 'ship');
-    const a = chips(propios, sq, sq, 12);
-    const resto = new Map([...sm].filter(([k]) => !propios.has(k)));
-    const b = chips(resto, sq, sq, Math.max(0, 12 - propios.size));
-    sh = a + (sq || !b ? '' : b);
-    if (sq) sh = a + b;
-  } else sh = chips(sm, sq, sq, 12);
+  if (!fq) sh = chips(sm, sq, sq, 12);                                                                  // sin fandom: todas las parejas
+  else if (fm.has(fq)) sh = chips(cuenta(vis.filter(f => norm(f.fandom) === fq), 'ship'), sq, sq, 12);  // fandom existente: solo sus parejas
+  // fandom nuevo: sin sugerencias, escribes la pareja a mano
   $('#s-ship').innerHTML = sh ? `<span class="sug-l">Ya añadidas · toca para elegir</span>${sh}` : '';
 }
 $('#s-fandom').addEventListener('click', e => {
@@ -1220,12 +1249,14 @@ function abrirForm(id) {
   $('#f-plat').value = f ? f.plataforma : 'ao3';
   $('#f-fav').checked = !!f && f.fav === 'si'; $('#f-adulto').checked = !!f && f.adulto;
   formVibes = new Set(f ? f.categorias : []); formT18 = new Set(f ? f.tags18 : []);
-  formEstado = f ? f.estado : 'por-leer'; formPub = f ? f.pub : ''; platManual = !!f; formRating = f ? f.rating : 0; formColor = f ? f.color : '';
+  formEstado = f ? f.estado : 'por-leer'; formPub = f ? f.pub : ''; platManual = !!f; formRating = f ? f.rating : 0; formColor = f ? f.color : ''; cpAbierto = false;
   $('#f-cap-act').value = f ? f.capAct : ''; $('#f-cap-tot').value = $('#f-cap-tot2').value = f ? f.capTot : ''; $('#f-cap-pub').value = f ? f.capPub : '';
   if (formVibes.has('largo') && formVibes.has('oneshot')) formVibes.delete('oneshot');
+  $('#f-saga-obras').value = f ? f.sagaObras : ''; $('#f-saga-caps').value = f ? f.sagaCaps : '';
   if (f && !formVibes.has('oneshot') && (f.pub || f.capPub || +f.capTot > 1)) formVibes.add('largo');   // fics antiguos con datos de capítulos
   $('#url-hint').hidden = true;
   $$('#sheet-fic .group').forEach(g => g.classList.remove('has-error'));
+  $('#g-url .err').textContent = ERR_URL; $('#g-titulo .err').textContent = ERR_TIT;
   $('#sheet-fic details.more').open = false;
   $('#nv-row').hidden = true; $('#nt-row').hidden = true; $('#nv-input').value = ''; $('#nt-input').value = '';
   pintarGrupo('vibes'); pintarGrupo('t18'); pintarEstados(); sugerir();
@@ -1242,9 +1273,9 @@ $('#f-url').addEventListener('input', e => {
   const p = detectarPlat(e.target.value);
   if (p && !platManual) $('#f-plat').value = p;
   mostrarDeteccion(e.target.value);
-  $('#g-url').classList.remove('has-error');
+  revisarDup();
 });
-$('#f-titulo').addEventListener('input', () => $('#g-titulo').classList.remove('has-error'));
+$('#f-titulo').addEventListener('input', revisarDup);
 ['#f-cap-pub', '#f-cap-tot', '#f-cap-tot2'].forEach(s => $(s).addEventListener('input', () => $('#g-capsmain').classList.remove('has-error')));
 $('#f-cap-tot').addEventListener('input', e => { $('#f-cap-tot2').value = e.target.value; });
 $('#f-cap-tot2').addEventListener('input', e => { $('#f-cap-tot').value = e.target.value; });
@@ -1258,12 +1289,46 @@ $('#fic-body').addEventListener('keydown', e => {          // "Sig." / Enter: pa
   if (sig) sig.focus(); else e.target.blur();
 });
 
+/* Duplicados: mismo enlace o mismo título */
+const ERR_URL = 'Ese enlace no parece válido.', ERR_TIT = 'Escribe al menos el título.';
+const nt = x => norm(x).replace(/\s+/g, ' ');
+function urlKey(u) {
+  u = safeUrl(u); if (!u) return '';
+  try {
+    const x = new URL(u), h = x.hostname.replace(/^www\./, ''), p = x.pathname.replace(/\/+$/, ''); let m;
+    if (h.includes('archiveofourown') && (m = p.match(/\/works\/(\d+)/))) return 'ao3:' + m[1];     // con o sin /chapters/…
+    if (h.includes('fanfiction.net') && (m = p.match(/\/s\/(\d+)/))) return 'ffnet:' + m[1];
+    return h + p.toLowerCase();
+  } catch (e) { return ''; }
+}
+function buscarDup(titulo, url) {
+  const t = nt(titulo), k = urlKey(url);
+  for (const f of db) {                                    // incluye los +18 ocultos
+    if (f.id === editId) continue;
+    if (k && urlKey(f.url) === k) return { campo:'url', fic:f };
+    if (t && nt(f.titulo) === t) return { campo:'titulo', fic:f };
+  }
+  return null;
+}
+function errCampo(campo, msg) { const g = campo === 'url' ? '#g-url' : '#g-titulo'; $(g + ' .err').textContent = msg; $(g).classList.add('has-error'); }
+function msgDup(d) {
+  const q = d.fic.adulto && prefs.adultos === 'ocultar' ? '' : `: “${d.fic.titulo}”`;
+  return d.campo === 'url' ? `Ese enlace ya está guardado${q}.` : `Ya tienes un fic con ese título${q}.`;
+}
+function revisarDup() {
+  $('#g-url .err').textContent = ERR_URL; $('#g-titulo .err').textContent = ERR_TIT;
+  $('#g-url').classList.remove('has-error'); $('#g-titulo').classList.remove('has-error');
+  const d = buscarDup($('#f-titulo').value, $('#f-url').value);
+  if (d) errCampo(d.campo, msgDup(d));
+}
 $('#btn-guardar').onclick = () => {
   const titulo = $('#f-titulo').value.trim();
   const urlRaw = $('#f-url').value.trim();
-  if (!titulo) { $('#g-titulo').classList.add('has-error'); $('#f-titulo').focus(); return; }
+  if (!titulo) { errCampo('titulo', ERR_TIT); $('#f-titulo').focus(); return; }
   let url = '';
-  if (urlRaw) { url = safeUrl(urlRaw); if (!url) { $('#g-url').classList.add('has-error'); $('#f-url').focus(); return; } }
+  if (urlRaw) { url = safeUrl(urlRaw); if (!url) { errCampo('url', ERR_URL); $('#f-url').focus(); return; } }
+  const dup = buscarDup(titulo, url);
+  if (dup) { errCampo(dup.campo, msgDup(dup)); $(dup.campo === 'url' ? '#f-url' : '#f-titulo').focus(); toast('Ese fic ya lo tienes guardado'); return; }
   const largo = formVibes.has('largo');
   const pubV = largo ? formPub : '';                           // "¿Terminado?" solo existe en historias largas
   const ong = pubV === 'en-curso' || pubV === 'sin-actualizar';
@@ -1285,10 +1350,12 @@ $('#btn-guardar').onclick = () => {
     fandom:$('#f-fandom').value, ship:$('#f-ship').value, fav:$('#f-fav').checked ? 'si' : 'no',
     categorias:[...formVibes], tags18: adulto ? [...formT18] : [], tagsExtra:$('#f-tropes').value, notas:$('#f-notas').value,
     estado:formEstado, adulto, cw:false,
-    pub:pubV, capAct, capTot, capPub, rating:formRating, color:formColor
+    pub:pubV, capAct, capTot, capPub, rating:formRating, color:formColor,
+    sagaObras: formVibes.has('saga') ? $('#f-saga-obras').value.trim() : '', sagaCaps: formVibes.has('saga') ? $('#f-saga-caps').value.trim() : ''
   };
   if (editId) { const i = db.findIndex(x => x.id === editId); db[i] = normFic({ ...db[i], ...datos }); }
   else db.unshift(normFic(datos));
+  if (esHex(formColor)) { prefs.coloresRec = [formColor.toLowerCase(), ...prefs.coloresRec.filter(c => c !== formColor.toLowerCase())].slice(0, 5); guardarPrefs(); }
   guardarDB(); cerrarHoja(); render();
   toast(datos.adulto && prefs.adultos === 'ocultar' ? 'Guardado · queda oculto por ser +18' : 'Guardado');
 };
