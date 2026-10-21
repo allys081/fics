@@ -171,7 +171,7 @@ a{color:inherit}
 .g-title{flex:1;min-width:0;font-family:var(--serif);font-size:14px;font-weight:700;line-height:1.28;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;padding-top:3px}
 .g-top .cbtn{width:32px;height:32px;margin-right:-2px;flex:none}
 .g-by{color:var(--mute);font-size:11px;margin-top:2px}
-.g-ship{margin-top:7px;line-height:1.3}
+.g-ship{margin-top:7px;line-height:1.3;display:flex;flex-wrap:wrap;gap:5px}
 .g-ship .shipchip{font-size:12px;padding:2px 10px}
 .g-fan{font-size:11px;color:var(--mute);margin-top:1px;overflow-wrap:anywhere}
 .g-notes{margin-top:6px;font-size:11.5px;color:var(--mute);font-style:italic;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -252,10 +252,48 @@ body.typing .sheet-body{padding-bottom:220px}
 .chip .x{display:inline-grid;place-items:center;margin-left:2px;opacity:.7;padding:2px;margin-right:-4px}
 .chip.nuevo{border-style:dashed;color:var(--acc);border-color:var(--acc)}
 #filtros-body .chip.on{background:var(--sel);border-color:var(--sel);color:var(--on-sel)}
-.sugs{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.sugs{display:block;margin-top:8px}
 .sugs:empty{display:none}
 .sugs .chip{padding:6px 11px;font-size:12px}
 .sug-l{width:100%;font-size:11px;color:var(--mute);font-weight:700}
+.sug-tog{display:flex;align-items:center;gap:6px;color:var(--mute);font-size:11.5px;font-weight:700;padding:5px 0}
+.sug-tog .ic{transition:transform .15s}
+.sug-tog[aria-expanded=true] .ic{transform:rotate(180deg)}
+.sug-chips{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 2px}
+#sel-ship{margin-bottom:8px}
+.facc{background:var(--card);border:1.5px solid var(--line);border-radius:16px;margin-bottom:10px;overflow:hidden;transition:border-color .2s,box-shadow .2s}
+.facc.open{border-color:color-mix(in srgb,var(--acc) 50%,var(--line));box-shadow:var(--shadow)}
+.facc.has:not(.open){border-color:color-mix(in srgb,var(--acc) 32%,var(--line))}
+.fhead{display:flex;align-items:center;gap:10px;width:100%;min-height:56px;padding:10px 14px;text-align:left}
+.fhead:active{background:var(--chip)}
+.fhead-t{flex:1;min-width:0}
+.fhead-t b{display:block;font-size:14px;font-weight:700}
+.fhead-t small{display:block;font-size:12px;color:var(--mute);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.facc.has .fhead-t small{color:var(--acc);font-weight:700}
+.fbadge{flex:none;min-width:22px;height:22px;padding:0 6px;border-radius:99px;background:var(--acc);color:var(--on-acc);font-size:11.5px;font-weight:800;display:grid;place-items:center}
+.fhead .ic{color:var(--mute);transition:transform .25s}
+.facc.open .fhead .ic{transform:rotate(180deg)}
+.fwrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows .28s ease}
+.facc.open .fwrap{grid-template-rows:1fr}
+.finner{overflow:hidden;min-height:0;visibility:hidden;transition:visibility 0s .28s}
+.facc.open .finner{visibility:visible;transition:none}
+.fbody{padding:12px 14px 14px;border-top:1px solid var(--line)}
+.fhint{font-size:11.5px;color:var(--mute);margin:0 0 10px}
+.fsearch{display:flex;align-items:center;gap:8px;height:40px;padding:0 10px;margin-bottom:10px;background:var(--bg);border:1.5px solid var(--line);border-radius:12px;color:var(--mute)}
+.fsearch:focus-within{border-color:var(--acc)}
+.fsearch input{flex:1;min-width:0;border:0;outline:0;background:none;font-size:16px;color:var(--ink)}
+.fopts{display:flex;flex-wrap:wrap;gap:8px;max-height:250px;overflow-y:auto;overscroll-behavior:contain;padding:1px}
+.fchip{display:inline-flex;align-items:center;gap:7px;max-width:100%;padding:8px 13px;border-radius:99px;background:var(--bg);border:1.5px solid var(--line);font-size:13px;font-weight:600;color:var(--chip-ink);text-align:left;transition:background .15s,border-color .15s,color .15s,transform .1s}
+.fchip:active{transform:scale(.96)}
+.fchip span{overflow-wrap:anywhere}
+.fchip em{font-style:normal;opacity:.6;font-size:11px}
+.fchip .ic{display:none}
+.fchip.on{background:var(--sel);border-color:var(--sel);color:var(--on-sel)}
+.fchip.on .ic{display:block}
+.fnone{font-size:12.5px;color:var(--mute);padding:6px 2px}
+.c-opinion{display:none;margin-top:7px;font-size:12px;color:var(--mute);padding-right:6px}
+.c-opinion b{color:var(--ink)}
+.card.open .c-opinion{display:block}
 .addrow{display:flex;gap:8px;margin-top:10px}
 .addrow .input{flex:1;min-width:0}
 .addrow .btn{height:auto;padding:0 16px}
@@ -374,8 +412,9 @@ details.more .inner{padding-top:6px}
         <div class="sugs" id="s-fandom"></div>
       </div>
       <div class="group">
-        <label class="label" for="f-ship">Pareja / Personajes (ship)</label>
-        <input class="input" id="f-ship" placeholder="Escribe una nueva o elige abajo" autocomplete="off">
+        <label class="label" for="f-ship">Pareja / Personajes (ship) · puedes poner varias</label>
+        <div class="chips" id="sel-ship" hidden></div>
+        <div class="addrow" style="margin-top:0"><input class="input" id="f-ship" placeholder="Escribe una nueva o elige abajo" autocomplete="off" enterkeyhint="done"><button type="button" class="btn primary" id="btn-add-ship">Agregar</button></div>
         <div class="sugs" id="s-ship"></div>
       </div>
       <div class="group">
@@ -386,7 +425,7 @@ details.more .inner{padding-top:6px}
           <input type="range" id="cp-hue" class="hue" min="0" max="360" value="140" aria-label="Tono">
           <div class="hexrow"><span class="prev" id="cp-prev"></span><input class="input" id="cp-hex" maxlength="7" placeholder="#32a852" autocapitalize="off" spellcheck="false" autocomplete="off"></div>
         </div>
-        <div class="hint">Elige uno de la paleta, o toca el círculo de colores para crear el tuyo. “Auto” lo calcula según el ship.</div>
+        <div class="hint">Si eliges un fandom, aquí salen los colores que ya usaste en él. Toca el círculo de colores para crear otro. “Auto” lo calcula según el ship.</div>
       </div>
       <div class="group">
         <span class="label">4. Vibes (toca para elegir varias)</span>
@@ -410,6 +449,14 @@ details.more .inner{padding-top:6px}
       <div class="group">
         <label class="label" for="f-notas">5. “De qué iba” / notas para recordar la trama</label>
         <textarea class="textarea" id="f-notas" placeholder="Aquel fic donde despierta en una cabaña y encuentra la carta…"></textarea>
+      </div>
+      <div class="group">
+        <label class="label" for="f-opinion">Qué me pareció / comentarios</label>
+        <textarea class="textarea" id="f-opinion" placeholder="Ej: Me encantó el final, pero el cap 12 se me hizo lento…"></textarea>
+      </div>
+      <div class="group">
+        <label class="label" for="f-tropes">Palabras clave para recordar</label>
+        <input class="input" id="f-tropes" placeholder="Ej: Enemies to lovers, Amnesia, Slow burn, Hanahaki" autocomplete="off">
       </div>
       <div class="group">
         <span class="label">6. Estado de lectura</span>
@@ -460,16 +507,6 @@ details.more .inner{padding-top:6px}
               <input class="input" id="f-cap-act" type="number" inputmode="numeric" min="0" placeholder="Ej: 14">
             </div>
             <div class="err">El capítulo actual no puede ser mayor que el total de capítulos.</div>
-          </div>
-          <div class="group">
-            <label class="label" for="f-plat">9. Plataforma</label>
-            <select class="select" id="f-plat">
-              <option value="ao3">AO3</option><option value="ffnet">FanFiction.net</option><option value="wattpad">Wattpad</option><option value="otro">Otro</option>
-            </select>
-          </div>
-          <div class="group">
-            <label class="label" for="f-tropes">10. Otros tropes / palabras clave</label>
-            <input class="input" id="f-tropes" placeholder="Ej: Enemies to lovers, Amnesia, Slow burn, Hanahaki" autocomplete="off">
           </div>
         </div>
       </details>
@@ -665,16 +702,19 @@ function normFic(f) {
   if (!adulto) tags18 = [];
   const pub = f.pub === 'sin-act' ? 'en-curso' : f.pub;            // valor de la versión anterior
   const pubOk = PUBS[pub] ? pub : '';
+  const ships = Array.isArray(f.ships) ? uniq(f.ships.map(s).filter(Boolean)) : (s(f.ship) ? [s(f.ship)] : []);   // varias parejas; "ship" (texto único) viene de versiones anteriores
+  const plataformas = Array.isArray(f.plataformas) ? uniq(f.plataformas.filter(k => PLATS[k])) : (PLATS[f.plataforma] ? [f.plataforma] : []);
+  if (!plataformas.length) plataformas.push('ao3');
   const categorias = Array.isArray(f.categorias) ? uniq(f.categorias.filter(k => validTag('vibes', k))) : [];
   return {
     id: s(f.id) || 'f_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
     titulo: s(f.titulo), autor: s(f.autor),   // el autor se conserva en los datos aunque ya no se muestre
-    plataforma: PLATS[f.plataforma] ? f.plataforma : 'ao3',
-    url: s(f.url), fandom: s(f.fandom), ship: s(f.ship),
+    plataforma: plataformas[0], plataformas,
+    url: s(f.url), fandom: s(f.fandom), ships, ship: ships[0] || '',
     fav: f.fav === 'si' ? 'si' : 'no',
     categorias,
     tags18,
-    tagsExtra: s(f.tagsExtra), notas: s(f.notas),
+    tagsExtra: s(f.tagsExtra), notas: s(f.notas), opinion: s(f.opinion),
     estado: ESTADOS[f.estado] ? f.estado : 'por-leer',
     adulto,
     rating: Math.min(10, Math.max(0, parseInt(f.rating, 10) || 0)),
@@ -695,7 +735,7 @@ const prefs = Object.assign({ tema:'auto', acento:'violeta', vista:'tarjetas', o
 prefs.coloresRec = Array.isArray(prefs.coloresRec) ? prefs.coloresRec.filter(c => /^#[0-9a-f]{6}$/.test(c)).slice(0, 5) : [];   // últimos colores personalizados
 if (!ACENTOS.includes(prefs.acento)) prefs.acento = 'violeta';   // los colores anteriores (terracota, verde) pasan a morado
 if (prefs.adultos === 'mostrar') prefs.adultos = 'ocultar';   // "mostrar" solo dura la sesión
-const st = { q:'', estado:'todos', plats:new Set(), pubs:new Set(), fandoms:new Set(), ships:new Set(), t18:new Set(), fav:false, soloAdulto:false, abiertos:new Set(), revelados:new Set() };
+const st = { q:'', estado:'todos', vibes:new Set(), pubs:new Set(), fandoms:new Set(), ships:new Set(), t18:new Set(), fav:false, soloAdulto:false, abiertos:new Set(), revelados:new Set() };
 const guardarPrefs = () => escribir(PKEY, prefs);
 const guardarDB = () => { if (!escribir(KEY, db)) toast('No pude guardar en este navegador. Haz un respaldo.'); };
 
@@ -719,6 +759,7 @@ $('#btn-tema').onclick = () => { prefs.tema = esOscuro() ? 'claro' : 'oscuro'; g
 const visibles = () => db.filter(f => !f.adulto || prefs.adultos !== 'ocultar');
 const ocultosN = () => db.filter(f => f.adulto).length;
 const labelDe = (campo, key) => { const f = db.find(x => norm(x[campo]) === key); return f ? f[campo] : key; };
+const labelShip = key => { for (const f of db) { const x = f.ships.find(y => norm(y) === key); if (x) return x; } return key; };
 
 function calcular() {
   const vis = visibles();
@@ -726,14 +767,14 @@ function calcular() {
   const words = norm(st.q).split(/\s+/).filter(Boolean);
   const base = vis.filter(f => {
     if (st.fav && f.fav !== 'si') return false;
-    if (st.plats.size && !st.plats.has(f.plataforma)) return false;
+    if (st.vibes.size && !f.categorias.some(k => st.vibes.has(k))) return false;
     if (st.pubs.size && !st.pubs.has(f.pub)) return false;
     if (st.fandoms.size && !st.fandoms.has(norm(f.fandom))) return false;
-    if (st.ships.size && !st.ships.has(norm(f.ship))) return false;
+    if (st.ships.size && !f.ships.some(x => st.ships.has(norm(x)))) return false;
     if (st.soloAdulto && !f.adulto) return false;
     for (const t of st.t18) if (!f.tags18.includes(t)) return false;
     if (words.length) {
-      const hay = norm([f.titulo, f.autor, f.fandom, f.ship, f.tagsExtra, f.notas, f.pub ? PUBS[f.pub] : '',
+      const hay = norm([f.titulo, f.autor, f.fandom, f.ships.join(' '), f.tagsExtra, f.notas, f.opinion, f.pub ? PUBS[f.pub] : '',
         f.categorias.map(k => tLab('vibes', k)).join(' '), f.tags18.map(k => tLab('t18', k)).join(' ')].join(' '));
       if (!words.every(w => hay.includes(w))) return false;
     }
@@ -747,21 +788,21 @@ function calcular() {
   else if (prefs.orden === 'favoritos') lista.sort((a, b) => (b.fav === 'si') - (a.fav === 'si'));
   return { vis, base, counts, lista };
 }
-const nFiltros = () => (st.fav ? 1 : 0) + st.plats.size + st.pubs.size + st.fandoms.size + st.ships.size + st.t18.size + (st.soloAdulto ? 1 : 0);
-function limpiarFiltros() { st.fav = false; st.plats.clear(); st.pubs.clear(); st.fandoms.clear(); st.ships.clear(); st.t18.clear(); st.soloAdulto = false; st.estado = 'todos'; }
+const nFiltros = () => (st.fav ? 1 : 0) + st.pubs.size + st.fandoms.size + st.ships.size + st.vibes.size + st.t18.size + (st.soloAdulto ? 1 : 0);
+function limpiarFiltros() { st.fav = false; st.vibes.clear(); st.pubs.clear(); st.fandoms.clear(); st.ships.clear(); st.t18.clear(); st.soloAdulto = false; st.estado = 'todos'; }
 
 /* ───────── Pintado principal ───────── */
 function colorFic(f) {
   if (/^#[0-9a-fA-F]{6}$/.test(f.color)) return f.color;
   if (/^[0-7]$/.test(f.color)) return `var(--f${f.color})`;
-  const k = f.ship || f.fandom; return k ? `var(--f${hash(norm(k)) % 8})` : 'var(--mute)';
+  const k = f.ships[0] || f.fandom; return k ? `var(--f${hash(norm(k)) % 8})` : 'var(--mute)';
 }
 
 const ratingHTML = r => `${r}/10 <span class="star">★</span>`;
-const platPill = (f, largo) => `<span class="plat ${f.plataforma}">${esc(largo ? PLATS[f.plataforma] : PLATS_S[f.plataforma])}</span>`;
-const shipChip = f => f.ship ? `<span class="shipchip">${esc(f.ship)}</span>` : '';
+const platPill = (f, largo) => f.plataformas.map(k => `<span class="plat ${k}">${esc(largo ? PLATS[k] : PLATS_S[k])}</span>`).join('');
+const shipChip = f => f.ships.map(x => `<span class="shipchip">${esc(x)}</span>`).join('');
 const adultoTag = f => f.adulto ? '<span class="badge18">+18</span>' : '';
-const shipRow = (f, cls) => f.ship || f.fandom ? `<p class="${cls}">${shipChip(f)}${f.fandom ? `<span class="fan">${esc(f.fandom)}</span>` : ''}</p>` : '';
+const shipRow = (f, cls) => f.ships.length || f.fandom ? `<p class="${cls}">${shipChip(f)}${f.fandom ? `<span class="fan">${esc(f.fandom)}</span>` : ''}</p>` : '';
 
 /* progreso de lectura: "Cap. 6 de 12" */
 function capsTxt(f) {
@@ -818,7 +859,8 @@ function cardHTML(f) {
       </div>
       ${shipRow(f, 'c-ship')}
       ${f.notas ? `<p class="c-notes">“${esc(f.notas)}”</p>` : ''}
-      ${f.tagsExtra ? `<p class="c-tropes"><b>Tropes:</b> ${esc(f.tagsExtra)}</p>` : ''}
+      ${f.tagsExtra ? `<p class="c-tropes"><b>Palabras clave:</b> ${esc(f.tagsExtra)}</p>` : ''}
+      ${f.opinion ? `<p class="c-opinion"><b>Qué me pareció:</b> ${esc(f.opinion)}</p>` : ''}
       <div class="c-foot">
         <div class="tags">${tags}</div>
         <button class="st st-${f.estado}" data-act="estado" aria-label="Estado: ${ESTADOS[f.estado]}. Toca para cambiar">${ESTADOS[f.estado]}</button>
@@ -845,7 +887,7 @@ function gridHTML(f) {
         <h3 class="g-title">${esc(f.titulo)}</h3>
         <button class="cbtn fav" data-act="fav" aria-pressed="${f.fav === 'si'}" aria-label="${f.fav === 'si' ? 'Quitar de favoritos' : 'Marcar como favorito'}" style="${f.fav === 'si' ? '' : 'color:var(--mute)'}">${icon('heart', 18, f.fav === 'si')}</button>
       </div>
-      ${f.ship ? `<p class="g-ship">${shipChip(f)}</p>` : ''}
+      ${f.ships.length ? `<p class="g-ship">${shipChip(f)}</p>` : ''}
       <div class="g-meta">${fmts.map(t => `<span class="tag fmt">${esc(t)}</span>`).join('')}${f.rating ? `<span class="tag rate">${ratingHTML(f.rating)}</span>` : ''}${platPill(f)}${adultoTag(f)}</div>
       <div class="g-btns">
         ${url ? `<a class="btn primary" data-act="leer" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${icon('link', 15)} Leer</a>` : ''}
@@ -896,9 +938,9 @@ function pintarPills() {
   const pill = (t, v, txt) => `<button class="pill" data-t="${t}" data-v="${esc(v)}" aria-label="Quitar filtro ${esc(txt)}">${esc(txt)} ${icon('x', 13)}</button>`;
   if (st.fav) out.push(pill('fav', '', '★ Favoritos'));
   st.fandoms.forEach(k => out.push(pill('fandom', k, labelDe('fandom', k))));
-  st.ships.forEach(k => out.push(pill('ship', k, labelDe('ship', k))));
+  st.ships.forEach(k => out.push(pill('ship', k, labelShip(k))));
   st.pubs.forEach(k => out.push(pill('pub', k, PUBS[k])));
-  st.plats.forEach(k => out.push(pill('plat', k, PLATS_S[k])));
+  st.vibes.forEach(k => out.push(pill('vibe', k, tShort('vibes', k))));
   if (st.soloAdulto) out.push(pill('adulto', '', '+18'));
   st.t18.forEach(k => out.push(pill('t18', k, tShort('t18', k))));
   $('#pills').innerHTML = out.join('');
@@ -943,7 +985,7 @@ $('#orden').onchange = e => { prefs.orden = e.target.value; guardarPrefs(); rend
 $('#pills').addEventListener('click', e => {
   const b = e.target.closest('.pill'); if (!b) return;
   const { t, v } = b.dataset;
-  if (t === 'fav') st.fav = false; else if (t === 'pub') st.pubs.delete(v); else if (t === 'plat') st.plats.delete(v); else if (t === 'fandom') st.fandoms.delete(v); else if (t === 'ship') st.ships.delete(v); else if (t === 'adulto') st.soloAdulto = false; else if (t === 't18') st.t18.delete(v);
+  if (t === 'fav') st.fav = false; else if (t === 'pub') st.pubs.delete(v); else if (t === 'vibe') st.vibes.delete(v); else if (t === 'fandom') st.fandoms.delete(v); else if (t === 'ship') st.ships.delete(v); else if (t === 'adulto') st.soloAdulto = false; else if (t === 't18') st.t18.delete(v);
   render();
 });
 $('#fab').onclick = () => abrirForm();
@@ -974,8 +1016,8 @@ function cerrarHoja(porPop) {
   if (!porPop && history.state && history.state.hoja) history.back();
 }
 function formSnap() {
-  return JSON.stringify([['#f-url','#f-titulo','#f-fandom','#f-ship','#f-notas','#f-tropes','#f-plat','#f-cap-act','#f-cap-tot','#f-cap-pub','#f-saga-obras','#f-saga-caps'].map(i => $(i).value),
-    [...formVibes].sort(), [...formT18].sort(), formEstado, formPub, formRating, formColor, $('#f-fav').checked, $('#f-adulto').checked]);
+  return JSON.stringify([['#f-url','#f-titulo','#f-fandom','#f-ship','#f-notas','#f-opinion','#f-tropes','#f-cap-act','#f-cap-tot','#f-cap-pub','#f-saga-obras','#f-saga-caps'].map(i => $(i).value),
+    [...formVibes].sort(), [...formT18].sort(), formShips.slice(), formPlats.slice().sort(), formEstado, formPub, formRating, formColor, $('#f-fav').checked, $('#f-adulto').checked]);
 }
 const formSucio = () => actual === 'sheet-fic' && formSnap() !== formBase;
 function mostrarSalir() { const d = $('#dlg-salir'); d.classList.add('open'); d.setAttribute('aria-hidden', 'false'); }
@@ -1023,8 +1065,8 @@ function pintarDet() {
   const url = safeUrl(f.url);
   const obra = [f.pub ? PUBS[f.pub] : '', totTxt(f), sagaTxt(f) ? 'Saga: ' + sagaTxt(f) : ''].filter(Boolean).join(' · ');
   const lectura = capsTxt(f);
-  const vibes = f.categorias.map(k => `<span class="tag">${tEmo('vibes', k)} ${esc(tLab('vibes', k))}</span>`).join('');
-  const t18 = f.tags18.map(k => `<span class="tag t18">${tEmo('t18', k)} ${esc(tLab('t18', k))}</span>`).join('');
+  const vibes = f.categorias.map(k => `<span class="tag">${esc(tLab('vibes', k))}</span>`).join('');
+  const t18 = f.tags18.map(k => `<span class="tag t18">${esc(tLab('t18', k))}</span>`).join('');
   const sec = (t, html) => html ? `<div class="det-sec"><h4>${t}</h4>${html}</div>` : '';
   $('#det-body').innerHTML = `<div style="--c:${colorFic(f)}">
     <h3 class="det-title">${esc(f.titulo)}</h3>
@@ -1038,9 +1080,10 @@ function pintarDet() {
     ${sec('Calificación', f.rating ? `<p>${ratingHTML(f.rating)}</p>` : '')}
     ${sec('Tu lectura', lectura ? `<p>${esc(lectura)}</p>` : '')}
     ${sec('De qué iba', f.notas ? `<p class="det-notes">${esc(f.notas)}</p>` : '')}
+    ${sec('Qué me pareció', f.opinion ? `<p class="det-notes">${esc(f.opinion)}</p>` : '')}
     ${sec('Vibes', vibes ? `<div class="tags">${vibes}</div>` : '')}
     ${sec('Etiquetas +18', t18 ? `<div class="tags">${t18}</div>` : '')}
-    ${sec('Tropes / palabras clave', f.tagsExtra ? `<p>${esc(f.tagsExtra)}</p>` : '')}
+    ${sec('Palabras clave', f.tagsExtra ? `<p>${esc(f.tagsExtra)}</p>` : '')}
   </div>`;
   $('#det-foot').innerHTML =
     (url ? `<a class="btn primary" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${icon('link', 17)} Leer</a>` : '') +
@@ -1058,7 +1101,7 @@ $('#sheet-det').addEventListener('click', e => {
 });
 
 /* ───────── Formulario ───────── */
-let editId = null, formVibes = new Set(), formT18 = new Set(), formEstado = 'por-leer', formPub = '', platManual = false, formRating = 0, formColor = '', formBase = '';
+let editId = null, formVibes = new Set(), formT18 = new Set(), formEstado = 'por-leer', formPub = '', platManual = false, formRating = 0, formColor = '', formBase = '', formShips = [], formPlats = ['ao3'];
 const GRUPOS = {
   vibes: { custom:'vibesCustom', campo:'categorias', el:'#f-vibes', set:() => formVibes, row:'#nv-row', inp:'#nv-input' },
   t18:   { custom:'t18Custom',   campo:'tags18',     el:'#f-t18',   set:() => formT18,   row:'#nt-row', inp:'#nt-input' }
@@ -1073,7 +1116,7 @@ function pintarGrupo(g) {
   const G = GRUPOS[g];
   $(G.el).innerHTML = opciones(g).map(k => {
     const propio = !DEFS[g][k];
-    return `<button type="button" class="chip${G.set().has(k) ? ' on' : ''}" data-v="${esc(k)}">${g === 'vibes' ? '' : tEmo(g, k) + ' '}${esc(tLab(g, k))}${propio ? `<span class="x" data-del="${esc(k)}" role="button" aria-label="Quitar de la lista">${icon('x', 13)}</span>` : ''}</button>`;
+    return `<button type="button" class="chip${G.set().has(k) ? ' on' : ''}" data-v="${esc(k)}">${esc(tLab(g, k))}${propio ? `<span class="x" data-del="${esc(k)}" role="button" aria-label="Quitar de la lista">${icon('x', 13)}</span>` : ''}</button>`;
   }).join('') + `<button type="button" class="chip nuevo" data-nuevo="1">${icon('plus', 14)} Nueva</button>`;
   if (g === 'vibes') pintarCaps();
 }
@@ -1146,13 +1189,20 @@ function pintarPicker(saltarHex) {
   return hx;
 }
 let cpAbierto = false;
+function coloresFandom() {                                  // colores que ya usaste en fics de ese fandom (más usados primero)
+  const fq = norm($('#f-fandom').value); if (!fq) return [];
+  const m = new Map();
+  db.forEach(f => { if (f.color && norm(f.fandom) === fq) { const c = f.color.toLowerCase(); m.set(c, (m.get(c) || 0) + 1); } });
+  return [...m.entries()].sort((a, b) => b[1] - a[1]).map(x => x[0]).slice(0, 6);
+}
 function pintarSw() {
-  const rec = prefs.coloresRec, custom = esHex(formColor), enRec = custom && rec.includes(formColor.toLowerCase());
+  const fc = coloresFandom(), cur = formColor.toLowerCase(), custom = esHex(formColor);
+  const lista = fc.length ? fc : ['0', '1', ...prefs.coloresRec];
+  if (cur && !custom && !lista.includes(cur)) lista.unshift(cur);
   const sw = (c, bg, on, lab) => `<button type="button" class="csw" data-c="${c}" style="background:${bg}" aria-pressed="${on}" aria-label="${lab}">${icon('check', 16)}</button>`;
   $('#f-color').innerHTML = `<button type="button" class="chip${formColor === '' ? ' on' : ''}" data-c="">Auto</button>` +
-    [0, 1].map(i => sw(i, `var(--f${i})`, formColor === String(i), 'Color ' + (i + 1))).join('') +
-    rec.map(c => sw(c, c, formColor.toLowerCase() === c, 'Color ' + c)).join('') +
-    sw('custom', custom && !enRec ? formColor : 'conic-gradient(#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00)', custom && !enRec, 'Color personalizado');
+    lista.map(c => sw(c, /^\d$/.test(c) ? `var(--f${c})` : c, cur === c, 'Color ' + c)).join('') +
+    sw('custom', custom && !lista.includes(cur) ? formColor : 'conic-gradient(#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00)', custom && !lista.includes(cur), 'Color personalizado');
 }
 function pintarColor() {
   pintarSw();
@@ -1190,48 +1240,72 @@ function pintarEstados() {
 }
 $('#f-adulto').addEventListener('change', pintarEstados);
 
-/* Sugerencias de fandom y ship: tocas y se rellena */
+/* Sugerencias de fandom y ship: listas plegables; en las parejas puedes elegir varias */
+const sugAb = { fandom:null, ship:null };            // null = automático (se abre sola al escribir)
+function pintarShips() {
+  $('#sel-ship').innerHTML = formShips.map(x => `<button type="button" class="chip on" data-x="${esc(x)}">${esc(x)}<span class="x">${icon('x', 13)}</span></button>`).join('');
+  $('#sel-ship').hidden = !formShips.length;
+}
+function agregarShip(v) {
+  v = (v ?? $('#f-ship').value).trim().replace(/\s+/g, ' ').slice(0, 60); if (!v) return false;
+  const ex = db.flatMap(f => f.ships).find(x => norm(x) === norm(v)); v = ex || v;         // respeta cómo ya la tenías escrita
+  if (!formShips.some(x => norm(x) === norm(v))) formShips.push(v);
+  $('#f-ship').value = ''; pintarShips(); sugerir(); return true;
+}
 function sugerir() {
   const vis = visibles();
-  const fIn = $('#f-fandom').value, sIn = $('#f-ship').value;
-  const fq = norm(fIn), sq = norm(sIn);
-  const cuenta = (arr, campo) => {
+  const fq = norm($('#f-fandom').value), sq = norm($('#f-ship').value);
+  const cuenta = (arr, get) => {
     const m = new Map();
-    arr.forEach(f => { const v = f[campo]; if (!v) return; const k = norm(v); const o = m.get(k) || { label:v, n:0 }; o.n++; m.set(k, o); });
+    arr.forEach(f => get(f).forEach(v => { if (!v) return; const k = norm(v); const o = m.get(k) || { label:v, n:0 }; o.n++; m.set(k, o); }));
     return m;
   };
   const orden = (a, b) => b[1].n - a[1].n || a[1].label.localeCompare(b[1].label, 'es');
-  const chips = (m, q, actual, limite) => [...m.entries()].filter(([k]) => !q || k.includes(q)).sort(orden).slice(0, limite)
-    .map(([k, o]) => `<button type="button" class="chip${k === actual ? ' on' : ''}" data-v="${esc(o.label)}">${esc(o.label)}</button>`).join('');
-
-  const fm = cuenta(vis, 'fandom');
-  const fh = chips(fm, fq, fq, 12);
-  $('#s-fandom').innerHTML = fh ? `<span class="sug-l">Ya añadidos · toca para elegir</span>${fh}` : '';
-
-  const sm = cuenta(vis, 'ship');
-  let sh = '';
-  if (!fq) sh = chips(sm, sq, sq, 12);                                                                  // sin fandom: todas las parejas
-  else if (fm.has(fq)) sh = chips(cuenta(vis.filter(f => norm(f.fandom) === fq), 'ship'), sq, sq, 12);  // fandom existente: solo sus parejas
-  // fandom nuevo: sin sugerencias, escribes la pareja a mano
-  $('#s-ship').innerHTML = sh ? `<span class="sug-l">Ya añadidas · toca para elegir</span>${sh}` : '';
+  const lista = (id, titulo, m, q, activos, auto) => {
+    const items = [...m.entries()].filter(([k]) => !q || k.includes(q)).sort(orden).slice(0, 40);
+    if (!items.length) return '';
+    const ab = sugAb[id] ?? auto;
+    return `<button type="button" class="sug-tog" data-tog="${id}" aria-expanded="${ab}"><span>${titulo} · ${items.length}</span>${icon('chev', 15)}</button>` +
+      (ab ? `<div class="sug-chips">${items.map(([k, o]) => `<button type="button" class="chip${activos.has(k) ? ' on' : ''}" data-v="${esc(o.label)}">${esc(o.label)}</button>`).join('')}</div>` : '');
+  };
+  const fm = cuenta(vis, f => [f.fandom]);
+  $('#s-fandom').innerHTML = lista('fandom', 'Fandoms ya añadidos', fm, fq, new Set([fq]), !!fq && !fm.has(fq));
+  /* parejas: sin fandom, todas; con un fandom que ya existe, solo las de ese fandom; con uno nuevo, ninguna */
+  const sm = !fq ? cuenta(vis, f => f.ships) : fm.has(fq) ? cuenta(vis.filter(f => norm(f.fandom) === fq), f => f.ships) : new Map();
+  $('#s-ship').innerHTML = lista('ship', 'Parejas ya añadidas', sm, sq, new Set(formShips.map(norm)), !!sq);
+  pintarSw();                                              // los colores dependen del fandom elegido
 }
 $('#s-fandom').addEventListener('click', e => {
+  const t = e.target.closest('[data-tog]');
+  if (t) { sugAb.fandom = t.getAttribute('aria-expanded') !== 'true'; return sugerir(); }
   const b = e.target.closest('.chip'); if (!b) return; vibrar();
-  $('#f-fandom').value = b.dataset.v; sugerir();
+  $('#f-fandom').value = b.dataset.v; sugAb.fandom = null; sugerir();
 });
 $('#s-ship').addEventListener('click', e => {
+  const t = e.target.closest('[data-tog]');
+  if (t) { sugAb.ship = t.getAttribute('aria-expanded') !== 'true'; return sugerir(); }
   const b = e.target.closest('.chip'); if (!b) return; vibrar();
-  $('#f-ship').value = b.dataset.v;
-  if (!$('#f-fandom').value.trim()) {                      // si no hay fandom, usa el más común de esa pareja
-    const m = new Map();
-    visibles().filter(f => norm(f.ship) === norm(b.dataset.v) && f.fandom).forEach(f => m.set(f.fandom, (m.get(f.fandom) || 0) + 1));
-    const top = [...m.entries()].sort((a, c) => c[1] - a[1])[0];
-    if (top) $('#f-fandom').value = top[0];
+  const v = b.dataset.v, i = formShips.findIndex(x => norm(x) === norm(v));
+  if (i >= 0) formShips.splice(i, 1);
+  else {
+    formShips.push(v);
+    if (!$('#f-fandom').value.trim()) {                    // si no hay fandom, usa el más común de esa pareja
+      const m = new Map();
+      visibles().filter(f => f.fandom && f.ships.some(x => norm(x) === norm(v))).forEach(f => m.set(f.fandom, (m.get(f.fandom) || 0) + 1));
+      const top = [...m.entries()].sort((a, c) => c[1] - a[1])[0];
+      if (top) $('#f-fandom').value = top[0];
+    }
   }
-  sugerir();
+  sugAb.ship = true; pintarShips(); sugerir();             // la lista queda abierta para seguir eligiendo
 });
-$('#f-fandom').addEventListener('input', sugerir);
-$('#f-ship').addEventListener('input', sugerir);
+$('#sel-ship').addEventListener('click', e => {
+  const b = e.target.closest('[data-x]'); if (!b) return; vibrar();
+  formShips = formShips.filter(x => x !== b.dataset.x); pintarShips(); sugerir();
+});
+$('#f-fandom').addEventListener('input', () => { sugAb.fandom = null; sugerir(); });
+$('#f-ship').addEventListener('input', () => { sugAb.ship = null; sugerir(); });
+$('#f-ship').addEventListener('keydown', e => { if (e.key === 'Enter' && $('#f-ship').value.trim()) { e.preventDefault(); agregarShip(); } });
+$('#btn-add-ship').onclick = () => { vibrar(); agregarShip(); $('#f-ship').focus(); };
 
 function mostrarDeteccion(url) {
   const p = detectarPlat(url), h = $('#url-hint');
@@ -1244,9 +1318,9 @@ function abrirForm(id) {
   const f = id ? db.find(x => x.id === id) : null;
   $('#fic-h').textContent = f ? 'Editar fanfic' : 'Agregar fanfic';
   $('#f-titulo').value = f ? f.titulo : ''; $('#f-url').value = f ? f.url : '';
-  $('#f-fandom').value = f ? f.fandom : ''; $('#f-ship').value = f ? f.ship : '';
-  $('#f-notas').value = f ? f.notas : ''; $('#f-tropes').value = f ? f.tagsExtra : '';
-  $('#f-plat').value = f ? f.plataforma : 'ao3';
+  $('#f-fandom').value = f ? f.fandom : ''; $('#f-ship').value = ''; formShips = f ? [...f.ships] : []; sugAb.fandom = sugAb.ship = null;
+  $('#f-notas').value = f ? f.notas : ''; $('#f-opinion').value = f ? f.opinion : ''; $('#f-tropes').value = f ? f.tagsExtra : '';
+  formPlats = f ? [...f.plataformas] : ['ao3'];
   $('#f-fav').checked = !!f && f.fav === 'si'; $('#f-adulto').checked = !!f && f.adulto;
   formVibes = new Set(f ? f.categorias : []); formT18 = new Set(f ? f.tags18 : []);
   formEstado = f ? f.estado : 'por-leer'; formPub = f ? f.pub : ''; platManual = !!f; formRating = f ? f.rating : 0; formColor = f ? f.color : ''; cpAbierto = false;
@@ -1259,7 +1333,7 @@ function abrirForm(id) {
   $('#g-url .err').textContent = ERR_URL; $('#g-titulo .err').textContent = ERR_TIT;
   $('#sheet-fic details.more').open = false;
   $('#nv-row').hidden = true; $('#nt-row').hidden = true; $('#nv-input').value = ''; $('#nt-input').value = '';
-  pintarGrupo('vibes'); pintarGrupo('t18'); pintarEstados(); sugerir();
+  pintarShips(); pintarGrupo('vibes'); pintarGrupo('t18'); pintarEstados(); sugerir();
   formBase = formSnap();
   abrirHoja('sheet-fic');
   $('#fic-body').scrollTop = 0;
@@ -1268,10 +1342,9 @@ function abrirForm(id) {
 $('#f-estado').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; formEstado = b.dataset.v; pintarEstados(); });
 $('#f-stars').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; vibrar(); const n = +b.dataset.n; formRating = formRating === n ? 0 : n; pintarRating(); });
 $('#f-pub').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; formPub = formPub === b.dataset.v ? '' : b.dataset.v; pintarEstados(); });
-$('#f-plat').addEventListener('change', () => platManual = true);
 $('#f-url').addEventListener('input', e => {
   const p = detectarPlat(e.target.value);
-  if (p && !platManual) $('#f-plat').value = p;
+  if (p) formPlats = [p];                                  // la plataforma se detecta sola desde el enlace
   mostrarDeteccion(e.target.value);
   revisarDup();
 });
@@ -1344,11 +1417,13 @@ $('#btn-guardar').onclick = () => {
     $('#g-caps').classList.add('has-error'); $('#f-cap-act').focus(); return;
   }
   vibrar();
+  if (!formPlats.length) formPlats = [detectarPlat(url) || 'ao3'];
+  agregarShip();                                           // si dejaste una pareja escrita sin tocar Agregar, también cuenta
   const adulto = $('#f-adulto').checked;
   const datos = {
-    titulo, url, plataforma:$('#f-plat').value,
-    fandom:$('#f-fandom').value, ship:$('#f-ship').value, fav:$('#f-fav').checked ? 'si' : 'no',
-    categorias:[...formVibes], tags18: adulto ? [...formT18] : [], tagsExtra:$('#f-tropes').value, notas:$('#f-notas').value,
+    titulo, url, plataformas:[...formPlats],
+    fandom:$('#f-fandom').value, ships:[...formShips], fav:$('#f-fav').checked ? 'si' : 'no',
+    categorias:[...formVibes], tags18: adulto ? [...formT18] : [], tagsExtra:$('#f-tropes').value, notas:$('#f-notas').value, opinion:$('#f-opinion').value,
     estado:formEstado, adulto, cw:false,
     pub:pubV, capAct, capTot, capPub, rating:formRating, color:formColor,
     sagaObras: formVibes.has('saga') ? $('#f-saga-obras').value.trim() : '', sagaCaps: formVibes.has('saga') ? $('#f-saga-caps').value.trim() : ''
@@ -1362,43 +1437,98 @@ $('#btn-guardar').onclick = () => {
 
 /* ───────── Filtros (hoja) ───────── */
 function contar(arr, fn) { const m = new Map(); arr.forEach(f => fn(f).forEach(k => { const o = m.get(k.key) || { label:k.label, n:0 }; o.n++; m.set(k.key, o); })); return m; }
+const filtAb = { open:null }, filtQ = {};
+let cierreT;
+function setAbierto(id) {                                  // abre/cierra con animación sin repintar (solo una sección abierta)
+  filtAb.open = id;
+  $$('#filtros-body .facc').forEach(sec => {
+    const on = sec.dataset.id === id;
+    sec.classList.toggle('open', on);
+    sec.querySelector('.fhead').setAttribute('aria-expanded', on);
+  });
+}
+function filtrarChips(id) {                                // buscador dentro de una sección
+  const sec = $(`#filtros-body .facc[data-id="${id}"]`); if (!sec) return;
+  const q = norm(filtQ[id] || ''); let hay = 0;
+  $$('.fchip', sec).forEach(c => { c.hidden = !!q && !c.dataset.s.includes(q); if (!c.hidden) hay++; });
+  const none = $('.fnone', sec); if (none) none.hidden = hay > 0;
+}
 function pintarFiltros() {
   const vis = visibles();
   const adultos = prefs.adultos !== 'ocultar';
-  const chip = (t, key, label, n, on) => `<button class="chip${on ? ' on' : ''}" data-t="${t}" data-v="${esc(key)}">${esc(label)} <em>${n}</em></button>`;
-  const bloque = (titulo, html) => html ? `<div class="sec-title">${titulo}</div><div class="chips">${html}</div>` : '';
+  const chip = (t, key, label, n, on) => `<button type="button" class="fchip${on ? ' on' : ''}" data-t="${t}" data-v="${esc(key)}" data-s="${esc(norm(label))}" aria-pressed="${on}">${icon('check', 14)}<span>${esc(label)}</span><em>${n}</em></button>`;
   const porNombre = ([, a], [, b]) => b.n - a.n || a.label.localeCompare(b.label, 'es');
-  const estados = Object.entries(ESTADOS).map(([k, v]) => chip('estado', k, v, vis.filter(f => f.estado === k).length, st.estado === k)).join('');
-  const pubs = Object.entries(PUBS).map(([k, l]) => chip('pub', k, l, vis.filter(f => f.pub === k).length, st.pubs.has(k))).join('');
+  const mk = (t, m, activos) => [...m.entries()].sort(porNombre).map(([k, o]) => chip(t, k, o.label, o.n, activos.has(k)));
+  const bloque = (id, titulo, chips, sel, o = {}) => {
+    if (!chips.length) return '';
+    const open = filtAb.open === id;
+    return `<section class="facc${open ? ' open' : ''}${sel.length ? ' has' : ''}" data-id="${id}">
+      <button type="button" class="fhead" data-sec="${id}" aria-expanded="${open}">
+        <span class="fhead-t"><b>${titulo}</b><small>${sel.length ? esc(sel.join(', ')) : (o.sub || 'Todos')}</small></span>
+        ${sel.length > 1 ? `<span class="fbadge">${sel.length}</span>` : ''}${icon('chev', 18)}
+      </button>
+      <div class="fwrap"><div class="finner"><div class="fbody">
+        ${o.hint ? `<p class="fhint">${o.hint}</p>` : ''}
+        ${chips.length > 8 ? `<div class="fsearch">${icon('search', 16)}<input type="search" data-q="${id}" placeholder="Buscar…" value="${esc(filtQ[id] || '')}" autocomplete="off" aria-label="Buscar en ${esc(titulo)}"></div>` : ''}
+        <div class="fopts">${chips.join('')}</div>
+        <p class="fnone" hidden>No hay coincidencias</p>
+      </div></div></div>
+    </section>`;
+  };
+  const estados = Object.entries(ESTADOS).map(([k, v]) => chip('estado', k, v, vis.filter(f => f.estado === k).length, st.estado === k));
+  const pubs = Object.entries(PUBS).map(([k, l]) => chip('pub', k, l, vis.filter(f => f.pub === k).length, st.pubs.has(k)));
   const fan = contar(vis, f => f.fandom ? [{ key:norm(f.fandom), label:f.fandom }] : []);
-  const fanH = [...fan.entries()].sort(porNombre).map(([k, o]) => chip('fandom', k, o.label, o.n, st.fandoms.has(k))).join('');
-  const shp = contar(vis, f => f.ship ? [{ key:norm(f.ship), label:f.ship }] : []);
-  const shpH = [...shp.entries()].sort(porNombre).map(([k, o]) => chip('ship', k, o.label, o.n, st.ships.has(k))).join('');
-  const plats = contar(vis, f => [{ key:f.plataforma, label:PLATS[f.plataforma] }]);
-  const platsH = [...plats.entries()].sort((a, b) => b[1].n - a[1].n).map(([k, o]) => chip('plat', k, o.label, o.n, st.plats.has(k))).join('');
+  /* parejas: si hay fandom elegido, solo las de ese fandom; si no, todas */
+  const dePareja = f => f.ships.map(x => ({ key:norm(x), label:x }));
+  const base = st.fandoms.size ? vis.filter(f => st.fandoms.has(norm(f.fandom))) : vis;
+  const shpAll = contar(vis, dePareja), shp = contar(base, dePareja);
+  st.ships.forEach(k => { if (!shp.has(k) && shpAll.has(k)) shp.set(k, shpAll.get(k)); });   // las ya elegidas siempre se ven
+  const vib = contar(vis, f => f.categorias.map(k => ({ key:k, label:tLab('vibes', k) })));
   const favN = vis.filter(f => f.fav === 'si').length;
   const ad = vis.filter(f => f.adulto);
-  const t18 = contar(ad, f => f.tags18.map(k => ({ key:k, label:k })));
-  const t18H = [...t18.entries()].sort((a, b) => b[1].n - a[1].n || tLab('t18', a[0]).localeCompare(tLab('t18', b[0]), 'es'))
-    .map(([k, o]) => chip('t18', k, tEmo('t18', k) + ' ' + tShort('t18', k), o.n, st.t18.has(k))).join('');
-  $('#filtros-body').innerHTML =
-    bloque('Estado de lectura', estados) +
-    bloque('¿Terminado?', pubs) +
-    bloque('Fandom / Universo', fanH) +
-    bloque('Pareja / Ship', shpH) +
-    bloque('Plataforma', platsH) +
-    bloque('Favoritos', favN ? chip('fav', '', '★ Solo favoritos', favN, st.fav) : '') +
-    (adultos && ad.length ? bloque('+18', chip('adulto', '', '🔞 Solo +18', ad.length, st.soloAdulto) + t18H) : '');
+  const t18 = contar(ad, f => f.tags18.map(k => ({ key:k, label:tShort('t18', k) })));
+  const adChips = [chip('adulto', '', 'Solo +18', ad.length, st.soloAdulto), ...mk('t18', t18, st.t18)];
+
+  const body = $('#filtros-body');
+  const y = body.scrollTop, ys = {};
+  $$('.facc', body).forEach(sec => { const o = $('.fopts', sec); if (o) ys[sec.dataset.id] = o.scrollTop; });
+  body.innerHTML =
+    bloque('estado', 'Estado de lectura', estados, st.estado !== 'todos' ? [ESTADOS[st.estado]] : []) +
+    bloque('pub', '¿Terminado?', pubs, [...st.pubs].map(k => PUBS[k])) +
+    bloque('fandom', 'Fandom / Universo', mk('fandom', fan, st.fandoms), [...st.fandoms].map(k => labelDe('fandom', k))) +
+    bloque('ship', 'Pareja / Ship', mk('ship', shp, st.ships), [...st.ships].map(labelShip), { sub:'Elige una o varias', hint:'Puedes elegir más de una pareja.' }) +
+    bloque('vibe', 'Vibes', mk('vibe', vib, st.vibes), [...st.vibes].map(k => tLab('vibes', k))) +
+    bloque('fav', 'Favoritos', favN ? [chip('fav', '', '★ Solo favoritos', favN, st.fav)] : [], st.fav ? ['Solo favoritos'] : []) +
+    (adultos && ad.length ? bloque('adulto', '+18', adChips, [...(st.soloAdulto ? ['Solo +18'] : []), ...[...st.t18].map(k => tShort('t18', k))]) : '');
+  body.scrollTop = y;
+  $$('.facc', body).forEach(sec => { const o = $('.fopts', sec); if (o && ys[sec.dataset.id]) o.scrollTop = ys[sec.dataset.id]; filtrarChips(sec.dataset.id); });
   const n = calcular().lista.length;
   $('#btn-ver').textContent = `Ver ${n} resultado${n === 1 ? '' : 's'}`;
 }
-$('#btn-filtros').onclick = () => { pintarFiltros(); abrirHoja('sheet-filtros'); };
+$('#btn-filtros').onclick = () => { filtAb.open = null; pintarFiltros(); abrirHoja('sheet-filtros'); };
+$('#filtros-body').addEventListener('input', e => { const id = e.target.dataset.q; if (!id) return; filtQ[id] = e.target.value; filtrarChips(id); });
 $('#filtros-body').addEventListener('click', e => {
-  const b = e.target.closest('.chip'); if (!b) return; vibrar();
+  const h = e.target.closest('[data-sec]');
+  if (h) {
+    const id = h.dataset.sec, abrir = filtAb.open !== id;
+    setAbierto(abrir ? id : null);
+    if (abrir) setTimeout(() => h.closest('.facc').scrollIntoView({ block:'nearest', behavior:'smooth' }), 290);
+    return;
+  }
+  const b = e.target.closest('.fchip'); if (!b) return; vibrar();
   const { t, v } = b.dataset;
-  const tog = (set, x) => set.has(x) ? set.delete(x) : set.add(x);
-  if (t === 'fav') st.fav = !st.fav; else if (t === 'estado') st.estado = st.estado === v ? 'todos' : v; else if (t === 'pub') tog(st.pubs, v); else if (t === 'plat') tog(st.plats, v); else if (t === 'fandom') tog(st.fandoms, v); else if (t === 'ship') tog(st.ships, v); else if (t === 'adulto') st.soloAdulto = !st.soloAdulto; else if (t === 't18') tog(st.t18, v);
+  const uno = set => { const ya = set.has(v); set.clear(); if (!ya) set.add(v); };     // una sola opción a la vez
+  if (t === 'fav') st.fav = !st.fav;
+  else if (t === 'estado') st.estado = st.estado === v ? 'todos' : v;
+  else if (t === 'pub') uno(st.pubs);
+  else if (t === 'fandom') uno(st.fandoms);
+  else if (t === 'vibe') uno(st.vibes);
+  else if (t === 'ship') st.ships.has(v) ? st.ships.delete(v) : st.ships.add(v);        // solo aquí se pueden elegir varias
+  else if (t === 'adulto') st.soloAdulto = !st.soloAdulto;
+  else if (t === 't18') uno(st.t18);
+  const id = b.closest('.facc').dataset.id;
   render();
+  if (id !== 'ship' && id !== 'adulto') { clearTimeout(cierreT); cierreT = setTimeout(() => { if (filtAb.open === id) setAbierto(null); }, 380); }   // al elegir una sola opción, se pliega
 });
 $('#btn-limpiar-filtros').onclick = () => { limpiarFiltros(); render(); };
 
