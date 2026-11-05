@@ -1,0 +1,1964 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light" data-acc="violeta">
+<head>
+<meta charset="UTF-8">
+<title>Mis Fanfics</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="theme-color" content="#f4effc">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-title" content="Fanfics">
+<script>
+/* Temas (id, nombre, descripción, oscuro, bg, card, ink, mute, line, chip, acento, acento-suave, sobre-acento) */
+window.__TH=[
+['ruby','Ruby Mocha','rubí intenso, lavanda y café blanco',1,'#2a1519','#371c21','#f5e9e6','#c3a6a6','#4d2c31','#43242a','#e8a0b4','#4a2630','#2a1519'],
+['matcha','Miel de matcha','hojas de salvia, chorrito de miel tibia',1,'#14201a','#1b2a22','#eef2e0','#aab99f','#2c4034','#23352b','#e5b93c','#3a3818','#14201a'],
+['flores','Felicidad de las flores','pétalos de rosa y burbujas de melocotón',0,'#fff1f0','#fffafa','#4a2530','#8f6670','#f4d3d4','#fbe3e2','#e8527f','#fde0e8','#ffffff'],
+['sorbete','Sorbete bañado por el sol','coral, mermelada de tomate y cielo',0,'#fff4ea','#fffaf5','#4a2a1c','#8f6b58','#f5d8c3','#fde6d3','#e2553d','#fddccf','#ffffff'],
+['peonia','Latte de peonía','colorete, palo de rosa y crema de vainilla',0,'#fbf0f0','#fffafa','#4a2e32','#8a6a70','#ecd3d6','#f5e1e3','#c0687a','#f7dde1','#ffffff'],
+['limon','Brisa de limón','lino azul cielo, piedra lunar y azafrán',0,'#eefaf8','#fbfffe','#1f3b3b','#5f8080','#cfe8e4','#def3ef','#2a8c95','#d3eef0','#ffffff'],
+['lila','Sueño diurno de lila','bruma color lavanda, convertida en luz del día',0,'#f4effc','#fcfaff','#33284a','#7a6f93','#e1d7f2','#ebe3f8','#7c5cd6','#e6dcfa','#ffffff'],
+['violeta','Latte violeta','flores de lila sobre crema de vainilla',0,'#f8f2f6','#fffcfd','#3d2f45','#857590','#e8dce8','#f0e6f1','#8e5fb5','#eadcf5','#ffffff'],
+['melocoton','Ensueño melocotón','lápiz labial color baya, caramelo y jazmín',0,'#fff3ee','#fffaf7','#4a2433','#94677a','#f6d6d6','#fde4e0','#d6336c','#fddae6','#ffffff'],
+['melodia','Melodíaaa','leche de fresa y cintas de colores pastel',0,'#fff0f4','#fffafc','#522a3c','#98677c','#f6d3df','#fbe2ea','#e0518a','#fcd9e6','#ffffff'],
+['kuro','Beso Kuro','violeta intenso, lila y un poco de rosa',0,'#efe9fb','#faf7ff','#2f2250','#6f6590','#d9cff0','#e4dbf6','#5f45b0','#ddd2f5','#ffffff'],
+['escarcha','Serenidad escarchada','melón, escarcha y glicina',0,'#eaf8fb','#f9feff','#1d3350','#5a7595','#cde6ee','#daf0f5','#5a6bd0','#d9defa','#ffffff'],
+['primavera','Flores de primavera','flores de cerezo, cielo y hojas nuevas',0,'#fcf1f5','#fffafc','#3d3040','#85708a','#efd9e3','#f7e4ec','#c9739b','#f8dfea','#ffffff'],
+['niebla','Niebla de lavanda','resplandor púrpura después de medianoche',1,'#1d1a24','#27232f','#eee9f6','#aaa2bb','#383344','#302b3a','#c9b8f0','#3a3350','#1d1a24'],
+['acero','Acero de medianoche','noche azul tinta y niebla plateada',1,'#101a20','#17252d','#e6eef0','#9ab0b6','#26383f','#1f2f37','#9fd0d6','#1f3a40','#101a20'],
+['bryn','El hogar de Bryn','pino intenso, musgo y chocolate negro',1,'#1a2114','#232c1c','#f0ead8','#b3ab92','#36402c','#2c3524','#a8c97a','#35432a','#1a2114'],
+['carmesi','Romance carmesí','caoba intenso, frutos rojos triturados y rojo de carreras',1,'#1f0a0d','#2b1014','#fbe9ea','#c9959b','#44191f','#38141a','#ff5a6e','#4a1a22','#1f0a0d'],
+['pinemoon','Rosado Pine Moon','violeta oscuro, rosa y oro',1,'#232136','#2a273f','#e0def4','#908caa','#393552','#312e48','#ea9a97','#44323f','#232136'],
+['supernova','Supernova de medianoche','noche oscura y violeta y luz de estrellas',1,'#0f0a1f','#170f2d','#ece8fa','#a39cc4','#2a2150','#1f1840','#a8a6f0','#2a2760','#0f0a1f']
+].map(function(a){return{id:a[0],n:a[1],d:a[2],dark:!!a[3],bg:a[4],card:a[5],ink:a[6],mute:a[7],line:a[8],chip:a[9],acc:a[10],soft:a[11],on:a[12]}});
+window.__applyTh=function(id){
+  var t=window.__TH.filter(function(x){return x.id===id})[0]||window.__TH.filter(function(x){return x.id==='lila'})[0];
+  var s=document.documentElement.style;
+  [['--bg',t.bg],['--card',t.card],['--ink',t.ink],['--mute',t.mute],['--line',t.line],['--chip',t.chip],['--acc',t.acc],['--acc-soft',t.soft],['--on-acc',t.on],
+   ['--pink',t.acc],['--on-pink',t.on],['--chip-ink','color-mix(in srgb,'+t.ink+' 78%,'+t.chip+')'],
+   ['--sel','color-mix(in srgb,'+t.ink+' 62%,'+t.bg+')'],['--on-sel',t.bg]].forEach(function(k){s.setProperty(k[0],k[1])});
+  return t;
+};
+/* Aplica el tema antes de pintar para evitar el "parpadeo" */
+try{var p=JSON.parse(localStorage.getItem('fics_prefs_v2')||'{}');
+var d=p.tema==='oscuro'||((p.tema||'auto')==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);
+document.documentElement.dataset.theme=d?'dark':'light';
+document.documentElement.dataset.fuente=['fraunces','jakarta','fira','chivo','space'].indexOf(p.fuente)>-1?p.fuente:'fraunces';
+window.__applyTh(d?(p.temaOscuro||'supernova'):(p.temaClaro||'lila'));}catch(e){}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chivo:wght@600;700&family=Fira+Sans:wght@600;700&family=Fraunces:ital,wght@0,600;0,700;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#fbf5ee; --card:#fffdf9; --ink:#3b2a22; --mute:#7a685d; --line:#eadfd2;
+  --chip:#f1e8dd; --chip-ink:#65534a;
+  --ok:#3d7a60; --ok-soft:#dcefe6; --danger:#b4412f;
+  /* paleta de parejas: morados, rosados, turquesa y celeste */
+  --f0:#7c5cd6; --f1:#c2417a; --f2:#14877c; --f3:#2a7fc0; --f4:#9b6fd0; --f5:#d4609a; --f6:#2fa89c; --f7:#4a9bd8;
+  --acc:#7c5cd6; --acc-soft:#ece6fb; --on-acc:#fff; --star:#e8a317;
+  --pink:#c2257a; --on-pink:#fff; --sel:#6b625c; --on-sel:#fff; --adult:#8c2236;
+  --shadow:0 1px 2px rgba(80,50,30,.06),0 6px 18px rgba(80,50,30,.06);
+  --scrim:rgba(30,18,10,.45);
+  --serif:'Fraunces','Lora',Georgia,'DejaVu Serif',serif;
+  --sans:'Plus Jakarta Sans',Inter,system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+[data-theme=dark]{
+  color-scheme:dark;
+  --bg:#14121a; --card:#1e1b27; --ink:#efeaf7; --mute:#a39cb3; --line:#2d2939;
+  --chip:#282434; --chip-ink:#bab2ca;
+  --ok:#6ee7b7; --ok-soft:rgba(110,231,183,.14); --danger:#ff8a78;
+  --f0:#c4b5fd; --f1:#f9a8d4; --f2:#5eead4; --f3:#7dd3fc; --f4:#a78bfa; --f5:#f472b6; --f6:#2dd4bf; --f7:#38bdf8;
+  --on-acc:#14121a; --star:#fbbf24;
+  --pink:#f472b6; --on-pink:#14121a; --sel:#4a4658; --on-sel:#efeaf7; --adult:#ffb4b4;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px rgba(0,0,0,.25);
+  --scrim:rgba(0,0,0,.6);
+}
+/* letra de los títulos (se elige en Ajustes) */
+[data-fuente=jakarta]{--serif:'Plus Jakarta Sans',Inter,system-ui,sans-serif}
+[data-fuente=fira]{--serif:'Fira Sans',system-ui,sans-serif}
+[data-fuente=chivo]{--serif:'Chivo',system-ui,sans-serif}
+[data-fuente=space]{--serif:'Space Grotesk',system-ui,sans-serif}
+
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);font-size:14px;line-height:1.45;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;min-height:100dvh}
+body.locked{overflow:hidden}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+input,select,textarea{font:inherit;color:inherit}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:8px}
+.ic{display:block;flex:none}
+
+.app{max-width:1200px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 10px) 16px calc(110px + env(safe-area-inset-bottom))}
+
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:6px 0 12px}
+.top h1{font-family:var(--serif);font-size:26px;font-weight:700;letter-spacing:-.4px;line-height:1.1}
+.top p{color:var(--mute);font-size:12px;margin-top:3px}
+.top-actions{display:flex;gap:8px}
+.ibtn{width:40px;height:40px;border-radius:13px;background:var(--card);border:1px solid var(--line);display:grid;place-items:center;color:var(--ink);transition:transform .12s}
+.ibtn:active{transform:scale(.92)}
+.ibtn.sm{width:34px;height:34px;border-radius:11px}
+.ibtn.on{background:var(--acc-soft);color:var(--acc);border-color:transparent}
+
+.searchbar{position:sticky;top:0;z-index:20;padding:6px 0 10px;background:linear-gradient(var(--bg) 82%,transparent)}
+.search{display:flex;align-items:center;gap:10px;height:46px;padding:0 6px 0 14px;background:var(--card);border:1.5px solid var(--line);border-radius:15px;color:var(--mute);transition:border-color .15s,box-shadow .15s}
+.search:focus-within{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-soft)}
+.search input{flex:1;min-width:0;border:0;outline:0;background:none;font-size:16px;color:var(--ink)}
+.search input::placeholder{color:var(--mute);opacity:.85}
+.search .clear{width:34px;height:34px;display:none;place-items:center;border-radius:10px;color:var(--mute)}
+.search.has .clear{display:grid}
+
+.seg{display:flex;background:var(--chip);border-radius:14px;padding:3px;gap:2px}
+.seg button{flex:1;padding:8px 2px;border-radius:11px;font-size:12.5px;font-weight:600;color:var(--mute);white-space:nowrap;transition:background .15s,color .15s}
+.seg button b{font-weight:700;opacity:.7;margin-left:3px;font-size:11px}
+.seg button.on{background:var(--card);color:var(--acc);box-shadow:0 1px 3px rgba(0,0,0,.14)}
+.seg.mini button{padding:9px 4px}
+
+.tools{display:flex;gap:8px;align-items:center;margin:12px 0}
+.fbtn{display:flex;align-items:center;gap:7px;height:38px;padding:0 13px;border-radius:12px;background:var(--card);border:1px solid var(--line);font-weight:700;font-size:12.5px;flex:none}
+.fbtn em{font-style:normal;background:var(--sel);color:var(--on-sel);min-width:18px;height:18px;border-radius:99px;display:none;place-items:center;font-size:10.5px;padding:0 5px}
+.fbtn.has em{display:grid}
+.pills{display:flex;gap:6px;overflow-x:auto;flex:1;scrollbar-width:none;min-width:0}
+.pills::-webkit-scrollbar{display:none}
+.pill{flex:none;display:inline-flex;align-items:center;gap:5px;background:var(--chip);color:var(--ink);border:1px solid var(--line);border-radius:99px;padding:6px 8px 6px 11px;font-size:12px;font-weight:700;white-space:nowrap}
+.view{display:flex;flex:none;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-left:auto}
+.view button{width:36px;height:36px;display:grid;place-items:center;color:var(--mute)}
+.view button.on{background:var(--acc-soft);color:var(--acc)}
+.listhead{display:flex;justify-content:space-between;align-items:center;color:var(--mute);font-size:12px;margin-bottom:8px;min-height:24px}
+.listhead label{display:flex;align-items:center;gap:4px}
+.listhead select{appearance:none;-webkit-appearance:none;border:0;background:none;color:var(--ink);font-weight:700;font-size:12px;padding:4px 16px 4px 2px;cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none' stroke='%23999' stroke-width='1.6'%3E%3Cpath d='M1 1l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 2px center}
+
+.lista{display:flex;flex-direction:column;gap:10px}
+.lista.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:stretch}
+@media(min-width:700px){.lista.grid{grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}.lista.compacta{gap:12px}.app{padding-left:28px;padding-right:28px}.top h1{font-size:30px}}
+.lista.grid .vacio{grid-column:1/-1}
+.card{position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:13px 10px 12px 18px;box-shadow:var(--shadow);cursor:pointer}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--c,var(--mute))}
+.c-head{display:flex;gap:6px;align-items:flex-start}
+.c-titles{flex:1;min-width:0;padding-top:2px}
+.c-title{font-family:var(--serif);font-size:16px;font-weight:700;line-height:1.25;letter-spacing:-.1px;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card.open .c-title{display:block}
+.c-by{color:var(--mute);font-size:12px;margin-top:3px;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.badge18{display:inline-block;font:800 10px/1.5 var(--sans);letter-spacing:.3px;color:var(--adult);border:1.5px solid currentColor;border-radius:6px;padding:0 5px}
+.c-btns{display:flex;flex:none}
+.cbtn{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;color:var(--mute)}
+.cbtn:active{background:var(--chip)}
+.cbtn.fav{color:var(--adult)}
+.c-ship{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding-right:6px}
+.shipchip{display:inline-block;max-width:100%;background:color-mix(in srgb,var(--c,var(--mute)) 52%,#2a2630);color:#fff;border-radius:99px;padding:3px 11px;font-size:12.5px;font-weight:700;line-height:1.35;overflow-wrap:anywhere}
+.fan{border:1px solid var(--line);border-radius:99px;padding:2px 9px;font-size:11px;color:var(--mute);line-height:1.35}
+.c-notes{margin:8px 6px 0 0;padding:8px 11px;background:color-mix(in srgb,var(--ink) 4%,transparent);border:1px solid var(--line);border-radius:10px;font-size:12.5px;color:var(--mute);font-style:italic;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.c-chars{margin-top:7px;font-size:12.5px;color:var(--mute);padding-right:6px}
+.c-chars b{color:var(--ink)}
+.c-tropes{display:none;margin-top:7px;font-size:12px;color:var(--mute);padding-right:6px}
+.c-tropes b{color:var(--ink)}
+.c-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:10px;padding-right:6px}
+.tags{display:flex;flex-wrap:wrap;gap:5px;min-width:0}
+.tag{background:var(--chip);color:var(--chip-ink);border-radius:8px;padding:3px 8px;font-size:11px;font-weight:600}
+.tag.rate{background:var(--chip);color:var(--ink);font-weight:700}
+.star{color:var(--star)}
+.tag.fmt{color:#111}
+[data-theme=dark] .tag.fmt{color:#fff}
+.plat{display:inline-flex;align-items:center;border-radius:99px;padding:3px 10px;font-size:10.5px;font-weight:800;letter-spacing:.3px;line-height:1.3;white-space:nowrap;color:var(--chip-ink);background:var(--chip);border:1px solid var(--line)}
+.cswrap{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.csw{width:36px;height:36px;border-radius:50%;border:3px solid var(--bg);box-shadow:0 0 0 2px var(--line);display:grid;place-items:center;color:var(--on-acc)}
+.csw[aria-pressed=true]{box-shadow:0 0 0 2.5px var(--ink)}
+.csw .ic{opacity:0}.csw[aria-pressed=true] .ic{opacity:1}
+.cpick{margin-top:12px;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:10px}
+.sv{position:relative;height:110px;border-radius:10px;touch-action:none;cursor:crosshair;background:linear-gradient(to top,#000,transparent),linear-gradient(to right,#fff,hsl(var(--h,140) 100% 50%))}
+.sv i{position:absolute;width:22px;height:22px;border:2px solid #fff;border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 0 1px rgba(0,0,0,.45);pointer-events:none}
+.hue{-webkit-appearance:none;appearance:none;width:100%;height:14px;border-radius:99px;margin:12px 0 10px;background:linear-gradient(to right,#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00);outline:0}
+.hue::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:#fff;border:2px solid rgba(0,0,0,.35);box-shadow:0 1px 4px rgba(0,0,0,.4)}
+.hue::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#fff;border:2px solid rgba(0,0,0,.35)}
+.hexrow{display:flex;gap:10px;align-items:center}
+.hexrow .prev{width:38px;height:38px;border-radius:12px;flex:none;border:1px solid var(--line)}
+.hexrow .input{font-family:monospace;text-transform:lowercase}
+.cswrap .chip{padding:8px 14px}
+.rate-box{margin-top:10px;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:10px 12px}
+.rate-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.rate-head .label{margin:0}
+.rate-head b{font-size:13px;color:var(--ink)}
+.stars{display:flex;gap:2px}
+.stars button{flex:1;min-width:0;height:36px;display:grid;place-items:center;color:var(--mute);opacity:.55}
+.stars button.on{color:var(--star);opacity:1}
+.st{flex:none;font-size:11px;font-weight:800;border-radius:99px;padding:5px 11px;border:1px solid transparent}
+.st-por-leer{background:transparent;border-color:var(--line);color:var(--mute)}
+.st-leyendo{background:var(--chip);border-color:var(--mute);color:var(--ink)}
+.st-terminado{background:var(--chip);color:var(--chip-ink)}
+.c-actions{display:none;gap:8px;margin-top:12px;padding:12px 6px 0 0;border-top:1px dashed var(--line)}
+.c-actions .btn{flex:1;justify-content:center;padding:0 8px;height:34px;font-size:12px}
+.g-btns .btn.primary,.c-actions .btn.primary{background:var(--chip);color:var(--ink);border:1px solid var(--line)}
+.card.open .c-notes{display:block;-webkit-line-clamp:unset}
+.card.open .c-tropes{display:block}
+.card.open .c-actions{display:flex}
+
+/* ── cuadrícula de 2 columnas ── */
+.lista.grid .card{display:flex;flex-direction:column;padding:11px 8px 10px 15px;border-radius:16px}
+.lista.grid .card::before{width:4px}
+.g-body{display:flex;flex-direction:column;justify-content:space-between;flex:1;min-width:0}   /* el espacio sobrante se reparte parejo entre título, ship, etiquetas y botones */
+.g-top{display:flex;gap:2px;align-items:flex-start}
+.g-title{flex:1;min-width:0;font-family:var(--serif);font-size:14px;font-weight:700;line-height:1.28;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;padding-top:3px}
+/* el corazón no estira la fila: con título de 1 línea ya no queda hueco antes del ship (el área de toque sigue siendo de 32 px) */
+.g-top .cbtn{width:32px;height:32px;margin:0 -2px -11px 0;flex:none}
+.g-by{color:var(--mute);font-size:11px;margin-top:2px}
+.g-ship{margin-top:7px;line-height:1.3;display:flex;flex-wrap:wrap;gap:5px}
+.g-ship .shipchip{font-size:12px;padding:2px 10px}
+.g-fan{font-size:11px;color:var(--mute);margin-top:1px;overflow-wrap:anywhere}
+.g-chars{font-size:11.5px;color:var(--ink);margin-top:4px;line-height:1.35;overflow-wrap:anywhere}
+.g-notes{margin-top:6px;font-size:11.5px;color:var(--mute);font-style:italic;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.g-meta{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-top:8px;padding-right:4px}
+.g-meta .st{padding:4px 9px;font-size:10.5px}
+.g-meta .tag{font-size:10.5px;padding:3px 7px}
+.g-btns{display:flex;gap:6px;padding:10px 4px 0 0}
+.g-btns .btn{flex:1;height:32px;padding:0 6px;font-size:12px;justify-content:center;border-radius:11px;gap:5px}
+
+.lista.compacta .card{padding:9px 6px 9px 16px;border-radius:14px;box-shadow:none}
+.lista.compacta .c-title{font-size:14.5px}
+.lista.compacta .c-ship{margin-top:3px;font-size:12.5px}
+.lista.compacta .cbtn{width:34px;height:34px}
+.lista.compacta .c-btns .link{display:none}
+.lista.compacta .c-notes{-webkit-line-clamp:unset;display:block;font-style:normal;color:var(--ink);white-space:pre-wrap}
+.lista.compacta .c-tropes{display:block}
+.lista.compacta .c-chars{display:block}
+.lista.compacta .c-foot{margin-top:6px}
+.lista.compacta .card:not(.open) .c-foot{justify-content:flex-start}
+.lista.compacta .st{padding:3px 9px;font-size:10.5px}
+.lista.compacta .card.open .c-btns .link{display:grid}
+
+.card.blur .c-body{filter:blur(9px);opacity:.7;pointer-events:none;user-select:none}
+.veil{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:800;font-size:12.5px;color:var(--ink);background:color-mix(in srgb,var(--card) 35%,transparent);text-align:center;padding:0 8px}
+
+.vacio{text-align:center;color:var(--mute);padding:48px 10px;font-size:14px}
+.vacio .big{font-family:var(--serif);font-size:19px;color:var(--ink);font-weight:700;margin-bottom:6px}
+.vacio .btn{margin-top:16px}
+.mas{margin:16px auto 0;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;color:var(--ink);background:var(--card);border:1px solid var(--line);font-size:12.5px;font-weight:700;padding:12px 14px;border-radius:14px;line-height:1.35;text-align:center}
+.mas .ic{transition:transform .2s}.mas.open .ic{transform:rotate(180deg)}
+.ocultos{margin:16px auto 0;display:flex;align-items:center;gap:7px;color:var(--mute);font-size:12px;font-weight:600;padding:8px 12px;border-radius:99px}
+
+.btn{text-decoration:none;display:inline-flex;align-items:center;gap:7px;height:44px;padding:0 18px;border-radius:13px;font-weight:700;font-size:14px;transition:transform .12s,filter .12s}
+.btn:active{transform:scale(.96)}
+.btn.primary{background:var(--acc);color:var(--on-acc)}
+.btn.save{background:var(--pink);color:var(--on-pink)}
+.btn.sec{background:var(--card);border:1.5px solid var(--line)}
+.btn.danger{color:var(--danger)}
+.btn.block{width:100%;justify-content:center}
+.fab{position:fixed;z-index:30;right:max(16px,calc(50% - 584px));bottom:calc(18px + env(safe-area-inset-bottom));height:54px;padding:0 22px 0 18px;border-radius:17px;background:var(--acc);color:var(--on-acc);font-weight:800;font-size:14.5px;display:flex;align-items:center;gap:8px;box-shadow:0 10px 24px rgba(0,0,0,.28);transition:transform .2s,opacity .2s}
+.fab:active{transform:scale(.95)}
+body.typing .fab{transform:translateY(120px);opacity:0;pointer-events:none}
+
+.overlay{position:fixed;left:0;right:0;top:var(--vvt,0px);height:var(--vvh,100dvh);z-index:100;display:flex;align-items:flex-end;justify-content:center;background:var(--scrim);opacity:0;visibility:hidden;transition:opacity .2s,visibility 0s .2s}
+.overlay.open{opacity:1;visibility:visible;transition:opacity .2s}
+.sheet{width:100%;max-width:520px;max-height:calc(100% - 8px);display:flex;flex-direction:column;background:var(--bg);border-radius:24px 24px 0 0;box-shadow:0 -10px 40px rgba(0,0,0,.25);transform:translateY(40px);transition:transform .26s cubic-bezier(.16,1,.3,1)}
+.overlay.open .sheet{transform:none}
+.grab{width:38px;height:4px;border-radius:9px;background:var(--line);margin:9px auto 0;flex:none}
+.sheet-head{display:flex;justify-content:space-between;align-items:center;padding:10px 18px 6px;flex:none}
+.sheet-head h2{font-family:var(--serif);font-size:20px;font-weight:700}
+.sheet-body{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:6px 18px 16px;-webkit-overflow-scrolling:touch}
+body.typing .sheet-body{padding-bottom:220px}
+.sheet-foot{flex:none;display:flex;gap:10px;justify-content:flex-end;padding:12px 18px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--bg)}
+.sheet-foot .btn.primary,.sheet-foot .btn.save{flex:1;justify-content:center}
+@media (min-width:600px){
+  .overlay{align-items:center}
+  .sheet{border-radius:24px;max-height:calc(100% - 40px)}
+  .grab{display:none}
+}
+
+.group{margin-bottom:14px}
+.label{display:block;font-size:12px;font-weight:700;color:var(--mute);margin-bottom:6px}
+.label i{color:var(--acc);font-style:normal}
+.input,.select,.textarea{width:100%;background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:11px 13px;font-size:16px;outline:none;transition:border-color .15s,box-shadow .15s}
+.textarea{resize:vertical;min-height:84px;line-height:1.45}
+.input:focus,.select:focus,.textarea:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-soft)}
+.input::placeholder,.textarea::placeholder{color:var(--mute);opacity:.7}
+.group.has-error .input{border-color:var(--danger)}
+.err{display:none;color:var(--danger);font-size:12px;font-weight:600;margin-top:5px}
+.group.has-error .err{display:block}
+.row2{display:flex;gap:8px;align-items:center}
+.row2 .input{flex:1;min-width:0}
+.row2 span{color:var(--mute);font-weight:700;font-size:13px}
+.capsbox{background:color-mix(in srgb,var(--acc) 7%,var(--card));border:1.5px solid color-mix(in srgb,var(--acc) 25%,var(--line));border-radius:14px;padding:12px 14px}
+.group .capsbox{margin-top:12px}
+#g-capsmain{margin-bottom:0}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:99px;background:var(--card);border:1.5px solid var(--line);font-size:12.5px;font-weight:700;color:var(--chip-ink);transition:all .12s;text-align:left}
+.chip em{font-style:normal;opacity:.65;font-size:11px}
+.chip.on{background:var(--acc);border-color:var(--acc);color:var(--on-acc)}
+.chip .x{display:inline-grid;place-items:center;margin-left:2px;opacity:.7;padding:2px;margin-right:-4px}
+.chip.nuevo{border-style:dashed;color:var(--acc);border-color:var(--acc)}
+#filtros-body .chip.on{background:var(--sel);border-color:var(--sel);color:var(--on-sel)}
+.sugs{display:block;margin-top:8px}
+.sugs:empty{display:none}
+.sugs .chip{padding:6px 11px;font-size:12px}
+.sug-l{width:100%;font-size:11px;color:var(--mute);font-weight:700}
+.sug-tog{display:flex;align-items:center;gap:6px;color:var(--mute);font-size:11.5px;font-weight:700;padding:5px 0}
+.sug-tog .ic{transition:transform .15s}
+.sug-tog[aria-expanded=true] .ic{transform:rotate(180deg)}
+.sug-chips{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 2px}
+#sel-ship{margin-bottom:8px}
+.facc{background:var(--card);border:1.5px solid var(--line);border-radius:16px;margin-bottom:10px;overflow:hidden;transition:border-color .2s,box-shadow .2s}
+.facc.open{border-color:color-mix(in srgb,var(--acc) 50%,var(--line));box-shadow:var(--shadow)}
+.facc.has:not(.open){border-color:color-mix(in srgb,var(--acc) 32%,var(--line))}
+.fhead{display:flex;align-items:center;gap:10px;width:100%;min-height:56px;padding:10px 14px;text-align:left}
+.fhead:active{background:var(--chip)}
+.fhead-t{flex:1;min-width:0}
+.fhead-t b{display:block;font-size:14px;font-weight:700}
+.fhead-t small{display:block;font-size:12px;color:var(--mute);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.facc.has .fhead-t small{color:var(--acc);font-weight:700}
+.fbadge{flex:none;min-width:22px;height:22px;padding:0 6px;border-radius:99px;background:var(--acc);color:var(--on-acc);font-size:11.5px;font-weight:800;display:grid;place-items:center}
+.fhead .ic{color:var(--mute);transition:transform .25s}
+.facc.open .fhead .ic{transform:rotate(180deg)}
+.fwrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows .28s ease}
+.facc.open .fwrap{grid-template-rows:1fr}
+.finner{overflow:hidden;min-height:0;visibility:hidden;transition:visibility 0s .28s}
+.facc.open .finner{visibility:visible;transition:none}
+.fbody{padding:12px 14px 14px;border-top:1px solid var(--line)}
+.fhint{font-size:11.5px;color:var(--mute);margin:0 0 10px}
+.fsearch{display:flex;align-items:center;gap:8px;height:40px;padding:0 10px;margin-bottom:10px;background:var(--bg);border:1.5px solid var(--line);border-radius:12px;color:var(--mute)}
+.fsearch:focus-within{border-color:var(--acc)}
+.fsearch input{flex:1;min-width:0;border:0;outline:0;background:none;font-size:16px;color:var(--ink)}
+.fopts{display:flex;flex-wrap:wrap;gap:8px;max-height:250px;overflow-y:auto;overscroll-behavior:contain;padding:1px}
+.fchip{display:inline-flex;align-items:center;gap:7px;max-width:100%;padding:8px 13px;border-radius:99px;background:var(--bg);border:1.5px solid var(--line);font-size:13px;font-weight:600;color:var(--chip-ink);text-align:left;transition:background .15s,border-color .15s,color .15s,transform .1s}
+.fchip:active{transform:scale(.96)}
+.fchip span{overflow-wrap:anywhere}
+.fchip em{font-style:normal;opacity:.6;font-size:11px}
+.fchip .ic{display:none}
+.fchip.on{background:var(--sel);border-color:var(--sel);color:var(--on-sel)}
+.fchip.on .ic{display:block}
+.fnone{font-size:12.5px;color:var(--mute);padding:6px 2px}
+.c-opinion{display:none;margin-top:7px;font-size:12px;color:var(--mute);padding-right:6px}
+.c-opinion b{color:var(--ink)}
+.card.open .c-opinion{display:block}
+.addrow{display:flex;gap:8px;margin-top:10px}
+.addrow .input{flex:1;min-width:0}
+.addrow .btn{height:auto;padding:0 16px}
+.t18box{background:color-mix(in srgb,var(--danger) 7%,var(--card));border:1.5px solid color-mix(in srgb,var(--danger) 25%,var(--line));border-radius:14px;padding:12px 14px;margin:2px 0 12px}
+.switch-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;background:var(--card);border:1.5px solid var(--line);border-radius:14px;margin-bottom:8px;cursor:pointer}
+.switch-row b{display:block;font-size:13.5px}
+.switch-row small{color:var(--mute);font-size:11.5px}
+.switch-row input{appearance:none;-webkit-appearance:none;flex:none;width:46px;height:28px;border-radius:99px;background:var(--chip);position:relative;transition:background .18s;border:1px solid var(--line)}
+.switch-row input::after{content:"";position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .18s}
+.switch-row input:checked{background:var(--acc);border-color:var(--acc)}
+.switch-row input:checked::after{transform:translateX(18px)}
+details.more{margin:10px 0 4px;border-top:1px dashed var(--line);padding-top:6px}
+details.more summary{list-style:none;cursor:pointer;font-weight:700;font-size:13px;color:var(--acc);padding:8px 0;display:flex;align-items:center;gap:6px}
+details.more summary::-webkit-details-marker{display:none}
+details.more[open] summary .ic{transform:rotate(180deg)}
+details.more .inner{padding-top:6px}
+.sec-title{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--mute);margin:18px 0 8px}
+.sec-title:first-child{margin-top:4px}
+.hint{color:var(--mute);font-size:12px;margin-top:8px;line-height:1.5}
+.swatches{display:flex;gap:12px}
+.sw{width:38px;height:38px;border-radius:50%;border:3px solid var(--bg);box-shadow:0 0 0 2px var(--line);display:grid;place-items:center;color:#fff}
+.sw[aria-pressed=true]{box-shadow:0 0 0 2.5px var(--ink)}
+.sw .ic{opacity:0}.sw[aria-pressed=true] .ic{opacity:1}
+.menu-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fontopts{display:flex;flex-direction:column;gap:6px}
+.fnt{display:block;width:100%;text-align:left;padding:12px 14px;border-radius:13px;background:var(--card);border:1.5px solid var(--line);font-size:18px;line-height:1.2;color:var(--ink);transition:background .15s,border-color .15s,color .15s}
+.fnt:active{transform:scale(.98)}
+.fnt.on{background:var(--acc-soft);border-color:var(--acc);color:var(--acc)}
+
+/* ── hoja de detalles ── */
+.det-title{font-family:var(--serif);font-size:21px;font-weight:700;line-height:1.25;overflow-wrap:anywhere}
+.det-ship{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.det-ship .shipchip{font-size:13.5px;padding:4px 13px}
+.det-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
+.det-row .st{padding:7px 14px;font-size:12px}
+.det-fav{height:34px;padding:0 13px;font-size:12.5px;border-radius:99px}
+.det-sec{margin-top:18px}
+.det-sec h4{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--mute);margin-bottom:7px}
+.det-sec p{font-size:14px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}
+.det-notes{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:12px;padding:12px 14px;font-style:italic}
+
+/* ── respaldo: enlace de Drive y PDF guardado en el dispositivo ── */
+.c-actions{flex-wrap:wrap}
+.c-actions .btn{min-width:72px}
+.g-alt{padding-top:6px}
+.tag.resp{background:var(--acc-soft);color:var(--acc);font-weight:700}
+.pdfrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.pdfrow .btn{height:38px;padding:0 14px;font-size:13px}
+.pdfname{flex:1 1 100%;display:flex;align-items:center;gap:6px;min-width:0;font-size:13px;font-weight:600;overflow-wrap:anywhere}
+.det-resp{display:flex;flex-wrap:wrap;gap:8px}
+.det-resp + .hint{margin-top:6px}
+
+.toast{position:fixed;z-index:200;left:50%;bottom:calc(88px + env(safe-area-inset-bottom));transform:translate(-50%,20px);opacity:0;pointer-events:none;display:flex;align-items:center;gap:14px;max-width:calc(100% - 32px);background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:14px;font-size:13px;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,.3);transition:all .25s}
+.toast.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.toast button{color:var(--acc);font-weight:800;filter:brightness(1.15)}
+[data-theme=light] .toast button{filter:brightness(1.6) saturate(1.1)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ── temas (selector con miniatura) ── */
+.temas{display:flex;flex-direction:column;gap:2px;margin-top:6px}
+.tem-sec{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--mute);margin:14px 4px 4px}
+.tem{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:10px;border-radius:16px;border:1.5px solid transparent;transition:background .15s}
+.tem:active{transform:scale(.99)}
+.tem.on{background:var(--acc-soft);border-color:var(--acc)}
+.tem-prev{position:relative;flex:none;width:68px;height:48px;border-radius:13px;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+.tem-dots{position:absolute;left:5px;bottom:4px;display:flex}
+.tem-dots i{width:13px;height:13px;border-radius:50%;margin-right:-3px;border:1.5px solid rgba(255,255,255,.85);box-sizing:border-box}
+.tem b{display:block;font-family:var(--serif);font-size:16px;line-height:1.2}
+.tem small{display:block;color:var(--mute);font-size:12px;margin-top:2px;line-height:1.3}
+/* ── páginas ── */
+.pager{display:flex;justify-content:center;align-items:center;gap:6px;flex-wrap:wrap;margin:14px 0}
+.pager button{min-width:38px;height:38px;padding:0 10px;border-radius:12px;background:var(--card);border:1px solid var(--line);font-weight:700;font-size:13px}
+.pager button.on{background:var(--acc);color:var(--on-acc);border-color:var(--acc)}
+.pager button:disabled{opacity:.35}
+.pager span{color:var(--mute)}
+.tag.shelf{background:var(--acc-soft);color:var(--acc);font-weight:700}
+.mark-btn{margin-top:8px}
+
+/* ── tamaño compacto (como FicEstante en el celular) ── */
+@media (max-width:699px){
+  body{font-size:13px}
+  .app{padding:calc(env(safe-area-inset-top) + 6px) 12px calc(96px + env(safe-area-inset-bottom))}
+  .top{padding:4px 0 8px}
+  .top h1{font-size:22px}.top p{font-size:11px;margin-top:2px}
+  .top-actions{gap:6px}
+  .ibtn{width:34px;height:34px;border-radius:11px}.ibtn .ic{width:18px;height:18px}
+  .searchbar{padding:4px 0 8px}
+  .search{height:40px;border-radius:13px;gap:8px;padding:0 4px 0 12px}
+  .seg{border-radius:12px}.seg button{padding:6px 2px;font-size:11.5px;border-radius:9px}.seg button b{font-size:10px}
+  .tools{margin:9px 0;gap:6px}
+  .fbtn{height:32px;padding:0 11px;font-size:11.5px;border-radius:10px}
+  .view button{width:32px;height:32px}
+  .listhead{font-size:11px;margin-bottom:6px}.listhead select{font-size:11px}
+  .lista{gap:8px}.lista.grid{gap:8px}
+  .card{padding:10px 8px 10px 14px;border-radius:15px}
+  .c-title{font-size:14.5px}.c-by{font-size:11px}
+  .cbtn{width:32px;height:32px}
+  .shipchip{font-size:11.5px;padding:2px 10px}
+  .tag{font-size:10px;padding:2px 7px}
+  .st{font-size:10px;padding:4px 9px}
+  .c-notes{font-size:11.5px}.c-chars,.c-tropes,.c-opinion{font-size:11.5px}
+  .lista.grid .card{padding:9px 6px 8px 13px;border-radius:14px}
+  .g-title{font-size:12.5px}
+  .g-ship .shipchip{font-size:11px;padding:1px 9px}
+  .g-fan{font-size:10px}.g-chars{font-size:10.5px}
+  .g-meta .tag{font-size:9.5px;padding:2px 6px}
+  .g-btns{padding-top:7px}.g-btns .btn{height:28px;font-size:11px;border-radius:9px}
+  .btn{height:38px;font-size:13px;padding:0 14px;border-radius:11px}
+  .fab{height:44px;font-size:13px;padding:0 16px 0 13px;border-radius:14px;bottom:calc(14px + env(safe-area-inset-bottom))}
+  .fab .ic{width:18px;height:18px}
+  .pager{margin:10px 0}.pager button{min-width:32px;height:32px;font-size:12px;border-radius:10px}
+  .sheet-head h2{font-size:18px}
+  .label{font-size:11.5px}
+  .tem-prev{width:58px;height:42px}.tem b{font-size:14.5px}.tem small{font-size:11px}
+}
+.brand{display:flex;align-items:center;gap:10px}
+.brand .logo{width:40px;height:40px;flex:none;color:var(--acc)}
+.brand span{font-style:italic;font-weight:600;color:var(--mute)}
+.brand span b{font-weight:700;color:var(--ink);margin-right:.25em}
+@media (max-width:699px){.brand .logo{width:34px;height:34px}.brand{gap:8px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div>
+      <h1 class="brand"><svg class="logo" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 40c-4-4-12-5-19-3V19c7-2 15-1 19 3 4-4 12-5 19-3v18c-7-2-15-1-19 3z"/><path d="M24 22v18"/><path d="M24 18c-2-4 2-6 0-10"/><path d="M24 2.5l1.1 2.6 2.6 1.1-2.6 1.1-1.1 2.6-1.1-2.6-2.6-1.1 2.6-1.1z" fill="currentColor" stroke-width="1"/><path d="M35 9l.8 1.8 1.8.8-1.8.8-.8 1.8-.8-1.8-1.8-.8 1.8-.8z" fill="currentColor" stroke-width=".8"/><path d="M13 11l.8 1.8 1.8.8-1.8.8-.8 1.8-.8-1.8-1.8-.8 1.8-.8z" fill="currentColor" stroke-width=".8"/><circle cx="31" cy="16" r="1" fill="currentColor" stroke="none"/></svg>
+<span><b>Mis</b>Fanfics</span></h1>
+      <p id="subtitulo"></p>
+    </div>
+    <div class="top-actions">
+      <button class="ibtn" id="btn-priv" aria-label="Mostrar u ocultar fics +18"></button>
+      <button class="ibtn" id="btn-tema" aria-label="Cambiar entre modo claro y oscuro"></button>
+      <button class="ibtn" id="btn-menu" aria-label="Ajustes y respaldo" data-ic="more"></button>
+    </div>
+  </header>
+
+  <div class="searchbar">
+    <div class="search" id="search">
+      <span data-ic="search"></span>
+      <input id="busqueda" type="search" enterkeyhint="search" autocomplete="off" placeholder="Buscar título, fandom, ship…" aria-label="Buscar">
+      <button class="clear" id="btn-limpiar" aria-label="Borrar búsqueda" data-ic="x"></button>
+    </div>
+  </div>
+
+  <div class="seg" id="seg">
+    <button data-estado="todos">Todos<b></b></button>
+    <button data-estado="por-leer">Por leer<b></b></button>
+    <button data-estado="leyendo">Leyendo<b></b></button>
+    <button data-estado="terminado">Ya leído<b></b></button>
+  </div>
+
+  <div class="tools">
+    <button class="fbtn" id="btn-filtros"><span data-ic="filter" data-size="17"></span>Filtros<em id="n-filtros"></em></button>
+    <div class="pills" id="pills"></div>
+    <div class="view" id="view">
+      <button data-vista="compacta" aria-label="Vista de lista compacta" data-ic="list"></button>
+      <button data-vista="tarjetas" aria-label="Vista de cuadrícula" data-ic="grid"></button>
+    </div>
+  </div>
+
+  <div class="listhead">
+    <span id="conteo"></span>
+    <label>Ordenar: <select id="orden" aria-label="Ordenar por"></select></label>
+  </div>
+
+  <main id="lista" class="lista"></main>
+  <div class="pager" id="pager" hidden></div>
+  <button class="mas" id="aviso-mas" hidden></button>
+  <button class="ocultos" id="aviso-ocultos" hidden></button>
+</div>
+
+<button class="fab" id="fab"><span data-ic="plus" data-size="22"></span>Agregar</button>
+<div class="toast" id="toast" role="status" aria-live="polite"><span id="toast-msg"></span><button id="toast-btn" hidden></button></div>
+
+<!-- Hoja: agregar / editar -->
+<div class="overlay" id="sheet-fic" aria-hidden="true">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="fic-h">
+    <div class="grab"></div>
+    <div class="sheet-head"><h2 id="fic-h">Agregar fanfic</h2><button class="ibtn sm" data-close aria-label="Cerrar" data-ic="x"></button></div>
+    <div class="sheet-body" id="fic-body">
+
+      <div class="group" id="g-url">
+        <label class="label" for="f-url">1. Enlace para leerlo</label>
+        <input class="input" id="f-url" inputmode="url" autocapitalize="off" autocomplete="off" spellcheck="false" placeholder="https://archiveofourown.org/works/…">
+        <div class="hint" id="url-hint" hidden></div>
+        <div class="err">Ese enlace no parece válido.</div>
+      </div>
+      <div class="group" id="g-titulo">
+        <label class="label" for="f-titulo">2. Título <i>*</i></label>
+        <input class="input" id="f-titulo" placeholder="Ej: Pasado imperfecto" autocomplete="off" autocapitalize="sentences">
+        <div class="err">Escribe al menos el título.</div>
+      </div>
+      <div class="group">
+        <label class="label" for="f-fandom">3. Fandom / Universo</label>
+        <input class="input" id="f-fandom" placeholder="Escribe uno nuevo o elige abajo" autocomplete="off">
+        <div class="sugs" id="s-fandom"></div>
+      </div>
+      <div class="group">
+        <label class="label" for="f-ship">Pareja / Personajes (ship) · puedes poner varias</label>
+        <div class="chips" id="sel-ship" hidden></div>
+        <div class="addrow" style="margin-top:0"><input class="input" id="f-ship" placeholder="Escribe una nueva o elige abajo" autocomplete="off" enterkeyhint="done"><button type="button" class="btn primary" id="btn-add-ship">Agregar</button></div>
+        <div class="sugs" id="s-ship"></div>
+      </div>
+      <div class="group">
+        <label class="label" for="f-personajes">Personajes (separados por coma)</label>
+        <input class="input" id="f-personajes" placeholder="Ej: Harry Potter, Draco Malfoy" autocomplete="off">
+      </div>
+      <div class="group">
+        <span class="label">Color de la barrita lateral</span>
+        <div class="cswrap" id="f-color"></div>
+        <div class="cpick" id="cpick" hidden>
+          <div class="sv" id="cp-sv"><i id="cp-dot"></i></div>
+          <input type="range" id="cp-hue" class="hue" min="0" max="360" value="140" aria-label="Tono">
+          <div class="hexrow"><span class="prev" id="cp-prev"></span><input class="input" id="cp-hex" maxlength="7" placeholder="#32a852" autocapitalize="off" spellcheck="false" autocomplete="off"></div>
+        </div>
+        <div class="hint">Si eliges un fandom, aquí salen los colores que ya usaste en él. Toca el círculo de colores para crear otro. “Auto” lo calcula según el ship.</div>
+      </div>
+      <div class="group">
+        <span class="label">4. Vibes (toca para elegir varias)</span>
+        <div class="chips" id="f-vibes"></div>
+        <div class="addrow" id="nv-row" hidden><input class="input" id="nv-input" placeholder="Nombre de tu vibe" maxlength="24" autocomplete="off" enterkeyhint="done"><button type="button" class="btn primary">Agregar</button></div>
+        <!-- Aparece al elegir "Historia larga" -->
+        <div class="capsbox" id="g-total" hidden>
+          <label class="label" for="f-cap-tot">Total de capítulos</label>
+          <input class="input" id="f-cap-tot" type="number" inputmode="numeric" min="0" placeholder="Ej: 35">
+          <div class="hint" id="tot-hint"></div>
+        </div>
+        <!-- Aparece al elegir "Saga" -->
+        <div class="capsbox" id="g-saga" hidden>
+          <label class="label" for="f-saga-obras">¿Cuántas obras son?</label>
+          <input class="input" id="f-saga-obras" type="number" inputmode="numeric" min="0" placeholder="Ej: 3">
+          <label class="label" for="f-saga-caps" style="margin-top:10px">¿De cuántos capítulos en total? (opcional)</label>
+          <input class="input" id="f-saga-caps" type="number" inputmode="numeric" min="0" placeholder="Ej: 60">
+          <div class="hint">Suma los capítulos de todas las obras de la saga.</div>
+        </div>
+      </div>
+      <div class="group">
+        <label class="label" for="f-notas">5. “De qué iba” / notas para recordar la trama</label>
+        <textarea class="textarea" id="f-notas" placeholder="Aquel fic donde despierta en una cabaña y encuentra la carta…"></textarea>
+      </div>
+      <div class="group">
+        <label class="label" for="f-opinion">Qué me pareció / comentarios</label>
+        <textarea class="textarea" id="f-opinion" placeholder="Ej: Me encantó el final, pero el cap 12 se me hizo lento…"></textarea>
+      </div>
+      <div class="group">
+        <label class="label" for="f-tropes">Palabras clave para recordar</label>
+        <input class="input" id="f-tropes" placeholder="Ej: Enemies to lovers, Amnesia, Slow burn, Hanahaki" autocomplete="off">
+      </div>
+      <div class="group">
+        <span class="label">6. Estado de lectura</span>
+        <div class="seg mini" id="f-estado">
+          <button type="button" data-v="por-leer">Por leer</button><button type="button" data-v="leyendo">Leyendo</button><button type="button" data-v="terminado">Ya leído</button>
+        </div>
+        <div class="rate-box">
+          <div class="rate-head"><span class="label">Calificación (opcional)</span><b id="rate-out"></b></div>
+          <div class="stars" id="f-stars"></div>
+        </div>
+      </div>
+      <div class="group" id="g-resp">
+        <label class="label" for="f-url2">Enlace de respaldo (Drive, opcional)</label>
+        <input class="input" id="f-url2" inputmode="url" autocapitalize="off" autocomplete="off" spellcheck="false" placeholder="https://drive.google.com/file/d/…">
+        <div class="err">Ese enlace no parece válido.</div>
+        <div class="hint">Para leerlo cuando el sitio esté en mantenimiento. En Drive, comparte el archivo como “Cualquier persona con el enlace”.</div>
+        <span class="label" style="margin-top:14px">PDF guardado en este dispositivo (opcional)</span>
+        <div id="pdf-box"></div>
+        <input type="file" id="f-pdf" accept="application/pdf,.pdf" hidden>
+        <div class="hint">Mejor solo para tus favoritos: ocupa espacio del navegador (máx. 40 MB por archivo) y no viaja en el respaldo .json.</div>
+      </div>
+      <div class="group" id="g-pubgroup" hidden>
+        <span class="label">7. ¿El fic está terminado?</span>
+        <div class="seg mini" id="f-pub">
+          <button type="button" data-v="completo">Completo</button><button type="button" data-v="en-curso">En curso</button><button type="button" data-v="sin-actualizar">Sin actualizar</button>
+        </div>
+        <div class="hint">En curso = se sigue actualizando. Sin actualizar = pausado o abandonado. Toca de nuevo para quitarlo.</div>
+
+        <!-- Aparece con "En curso" o "Sin actualizar" -->
+        <div class="group capsbox" id="g-capsmain" hidden>
+          <span class="label">Capítulos de la obra</span>
+          <div class="row2">
+            <span>Van</span>
+            <input class="input" id="f-cap-pub" type="number" inputmode="numeric" min="0" placeholder="Ej: 12">
+            <span>de</span>
+            <input class="input" id="f-cap-tot2" type="number" inputmode="numeric" min="0" placeholder="? (vacío)">
+          </div>
+          <div class="hint">Si dice 13 capítulos pero solo hay 12: van 12 de 13. Si dice 8/?, pon 8 y deja el total vacío (se verá 8/?). El total es el mismo de arriba, en Vibes.</div>
+          <div class="err" id="cm-err">Revisa los capítulos.</div>
+        </div>
+      </div>
+
+      <div class="group">
+        <span class="label">Mis estantes (toca para elegir varios)</span>
+        <div class="chips" id="f-estantes"></div>
+        <div class="addrow" id="ne-row" hidden><input class="input" id="ne-input" placeholder="Nombre del estante" maxlength="30" autocomplete="off" enterkeyhint="done"><button type="button" class="btn primary">Agregar</button></div>
+      </div>
+      <label class="switch-row"><span><b>⭐ Favorito</b><small>Para encontrarlo rápido</small></span><input type="checkbox" id="f-fav"></label>
+      <label class="switch-row"><span><b>🔞 Contenido +18</b><small>Se oculta con el modo privado</small></span><input type="checkbox" id="f-adulto"></label>
+      <div class="t18box" id="g-t18" hidden>
+        <span class="label">Etiquetas +18 (solo se ven cuando los +18 están visibles)</span>
+        <div class="chips" id="f-t18"></div>
+        <div class="addrow" id="nt-row" hidden><input class="input" id="nt-input" placeholder="Nombre de la etiqueta" maxlength="30" autocomplete="off" enterkeyhint="done"><button type="button" class="btn primary">Agregar</button></div>
+      </div>
+
+      <details class="more">
+        <summary>Más opciones (detalles) <span data-ic="chev" data-size="16"></span></summary>
+        <div class="inner">
+          <div class="group" id="g-caps">
+            <span class="label">8. Progreso de lectura (capítulo por el que vas)</span>
+            <div class="row2">
+              <span>Cap.</span>
+              <input class="input" id="f-cap-act" type="number" inputmode="numeric" min="0" placeholder="Ej: 14">
+            </div>
+            <div class="err">El capítulo actual no puede ser mayor que el total de capítulos.</div>
+          </div>
+        </div>
+      </details>
+    </div>
+    <div class="sheet-foot">
+      <button class="btn sec" data-close>Cancelar</button>
+      <button class="btn save" id="btn-guardar">Guardar fanfic</button>
+    </div>
+  </div>
+</div>
+
+<!-- Hoja: detalles de un fic -->
+<div class="overlay" id="sheet-det" aria-hidden="true">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="det-h">
+    <div class="grab"></div>
+    <div class="sheet-head"><h2 id="det-h">Detalles</h2><button class="ibtn sm" data-close aria-label="Cerrar" data-ic="x"></button></div>
+    <div class="sheet-body" id="det-body"></div>
+    <div class="sheet-foot" id="det-foot"></div>
+  </div>
+</div>
+
+<!-- Hoja: filtros -->
+<div class="overlay" id="sheet-filtros" aria-hidden="true">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="filt-h">
+    <div class="grab"></div>
+    <div class="sheet-head"><h2 id="filt-h">Filtros</h2><button class="ibtn sm" data-close aria-label="Cerrar" data-ic="x"></button></div>
+    <div class="sheet-body" id="filtros-body"></div>
+    <div class="sheet-foot">
+      <button class="btn sec" id="btn-limpiar-filtros">Limpiar</button>
+      <button class="btn primary" id="btn-ver" data-close>Ver resultados</button>
+    </div>
+  </div>
+</div>
+
+<!-- Hoja: ajustes -->
+<div class="overlay" id="sheet-menu" aria-hidden="true">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="menu-h">
+    <div class="grab"></div>
+    <div class="sheet-head"><h2 id="menu-h">Ajustes</h2><button class="ibtn sm" data-close aria-label="Cerrar" data-ic="x"></button></div>
+    <div class="sheet-body">
+      <div class="sec-title">Apariencia</div>
+      <div class="seg mini" id="m-tema">
+        <button data-v="auto">Automático</button><button data-v="claro">Claro</button><button data-v="oscuro">Oscuro</button>
+      </div>
+      <div class="hint">Automático sigue el modo claro/oscuro de tu celular. Elige un tema claro y uno oscuro: se usa el que corresponda al modo.</div>
+      <div class="temas" id="m-temas"></div>
+
+      <div class="sec-title">Letra de los títulos</div>
+      <div class="fontopts" id="m-fuentes">
+        <button class="fnt" data-f="fraunces" style="font-family:'Fraunces',Georgia,serif;font-weight:700">Fraunces (la de ahora)</button>
+        <button class="fnt" data-f="jakarta" style="font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-weight:700">Plus Jakarta (sin serif)</button>
+        <button class="fnt" data-f="fira" style="font-family:'Fira Sans',system-ui,sans-serif;font-weight:700">Fira Sans</button>
+        <button class="fnt" data-f="chivo" style="font-family:'Chivo',system-ui,sans-serif;font-weight:700">Chivo</button>
+        <button class="fnt" data-f="space" style="font-family:'Space Grotesk',system-ui,sans-serif;font-weight:700">Space Grotesk</button>
+      </div>
+
+      <div class="sec-title">Fics +18</div>
+      <div class="seg mini" id="m-adultos">
+        <button data-v="ocultar">Ocultar</button><button data-v="difuminar">Difuminar</button><button data-v="mostrar">Mostrar</button>
+      </div>
+      <div class="hint"><b>Ocultar:</b> no aparecen en ningún lado (lista, búsqueda, filtros ni conteos). <b>Difuminar:</b> aparecen borrosos y los abres tocándolos. <b>Mostrar</b> se vuelve a ocultar solo al cerrar la página. El botón del ojo, arriba, alterna rápido.</div>
+      <label class="switch-row" style="margin-top:12px"><span><b>Avisar cuántos hay ocultos</b><small>Una línea discreta al final de la lista</small></span><input type="checkbox" id="m-aviso"></label>
+
+      <div class="sec-title">Tus datos</div>
+      <div class="menu-btns">
+        <button class="btn sec block" id="btn-exportar"><span data-ic="download" data-size="18"></span>Respaldar</button>
+        <button class="btn sec block" id="btn-importar"><span data-ic="upload" data-size="18"></span>Cargar</button>
+      </div>
+      <input type="file" id="file-input" accept=".json,application/json" hidden>
+      <div class="hint" id="info-respaldo"></div>
+    </div>
+    <div class="sheet-foot"><button class="btn primary" data-close>Listo</button></div>
+  </div>
+</div>
+
+<!-- Hoja: importar -->
+<div class="overlay" id="sheet-import" aria-hidden="true">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="imp-h">
+    <div class="grab"></div>
+    <div class="sheet-head"><h2 id="imp-h">Cargar respaldo</h2><button class="ibtn sm" data-close aria-label="Cerrar" data-ic="x"></button></div>
+    <div class="sheet-body">
+      <p id="imp-info" style="margin-bottom:14px"></p>
+      <div style="display:grid;gap:10px">
+        <button class="btn primary block" id="imp-combinar">Combinar con los que ya tengo</button>
+        <button class="btn sec block danger" id="imp-reemplazar">Reemplazar todo</button>
+      </div>
+      <div class="hint">“Combinar” agrega solo los que no tienes. “Reemplazar” borra los actuales y deja únicamente los del archivo.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Aviso: cambios sin guardar -->
+<div class="overlay" id="dlg-salir" style="z-index:150" aria-hidden="true">
+  <div class="sheet" role="alertdialog" aria-modal="true" aria-labelledby="salir-h">
+    <div class="grab"></div>
+    <div class="sheet-head"><h2 id="salir-h">¿Guardar los cambios?</h2></div>
+    <div class="sheet-body"><p>Tienes cambios sin guardar en este fanfic.</p></div>
+    <div class="sheet-foot" style="flex-direction:column">
+      <button class="btn save block" id="salir-guardar" style="flex:none">Guardar fanfic</button>
+      <button class="btn sec danger block" id="salir-descartar" style="flex:none">Salir sin guardar</button>
+      <button class="btn sec block" id="salir-seguir" style="flex:none">Seguir editando</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+'use strict';
+
+/* ───────── Constantes ───────── */
+const KEY = 'biblioteca_fics';          // misma clave que antes (tus datos se conservan)
+const PKEY = 'fics_prefs_v2';
+const BKEY = 'fics_ultimo_respaldo';
+const MAX_PDF = 40 * 1024 * 1024;       // tope por PDF guardado en el dispositivo
+const TH = window.__TH;
+const VIBES = {
+  suave:      { n:'Suave / Confort',            s:'Suave',    e:'🌸' },
+  angst:      { n:'Angustia / Angst',           s:'Angst',    e:'💔' },
+  dark:       { n:'Oscuro / Heavy',             s:'Oscuro',   e:'⚠️' },
+  largo:      { n:'Historia larga',             s:'Larga',    e:'📖' },
+  saga:       { n:'Saga / Serie',               s:'Saga',     e:'📚' },
+  oneshot:    { n:'One-shot (1 capítulo)',      s:'One-shot', e:'⚡' },
+  timetravel: { n:'Viaje en el tiempo / Fix-it',s:'Fix-it',   e:'⏳' },
+  au:         { n:'Universo alterno (AU)',      s:'AU',       e:'✨' },
+  humor:      { n:'Comedia / Divertido',        s:'Comedia',  e:'😂' }
+};
+const T18 = {
+  smut:   { n:'Explícito (smut)',  s:'Smut',      e:'🔥' },
+  noncon: { n:'Non-con (rape)',    s:'Non-con',   e:'🚫' },
+  dubcon: { n:'Dub-con',           s:'Dub-con',   e:'⚠️' },
+  gore:   { n:'Violencia gráfica', s:'Violencia', e:'🩸' }
+};
+const DEFS = { vibes: VIBES, t18: T18 };
+/* las etiquetas propias se guardan como "c:nombre" */
+const tLab = (g, k) => DEFS[g][k] ? DEFS[g][k].n : String(k).slice(2);
+const tShort = (g, k) => DEFS[g][k] ? DEFS[g][k].s : String(k).slice(2);
+const tEmo = (g, k) => DEFS[g][k] ? DEFS[g][k].e : '🏷️';
+const validTag = (g, k) => typeof k === 'string' && (!!DEFS[g][k] || (k.startsWith('c:') && k.length > 2));
+const PLATS  = { ao3:'AO3', ffnet:'FanFiction.net', wattpad:'Wattpad', otro:'Otro' };
+const PLATS_S= { ao3:'AO3', ffnet:'FF.net', wattpad:'Wattpad', otro:'Web' };
+const ESTADOS = { 'por-leer':'Por leer', leyendo:'Leyendo', terminado:'Ya leído' };
+const PUBS = { completo:'Completo', 'en-curso':'En curso', 'sin-actualizar':'Sin actualizar' };
+const ORDENES = { recientes:'Más recientes', antiguos:'Más antiguos', titulo:'Título A–Z', calif:'Mejor calificados', favoritos:'Favoritos primero', azar:'Al azar' };
+const PAGE = 24;
+const hoy = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+
+const I = {
+  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6L7 7M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"/>',
+  moon:'<path d="M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z"/>',
+  eye:'<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  eyeoff:'<path d="M3 3l18 18"/><path d="M10.6 5.1A10 10 0 0112 5c6.4 0 10 7 10 7a17 17 0 01-3.2 4M6.5 6.6A17 17 0 002 12s3.6 7 10 7a10 10 0 004.2-.9"/><path d="M9.9 9.9a3 3 0 004.2 4.2"/>',
+  more:'<circle cx="12" cy="5" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="12" cy="19" r="1.3"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
+  x:'<path d="M6 6l12 12M18 6L6 18"/>',
+  filter:'<path d="M4 6h16M7 12h10M10 18h4"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  heart:'<path d="M12 20s-7.5-4.6-9.2-9.3C1.7 7.4 3.8 4.5 6.9 4.5c1.9 0 3.5 1 5.1 3 1.6-2 3.2-3 5.1-3 3.1 0 5.2 2.9 4.1 6.2C19.5 15.4 12 20 12 20z"/>',
+  list:'<path d="M4 6h16M4 12h16M4 18h16"/>',
+  grid:'<rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/>',
+  link:'<path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1"/>',
+  edit:'<path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/>',
+  trash:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>',
+  download:'<path d="M12 4v11M7 11l5 5 5-5M5 20h14"/>',
+  upload:'<path d="M12 16V5M7 9l5-5 5 5M5 20h14"/>',
+  lock:'<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/>',
+  chev:'<path d="M6 9l6 6 6-6"/>',
+  check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  star:'<path d="M12 3.5l2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 17.3l-5.4 2.9 1.1-6.1-4.5-4.2 6.1-.8z"/>',
+  file:'<path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>',
+  cloud:'<path d="M7 18h10.5a3.5 3.5 0 00.5-6.96A5.5 5.5 0 007 10.5 3.75 3.75 0 007 18z"/>'
+};
+const icon = (n, size = 20, fill = false) =>
+  `<svg class="ic" viewBox="0 0 24 24" width="${size}" height="${size}" fill="${fill ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[n]}</svg>`;
+
+/* ───────── Utilidades ───────── */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+const norm = s => String(s ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+const hash = s => { let h = 0; for (const c of s) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
+const fmtSize = n => n >= 1048576 ? (n / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB';
+function leer(k, def) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : def; } catch (e) { return def; } }
+function escribir(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }
+function safeUrl(u) {
+  u = (u || '').trim(); if (!u) return '';
+  if (!/^https?:\/\//i.test(u)) u = 'https://' + u;
+  try { const x = new URL(u); return (x.protocol === 'http:' || x.protocol === 'https:') && x.hostname.includes('.') ? x.href : ''; } catch (e) { return ''; }
+}
+function detectarPlat(u) {
+  const h = (u || '').toLowerCase();
+  if (h.includes('archiveofourown') || h.includes('ao3')) return 'ao3';
+  if (h.includes('fanfiction.net')) return 'ffnet';
+  if (h.includes('wattpad')) return 'wattpad';
+  return null;
+}
+function normFic(f) {
+  const s = v => typeof v === 'string' ? v.trim() : '';
+  const n = v => String(v ?? '').replace(/\D/g, '').slice(0, 5);
+  const uniq = a => [...new Set(a)];
+  const adulto = !!f.adulto;
+  let tags18 = Array.isArray(f.tags18) ? uniq(f.tags18.filter(k => validTag('t18', k))) : [];
+  if (f.cw && !tags18.includes('c:CW')) tags18.push('c:CW');     // el antiguo "CW" pasa a ser una etiqueta +18 propia
+  if (!adulto) tags18 = [];
+  const pub = f.pub === 'sin-act' ? 'en-curso' : f.pub;            // valor de la versión anterior
+  const pubOk = PUBS[pub] ? pub : '';
+  const ships = Array.isArray(f.ships) ? uniq(f.ships.map(s).filter(Boolean)) : (s(f.ship) ? [s(f.ship)] : []);   // varias parejas; "ship" (texto único) viene de versiones anteriores
+  const plataformas = Array.isArray(f.plataformas) ? uniq(f.plataformas.filter(k => PLATS[k])) : (PLATS[f.plataforma] ? [f.plataforma] : []);
+  if (!plataformas.length) plataformas.push('ao3');
+  const categorias = Array.isArray(f.categorias) ? uniq(f.categorias.filter(k => validTag('vibes', k))) : [];
+  return {
+    id: s(f.id) || 'f_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+    titulo: s(f.titulo), autor: s(f.autor),   // el autor se conserva en los datos aunque ya no se muestre
+    plataforma: plataformas[0], plataformas,
+    url: s(f.url), fandom: s(f.fandom), ships, ship: ships[0] || '',
+    urlRespaldo: safeUrl(f.urlRespaldo),                       // enlace de Drive (u otro) para leerlo sin el sitio
+    pdfNombre: s(f.pdfNombre), pdfSize: Math.max(0, parseInt(f.pdfSize, 10) || 0),   // el PDF en sí vive en IndexedDB, aquí solo su nombre
+    fav: f.fav === 'si' ? 'si' : 'no',
+    categorias,
+    tags18,
+    personajes: s(f.personajes),
+    tagsExtra: s(f.tagsExtra), notas: s(f.notas), opinion: s(f.opinion),
+    estado: ESTADOS[f.estado] ? f.estado : 'por-leer',
+    estantes: Array.isArray(f.estantes) ? uniq(f.estantes.map(s).filter(Boolean)) : [],
+    leido: /^\d{4}-\d{2}-\d{2}$/.test(f.leido || '') ? f.leido : '',
+    adulto,
+    rating: Math.min(10, Math.max(0, parseInt(f.rating, 10) || 0)),
+    color: /^([0-7]|#[0-9a-fA-F]{6})$/.test(String(f.color ?? '')) ? String(f.color) : '',   // '' = automático; 0-7 = paleta; #rrggbb = personalizado
+    pub: pubOk,
+    capAct: n(f.capAct),
+    capTot: n(f.capTot !== undefined ? f.capTot : f.caps),  // "caps" es el campo de una versión anterior
+    capPub: (pubOk === 'en-curso' || pubOk === 'sin-actualizar') ? n(f.capPub) : '',   // capítulos publicados hasta ahora
+    sagaObras: categorias.includes('saga') ? n(f.sagaObras) : '',
+    sagaCaps: categorias.includes('saga') ? n(f.sagaCaps) : ''
+  };
+}
+
+/* ───────── PDFs guardados en el dispositivo (IndexedDB) ───────── */
+const IDB_NOMBRE = 'fics_archivos', IDB_TABLA = 'pdfs';
+let idbP = null;
+function idb() {
+  return idbP || (idbP = new Promise((ok, no) => {
+    if (!window.indexedDB) return no(new Error('sin IndexedDB'));
+    const r = indexedDB.open(IDB_NOMBRE, 1);
+    r.onupgradeneeded = () => r.result.createObjectStore(IDB_TABLA);
+    r.onsuccess = () => ok(r.result);
+    r.onerror = () => { idbP = null; no(r.error); };
+  }));
+}
+function tx(modo, fn) {
+  return idb().then(d => new Promise((ok, no) => {
+    const t = d.transaction(IDB_TABLA, modo);
+    const rq = fn(t.objectStore(IDB_TABLA));
+    t.oncomplete = () => ok(rq && rq.result);
+    t.onerror = () => no(t.error);
+    t.onabort = () => no(t.error);
+  }));
+}
+const pdfPut = (id, blob) => tx('readwrite', s => s.put(blob, id));
+const pdfGet = id => tx('readonly', s => s.get(id));
+const pdfDel = id => tx('readwrite', s => s.delete(id)).catch(() => {});
+function pedirPersistencia() { try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) {} }   // pide que el navegador no borre los PDFs solo
+async function abrirPdf(id) {
+  const w = window.open('', '_blank');                      // se abre de inmediato para que el celular no bloquee la ventana
+  try {
+    const blob = await pdfGet(id);
+    if (!blob) { if (w) w.close(); toast('Este PDF no está guardado en este navegador'); return; }
+    const url = URL.createObjectURL(new Blob([blob], { type:'application/pdf' }));
+    if (w) w.location.href = url;
+    else { const a = document.createElement('a'); a.href = url; a.target = '_blank'; a.rel = 'noopener'; document.body.appendChild(a); a.click(); a.remove(); }
+    setTimeout(() => URL.revokeObjectURL(url), 30 * 60 * 1000);
+  } catch (e) { if (w) w.close(); toast('No pude abrir el PDF'); }
+}
+
+/* ───────── Estado ───────── */
+let db = (leer(KEY, []) || []).filter(f => f && typeof f === 'object').map(normFic).filter(f => f.titulo);
+const prefs = Object.assign({ tema:'auto', temaClaro:'lila', temaOscuro:'supernova', estantes:[], fuente:'fraunces', vista:'tarjetas', orden:'recientes', adultos:'ocultar', aviso:false, vibesCustom:[], t18Custom:[] }, leer(PKEY, {}));
+['vibesCustom', 't18Custom'].forEach(k => { prefs[k] = Array.isArray(prefs[k]) ? prefs[k].filter(x => typeof x === 'string' && x.startsWith('c:')) : []; });
+prefs.coloresRec = Array.isArray(prefs.coloresRec) ? prefs.coloresRec.filter(c => /^#[0-9a-f]{6}$/.test(c)).slice(0, 5) : [];   // últimos colores personalizados
+if (!TH.some(t => t.id === prefs.temaClaro && !t.dark)) prefs.temaClaro = 'lila';
+if (!TH.some(t => t.id === prefs.temaOscuro && t.dark)) prefs.temaOscuro = 'supernova';
+prefs.estantes = Array.isArray(prefs.estantes) ? prefs.estantes.filter(x => typeof x === 'string' && x) : [];
+const FUENTES = ['fraunces', 'jakarta', 'fira', 'chivo', 'space'];
+if (!FUENTES.includes(prefs.fuente)) prefs.fuente = 'fraunces';
+if (prefs.adultos === 'mostrar') prefs.adultos = 'ocultar';   // "mostrar" solo dura la sesión
+const st = { pag:1, clave:'', semilla:1, estantes:new Set(), verTodos:false, q:'', estado:'todos', vibes:new Set(), pubs:new Set(), fandoms:new Set(), ships:new Set(), plats:new Set(), t18:new Set(), fav:false, soloAdulto:false, abiertos:new Set(), revelados:new Set() };
+const guardarPrefs = () => escribir(PKEY, prefs);
+const guardarDB = () => { if (!escribir(KEY, db)) toast('No pude guardar en este navegador. Haz un respaldo.'); };
+
+/* ───────── Íconos estáticos ───────── */
+$$('[data-ic]').forEach(el => { el.insertAdjacentHTML('afterbegin', icon(el.dataset.ic, +el.dataset.size || 20)); });
+
+/* ───────── Tema ───────── */
+const mqDark = matchMedia('(prefers-color-scheme: dark)');
+function esOscuro() { return prefs.tema === 'oscuro' || (prefs.tema === 'auto' && mqDark.matches); }
+function aplicarTema() {
+  const r = document.documentElement;
+  r.dataset.theme = esOscuro() ? 'dark' : 'light';
+  r.dataset.fuente = prefs.fuente;
+  window.__applyTh(esOscuro() ? prefs.temaOscuro : prefs.temaClaro);
+  $('#btn-tema').innerHTML = icon(esOscuro() ? 'sun' : 'moon');
+  const m = $('meta[name=theme-color]'); if (m) m.content = getComputedStyle(r).getPropertyValue('--bg').trim();
+}
+mqDark.addEventListener?.('change', aplicarTema);
+$('#btn-tema').onclick = () => { prefs.tema = esOscuro() ? 'claro' : 'oscuro'; guardarPrefs(); aplicarTema(); pintarMenu(); };
+
+/* ───────── Filtrado ───────── */
+const visibles = () => db.filter(f => !f.adulto || prefs.adultos !== 'ocultar');
+const ocultosN = () => db.filter(f => f.adulto).length;
+const labelDe = (campo, key) => { const f = db.find(x => norm(x[campo]) === key); return f ? f[campo] : key; };
+const labelEstante = key => { for (const f of db) { const x = f.estantes.find(y => norm(y) === key); if (x) return x; } return (prefs.estantes.find(y => norm(y) === key)) || key; };
+const labelShip = key => { for (const f of db) { const x = f.ships.find(y => norm(y) === key); if (x) return x; } return key; };
+
+function calcular() {
+  const vis = visibles();
+  if (prefs.adultos === 'ocultar') { st.soloAdulto = false; st.t18.clear(); }
+  const words = norm(st.q).split(/\s+/).filter(Boolean);
+  const base = vis.filter(f => {
+    if (st.fav && f.fav !== 'si') return false;
+    if (st.vibes.size && !f.categorias.some(k => st.vibes.has(k))) return false;
+    if (st.pubs.size && !st.pubs.has(f.pub)) return false;
+    if (st.plats.size && !f.plataformas.some(k => st.plats.has(k))) return false;
+    if (st.fandoms.size && !st.fandoms.has(norm(f.fandom))) return false;
+    if (st.ships.size && !f.ships.some(x => st.ships.has(norm(x)))) return false;
+    if (st.estantes.size && !f.estantes.some(x => st.estantes.has(norm(x)))) return false;
+    if (st.soloAdulto && !f.adulto) return false;
+    for (const t of st.t18) if (!f.tags18.includes(t)) return false;
+    if (words.length) {
+      const hay = norm([f.titulo, f.autor, f.fandom, f.ships.join(' '), f.personajes, f.estantes.join(' '), f.tagsExtra, f.notas, f.opinion, f.pub ? PUBS[f.pub] : '',
+        f.categorias.map(k => tLab('vibes', k)).join(' '), f.tags18.map(k => tLab('t18', k)).join(' ')].join(' '));
+      if (!words.every(w => hay.includes(w))) return false;
+    }
+    return true;
+  });
+  const counts = { todos: base.length, 'por-leer': 0, leyendo: 0, terminado: 0 };
+  base.forEach(f => counts[f.estado]++);
+  let lista = st.estado === 'todos' ? base.slice() : base.filter(f => f.estado === st.estado);
+  if (prefs.orden === 'antiguos') lista.reverse();
+  else if (prefs.orden === 'titulo') lista.sort((a, b) => a.titulo.localeCompare(b.titulo, 'es', { sensitivity:'base' }));
+  else if (prefs.orden === 'calif') lista.sort((a, b) => b.rating - a.rating);
+  else if (prefs.orden === 'azar') lista.sort((a, b) => hash(a.id + st.semilla) - hash(b.id + st.semilla));
+  else if (prefs.orden === 'favoritos') lista.sort((a, b) => (b.fav === 'si') - (a.fav === 'si'));
+  return { vis, base, counts, lista };
+}
+const nFiltros = () => (st.fav ? 1 : 0) + st.pubs.size + st.plats.size + st.fandoms.size + st.ships.size + st.vibes.size + st.estantes.size + st.t18.size + (st.soloAdulto ? 1 : 0);
+function limpiarFiltros() { st.fav = false; st.vibes.clear(); st.estantes.clear(); st.pubs.clear(); st.plats.clear(); st.fandoms.clear(); st.ships.clear(); st.t18.clear(); st.soloAdulto = false; st.estado = 'todos'; }
+
+/* ───────── Pintado principal ───────── */
+function colorFic(f) {
+  if (/^#[0-9a-fA-F]{6}$/.test(f.color)) return f.color;
+  if (/^[0-7]$/.test(f.color)) return `var(--f${f.color})`;
+  const k = f.ships[0] || f.fandom; return k ? `var(--f${hash(norm(k)) % 8})` : 'var(--mute)';
+}
+
+function ciclarEstado(f) { const o = Object.keys(ESTADOS); f.estado = o[(o.indexOf(f.estado) + 1) % o.length]; if (f.estado === 'terminado' && !f.leido) f.leido = hoy(); }
+const ratingHTML = r => `${r}/10 <span class="star">★</span>`;
+const platPill = (f, largo) => f.plataformas.map(k => `<span class="plat ${k}">${esc(largo ? PLATS[k] : PLATS_S[k])}</span>`).join('');
+const shipChip = f => f.ships.map(x => `<span class="shipchip">${esc(x)}</span>`).join('');
+const adultoTag = f => f.adulto ? '<span class="badge18">+18</span>' : '';
+const respTags = f => (f.pdfNombre ? '<span class="tag resp">📄 PDF</span>' : '') + (f.urlRespaldo ? '<span class="tag resp">☁️ Drive</span>' : '');
+/* botones de respaldo: el de Drive es un enlace, el del PDF abre el archivo guardado aquí */
+const btnDrive = (f, ic) => f.urlRespaldo ? `<a class="btn sec" data-act="respaldo" href="${esc(f.urlRespaldo)}" target="_blank" rel="noopener noreferrer">${icon('cloud', ic)} Drive</a>` : '';
+const btnPdf = (f, ic) => f.pdfNombre ? `<button class="btn sec" data-act="pdf">${icon('file', ic)} PDF</button>` : '';
+const shipRow = (f, cls) => f.ships.length || f.fandom ? `<p class="${cls}">${shipChip(f)}${f.fandom ? `<span class="fan">${esc(f.fandom)}</span>` : ''}</p>` : '';
+
+/* progreso de lectura: "Cap. 6 de 12" */
+function capsTxt(f) {
+  const tot = f.capTot || f.capPub;
+  if (f.capAct && tot) return `Cap. ${f.capAct} de ${tot}`;
+  if (f.capAct) return `Cap. ${f.capAct}`;
+  return '';
+}
+/* capítulos de la obra: "12/13 caps", "8/? caps" o "35 caps" */
+function totTxt(f) {
+  if (f.capPub) return `${f.capPub}/${f.capTot || '?'} caps`;
+  if (f.capTot) return `${f.capTot} cap${f.capTot === '1' ? '' : 's'}`;
+  return '';
+}
+function sagaTxt(f) {
+  if (!f.categorias.includes('saga')) return '';
+  const o = f.sagaObras ? `${f.sagaObras} obra${f.sagaObras === '1' ? '' : 's'}` : '';
+  const c = f.sagaCaps ? `${f.sagaCaps} cap${f.sagaCaps === '1' ? '' : 's'}` : '';
+  return [o, c].filter(Boolean).join(' · ');
+}
+function tagsDe(f) {
+  const caps = capsTxt(f), tot = (f.capPub || !f.capAct) ? totTxt(f) : '';
+  return [
+    ...(f.rating ? [`<span class="tag rate">${ratingHTML(f.rating)}</span>`] : []),
+    ...(f.pub ? [`<span class="tag pub">${esc(PUBS[f.pub])}</span>`] : []),
+    ...(tot ? [`<span class="tag">${esc(tot)}</span>`] : []),
+    ...(caps ? [`<span class="tag">${esc(caps)}</span>`] : []),
+    ...(sagaTxt(f) ? [`<span class="tag">${esc(sagaTxt(f))}</span>`] : []),
+    ...f.estantes.map(x => `<span class="tag shelf">📚 ${esc(x)}</span>`),
+    ...f.categorias.map(k => `<span class="tag${k === 'largo' || k === 'oneshot' || k === 'saga' ? ' fmt' : ''}">${esc(tShort('vibes', k))}</span>`),
+    ...f.tags18.map(k => `<span class="tag t18">${esc(tShort('t18', k))}</span>`)
+  ];
+}
+const bloqueado = f => f.adulto && prefs.adultos === 'difuminar' && !st.revelados.has(f.id);
+const velo = f => bloqueado(f) ? `<button class="veil" data-act="revelar">${icon('lock', 18)} Contenido +18 · toca para ver</button>` : '';
+
+/* vista compacta (la de antes) */
+function cardHTML(f) {
+  const open = st.abiertos.has(f.id);
+  const blur = bloqueado(f);
+  const url = safeUrl(f.url);
+  const tagsAll = tagsDe(f);
+  const tags = tagsAll.join('');   // lista completa: todas las etiquetas, como en AO3
+  return `<article class="card${open ? ' open' : ''}${blur ? ' blur' : ''}" data-id="${esc(f.id)}" style="--c:${colorFic(f)}">
+    <div class="c-body">
+      <div class="c-head">
+        <div class="c-titles">
+          <h3 class="c-title">${esc(f.titulo)}</h3>
+          <p class="c-by">${platPill(f)}${adultoTag(f)}${respTags(f)}${f.leido ? `<span class="fan">leído ${esc(f.leido)}</span>` : ''}${f.rating ? `<span class="tag rate">${ratingHTML(f.rating)}</span>` : ''}</p>
+        </div>
+        <div class="c-btns">
+          ${url ? `<a class="cbtn link" data-act="leer" href="${esc(url)}" target="_blank" rel="noopener noreferrer" aria-label="Leer fic">${icon('link', 19)}</a>` : ''}
+          <button class="cbtn fav" data-act="fav" aria-pressed="${f.fav === 'si'}" aria-label="${f.fav === 'si' ? 'Quitar de favoritos' : 'Marcar como favorito'}" style="${f.fav === 'si' ? '' : 'color:var(--mute)'}">${icon('heart', 19, f.fav === 'si')}</button>
+        </div>
+      </div>
+      ${shipRow(f, 'c-ship')}
+      ${f.personajes ? `<p class="c-chars"><b>Personajes:</b> ${esc(f.personajes)}</p>` : ''}
+      ${f.notas ? `<p class="c-notes">“${esc(f.notas)}”</p>` : ''}
+      ${f.tagsExtra ? `<p class="c-tropes"><b>Palabras clave:</b> ${esc(f.tagsExtra)}</p>` : ''}
+      ${f.opinion ? `<p class="c-opinion"><b>Qué me pareció:</b> ${esc(f.opinion)}</p>` : ''}
+      <div class="c-foot">
+        <div class="tags">${tags}</div>
+        <button class="st st-${f.estado}" data-act="estado" aria-label="Estado: ${ESTADOS[f.estado]}. Toca para cambiar">${ESTADOS[f.estado]}</button>
+      </div>
+      <div class="c-actions">
+        ${url ? `<a class="btn primary" data-act="leer" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${icon('link', 17)} Leer</a>` : ''}
+        ${btnDrive(f, 17)}${btnPdf(f, 17)}
+        <button class="btn sec" data-act="editar">${icon('edit', 17)} Editar</button>
+        <button class="btn sec danger" data-act="borrar" aria-label="Eliminar">${icon('trash', 17)}</button>
+      </div>
+    </div>
+    ${velo(f)}
+  </article>`;
+}
+
+/* vista cuadrícula: 2 columnas, con "Leer" y "+ Info" */
+function gridHTML(f) {
+  const blur = bloqueado(f);
+  const url = safeUrl(f.url);
+  const fmts = [f.categorias.includes('oneshot') ? 'One-shot' : '', f.categorias.includes('largo') ? 'Historia larga' : '',
+    f.categorias.includes('saga') ? 'Saga' + (f.sagaObras ? ` · ${f.sagaObras} obra${f.sagaObras === '1' ? '' : 's'}` : '') : ''].filter(Boolean);
+  const alt = btnDrive(f, 15) + btnPdf(f, 15);
+  const chars = (f.personajes || '').split(',').map(x => x.trim()).filter(Boolean);
+  const tg = [...fmts.map(t => `<span class="tag fmt">${esc(t)}</span>`), ...f.categorias.filter(k => !['largo', 'oneshot', 'saga'].includes(k)).map(k => `<span class="tag">${esc(tShort('vibes', k))}</span>`)];
+  return `<article class="card g${blur ? ' blur' : ''}" data-id="${esc(f.id)}" style="--c:${colorFic(f)}">
+    <div class="c-body g-body">
+      <div class="g-top">
+        <h3 class="g-title">${esc(f.titulo)}</h3>
+        <button class="cbtn fav" data-act="fav" aria-pressed="${f.fav === 'si'}" aria-label="${f.fav === 'si' ? 'Quitar de favoritos' : 'Marcar como favorito'}" style="${f.fav === 'si' ? '' : 'color:var(--mute)'}">${icon('heart', 18, f.fav === 'si')}</button>
+      </div>
+      ${f.ships.length ? `<p class="g-ship">${f.ships.slice(0, 2).map(x => `<span class="shipchip">${esc(x)}</span>`).join('')}${f.ships.length > 2 ? `<span class="tag">+${f.ships.length - 2}</span>` : ''}</p>` : ''}
+      ${f.fandom ? `<p class="g-fan">${esc(f.fandom)}</p>` : ''}
+      ${chars.length ? `<p class="g-chars">${chars.slice(0, 3).map(esc).join(' · ')}${chars.length > 3 ? ` +${chars.length - 3}` : ''}</p>` : ''}
+      <div class="g-meta">${adultoTag(f)}${f.rating ? `<span class="tag rate">${ratingHTML(f.rating)}</span>` : ''}${tg.slice(0, 3).join('')}${tg.length > 3 ? `<span class="tag">+${tg.length - 3}</span>` : ''}</div>
+      <div class="g-btns">
+        ${url ? `<a class="btn primary" data-act="leer" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${icon('link', 15)} Leer</a>` : ''}
+        <button class="btn sec" data-act="info">${icon('plus', 15)} Info</button>
+      </div>
+      ${alt ? `<div class="g-btns g-alt">${alt}</div>` : ''}
+    </div>
+    ${velo(f)}
+  </article>`;
+}
+
+const LIMITE = 100; // (ya no se usa: ahora hay páginas)                                   // cuántos se muestran antes del botón "ver los demás"
+function pintarPager(total) {
+  const n = Math.ceil(total / PAGE);
+  const nums = [];
+  for (let i = 1; i <= n; i++) if (i === 1 || i === n || Math.abs(i - st.pag) <= 1) nums.push(i);
+  let html = '', prev = 0;
+  nums.forEach(i => { if (i - prev > 1) html += '<span>…</span>'; html += `<button data-pg="${i}" class="${i === st.pag ? 'on' : ''}">${i}</button>`; prev = i; });
+  html = `<button data-pg="${st.pag - 1}" ${st.pag <= 1 ? 'disabled' : ''} aria-label="Página anterior">‹</button>` + html + `<button data-pg="${st.pag + 1}" ${st.pag >= n ? 'disabled' : ''} aria-label="Página siguiente">›</button>`;
+  ['#pager'].forEach(id => { const el = $(id); el.hidden = n <= 1; el.innerHTML = n > 1 ? html : ''; });
+}
+function render() {
+  const clave = JSON.stringify([st.q, st.estado, st.fav, prefs.orden, st.semilla, [...st.vibes], [...st.pubs], [...st.fandoms], [...st.ships], [...st.plats], [...st.estantes], [...st.t18], st.soloAdulto]);
+  if (clave !== st.clave) { st.clave = clave; st.pag = 1; }
+  const { vis, counts, lista } = calcular();
+  const leyendo = vis.filter(f => f.estado === 'leyendo').length;
+  $('#subtitulo').textContent = `${vis.length} guardado${vis.length === 1 ? '' : 's'}${leyendo ? ` · ${leyendo} leyendo` : ''}`;
+  $('#btn-priv').innerHTML = icon(prefs.adultos === 'ocultar' ? 'eyeoff' : 'eye');
+  $('#btn-priv').classList.toggle('on', prefs.adultos !== 'ocultar');
+  $('#btn-priv').setAttribute('aria-label', prefs.adultos === 'ocultar' ? 'Fics +18 ocultos. Toca para mostrarlos' : 'Fics +18 visibles. Toca para ocultarlos');
+  $$('#seg button').forEach(b => {
+    b.classList.toggle('on', b.dataset.estado === st.estado);
+    const n = counts[b.dataset.estado];
+    b.querySelector('b').textContent = b.dataset.estado === 'todos' ? '' : n;
+  });
+  const nf = nFiltros();
+  $('#btn-filtros').classList.toggle('has', nf > 0);
+  $('#n-filtros').textContent = nf;
+  pintarPills();
+  const compacta = prefs.vista === 'compacta';
+  $$('#view button').forEach(b => b.classList.toggle('on', b.dataset.vista === prefs.vista));
+  $('#lista').className = 'lista ' + (compacta ? 'compacta' : 'grid');
+  $('#orden').value = prefs.orden;
+  $('#conteo').textContent = `${lista.length} resultado${lista.length === 1 ? '' : 's'}`;
+  const cont = $('#lista');
+  if (!lista.length) {
+    cont.innerHTML = !vis.length
+      ? `<div class="vacio"><div class="big">Tu biblioteca está vacía</div>Guarda aquí los fics que lees para no perderlos.<br><button class="btn primary" data-act="nuevo">${icon('plus', 18)} Agregar el primero</button></div>`
+      : `<div class="vacio"><div class="big">Nada por aquí</div>Ningún fic coincide con la búsqueda o los filtros.<br>${nf || st.q || st.estado !== 'todos' ? `<button class="btn sec" data-act="reset">Limpiar todo</button>` : ''}</div>`;
+  } else {
+    const n = Math.ceil(lista.length / PAGE);
+    st.pag = Math.min(Math.max(1, st.pag), n);
+    cont.innerHTML = lista.slice((st.pag - 1) * PAGE, st.pag * PAGE).map(compacta ? cardHTML : gridHTML).join('');
+  }
+  pintarPager(lista.length);
+  const mas = $('#aviso-mas'); mas.hidden = true;
+  const av = $('#aviso-ocultos'), oc = ocultosN();
+  const mostrarAviso = prefs.aviso && prefs.adultos === 'ocultar' && oc > 0;
+  av.hidden = !mostrarAviso;
+  if (mostrarAviso) av.innerHTML = `${icon('lock', 15)} ${oc} fic${oc === 1 ? '' : 's'} +18 oculto${oc === 1 ? '' : 's'}`;
+  if (filtrosAbiertos()) pintarFiltros();
+  if (actual === 'sheet-det') pintarDet();
+}
+
+function pintarPills() {
+  const out = [];
+  const pill = (t, v, txt) => `<button class="pill" data-t="${t}" data-v="${esc(v)}" aria-label="Quitar filtro ${esc(txt)}">${esc(txt)} ${icon('x', 13)}</button>`;
+  if (st.fav) out.push(pill('fav', '', '★ Favoritos'));
+  st.fandoms.forEach(k => out.push(pill('fandom', k, labelDe('fandom', k))));
+  st.ships.forEach(k => out.push(pill('ship', k, labelShip(k))));
+  st.pubs.forEach(k => out.push(pill('pub', k, PUBS[k])));
+  st.plats.forEach(k => out.push(pill('plat', k, PLATS[k])));
+  st.estantes.forEach(k => out.push(pill('estante', k, '📚 ' + labelEstante(k))));
+  st.vibes.forEach(k => out.push(pill('vibe', k, tShort('vibes', k))));
+  if (st.soloAdulto) out.push(pill('adulto', '', '+18'));
+  st.t18.forEach(k => out.push(pill('t18', k, tShort('t18', k))));
+  $('#pills').innerHTML = out.join('');
+}
+
+/* ───────── Eventos de la lista ───────── */
+$('#lista').addEventListener('click', e => {
+  const actEl = e.target.closest('[data-act]');
+  const act = actEl && actEl.dataset.act;
+  if (act === 'leer' || act === 'respaldo') return;         // son enlaces: el navegador los abre solo
+  if (act === 'nuevo') return abrirForm();
+  if (act === 'reset') { limpiarFiltros(); st.q = ''; $('#busqueda').value = ''; $('#search').classList.remove('has'); return render(); }
+  const card = e.target.closest('.card'); if (!card) return;
+  const f = db.find(x => x.id === card.dataset.id); if (!f) return;
+  if (act === 'revelar') { st.revelados.add(f.id); return render(); }
+  if (card.classList.contains('blur')) return;
+  if (act === 'pdf') return abrirPdf(f.id);
+  if (act === 'fav') { f.fav = f.fav === 'si' ? 'no' : 'si'; vibrar(); guardarDB(); return render(); }
+  if (act === 'estado') { ciclarEstado(f); vibrar(); guardarDB(); return render(); }
+  if (act === 'editar') return abrirForm(f.id);
+  if (act === 'borrar') return borrarFic(f.id);
+  if (card.classList.contains('g')) return abrirDetalle(f.id);     // en la cuadrícula, tocar la tarjeta abre "+ Info"
+  st.abiertos.has(f.id) ? st.abiertos.delete(f.id) : st.abiertos.add(f.id);
+  card.outerHTML = cardHTML(f);
+});
+
+function borrarFic(id) {
+  const i = db.findIndex(x => x.id === id); if (i < 0) return;
+  const [f] = db.splice(i, 1);
+  st.abiertos.delete(id);
+  guardarDB(); render();
+  /* el PDF se borra solo si pasan los segundos del "Deshacer" y el fic no volvió */
+  if (f.pdfNombre) setTimeout(() => { if (!db.some(x => x.id === f.id)) pdfDel(f.id); }, 7000);
+  toast('Fic eliminado', 'Deshacer', () => { db.splice(Math.min(i, db.length), 0, f); guardarDB(); render(); }, 6000);
+}
+
+/* ───────── Buscador, pestañas, orden, vista ───────── */
+const inBusq = $('#busqueda');
+inBusq.addEventListener('input', () => { st.q = inBusq.value; $('#search').classList.toggle('has', !!inBusq.value.trim()); render(); });
+$('#btn-limpiar').onclick = () => { inBusq.value = ''; st.q = ''; $('#search').classList.remove('has'); render(); inBusq.focus(); };
+$('#seg').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; vibrar(); st.estado = b.dataset.estado; render(); });
+$('#view').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; prefs.vista = b.dataset.vista; guardarPrefs(); render(); });
+$('#orden').innerHTML = Object.entries(ORDENES).map(([k, v]) => `<option value="${k}">${v}</option>`).join('');
+$('#orden').onchange = e => { prefs.orden = e.target.value; st.semilla = Date.now(); guardarPrefs(); render(); };
+$('#pills').addEventListener('click', e => {
+  const b = e.target.closest('.pill'); if (!b) return;
+  const { t, v } = b.dataset;
+  if (t === 'fav') st.fav = false; else if (t === 'pub') st.pubs.delete(v); else if (t === 'plat') st.plats.delete(v); else if (t === 'vibe') st.vibes.delete(v); else if (t === 'estante') st.estantes.delete(v); else if (t === 'fandom') st.fandoms.delete(v); else if (t === 'ship') st.ships.delete(v); else if (t === 'adulto') st.soloAdulto = false; else if (t === 't18') st.t18.delete(v);
+  render();
+});
+$('#fab').onclick = () => abrirForm();
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-pg]'); if (!b || b.disabled) return;
+  st.pag = +b.dataset.pg; render();
+  const t = $('#lista').getBoundingClientRect().top + scrollY - ($('.searchbar').offsetHeight + 8);
+  window.scrollTo({ top:Math.max(0, t), behavior:'auto' });
+});
+
+/* ───────── Privacidad +18 ───────── */
+$('#btn-priv').onclick = () => {
+  vibrar();
+  if (prefs.adultos === 'ocultar') { prefs.adultos = 'mostrar'; toast('Fics +18 visibles'); }
+  else { prefs.adultos = 'ocultar'; st.revelados.clear(); toast('Fics +18 ocultos'); }
+  guardarPrefs(); render(); pintarMenu();
+};
+$('#aviso-ocultos').onclick = () => $('#btn-priv').click();
+$('#aviso-mas').onclick = () => { st.verTodos = !st.verTodos; render(); if (!st.verTodos) $('#aviso-mas').scrollIntoView({ block:'center' }); };
+
+/* ───────── Hojas (sheets) ───────── */
+let actual = null;
+const filtrosAbiertos = () => actual === 'sheet-filtros';
+function abrirHoja(id) {
+  if (actual) $('#' + actual).classList.remove('open'); else history.pushState({ hoja:1 }, '');
+  actual = id;
+  const o = $('#' + id); o.classList.add('open'); o.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('locked');
+}
+function ocultarHoja(id) { const o = $('#' + id); o.classList.remove('open'); o.setAttribute('aria-hidden', 'true'); }
+function cerrarHoja(porPop) {
+  if (!actual) return;
+  ocultarHoja(actual); actual = null; document.body.classList.remove('locked');
+  if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+  if (!porPop && history.state && history.state.hoja) history.back();
+}
+function formSnap() {
+  return JSON.stringify([['#f-url','#f-url2','#f-titulo','#f-fandom','#f-ship','#f-personajes','#f-notas','#f-opinion','#f-tropes','#f-cap-act','#f-cap-tot','#f-cap-pub','#f-saga-obras','#f-saga-caps'].map(i => $(i).value),
+    [...formVibes].sort(), [...formT18].sort(), formEst.slice().sort(), formShips.slice(), formPlats.slice().sort(), formEstado, formPub, formRating, formColor, $('#f-fav').checked, $('#f-adulto').checked,
+    formPdf.nombre, formPdf.quitar]);
+}
+const formSucio = () => actual === 'sheet-fic' && formSnap() !== formBase;
+function mostrarSalir() { const d = $('#dlg-salir'); d.classList.add('open'); d.setAttribute('aria-hidden', 'false'); }
+function cerrarSalir() { const d = $('#dlg-salir'); d.classList.remove('open'); d.setAttribute('aria-hidden', 'true'); }
+function intentarCerrar() { if (formSucio()) mostrarSalir(); else cerrarHoja(); }
+window.addEventListener('popstate', () => {
+  if (!actual) return;
+  if (formSucio()) { history.pushState({ hoja:1 }, ''); mostrarSalir(); return; }   // el botón "atrás" pregunta antes de salir
+  cerrarHoja(true);
+});
+$('#salir-seguir').onclick = cerrarSalir;
+$('#salir-descartar').onclick = () => { cerrarSalir(); cerrarHoja(); };
+$('#salir-guardar').onclick = () => { cerrarSalir(); $('#btn-guardar').click(); };
+$$('.overlay').forEach(o => o.addEventListener('mousedown', e => { if (e.target === o) (o.id === 'dlg-salir' ? cerrarSalir() : intentarCerrar()); }));
+document.addEventListener('click', e => { if (e.target.closest('[data-close]')) intentarCerrar(); });
+window.addEventListener('keydown', e => { if (e.key === 'Escape') ($('#dlg-salir').classList.contains('open') ? cerrarSalir() : intentarCerrar()); });
+
+function centrar(el) {                                   // sube el campo para que quede arriba, visible sobre el teclado
+  const sb = el.closest('.sheet-body'); if (!sb) return;
+  const r = el.getBoundingClientRect(), b = sb.getBoundingClientRect();
+  sb.scrollTo({ top: Math.max(0, sb.scrollTop + (r.top - b.top) - 64), behavior:'smooth' });
+}
+function ajustarVV() {
+  const vv = window.visualViewport; if (!vv) return;
+  const r = document.documentElement.style;
+  r.setProperty('--vvh', vv.height + 'px'); r.setProperty('--vvt', vv.offsetTop + 'px');
+  if (actual) { const f = document.activeElement; if (f && f.matches('input,textarea,select') && $('#' + actual).contains(f)) setTimeout(() => centrar(f), 60); }
+}
+if (window.visualViewport) { visualViewport.addEventListener('resize', ajustarVV); visualViewport.addEventListener('scroll', ajustarVV); }
+window.addEventListener('orientationchange', () => setTimeout(ajustarVV, 250));
+ajustarVV();
+document.addEventListener('focusin', e => {
+  if (!e.target.matches('input,textarea,select')) return;
+  document.body.classList.add('typing');
+  if (actual && $('#' + actual).contains(e.target)) setTimeout(() => centrar(e.target), 320);
+});
+document.addEventListener('focusout', () => setTimeout(() => { if (!document.activeElement || !document.activeElement.matches('input,textarea,select')) document.body.classList.remove('typing'); }, 80));
+
+/* ───────── Detalles de un fic ───────── */
+let detId = null;
+function abrirDetalle(id) { vibrar(); detId = id; pintarDet(); abrirHoja('sheet-det'); $('#det-body').scrollTop = 0; }
+function pintarDet() {
+  const f = db.find(x => x.id === detId);
+  if (!f) { if (actual === 'sheet-det') cerrarHoja(); return; }
+  const url = safeUrl(f.url);
+  const obra = [f.pub ? PUBS[f.pub] : '', totTxt(f), sagaTxt(f) ? 'Saga: ' + sagaTxt(f) : ''].filter(Boolean).join(' · ');
+  const lectura = capsTxt(f);
+  const vibes = f.categorias.map(k => `<span class="tag">${esc(tLab('vibes', k))}</span>`).join('');
+  const t18 = f.tags18.map(k => `<span class="tag t18">${esc(tLab('t18', k))}</span>`).join('');
+  const sec = (t, html) => html ? `<div class="det-sec"><h4>${t}</h4>${html}</div>` : '';
+  const resp = (f.urlRespaldo || f.pdfNombre)
+    ? `<div class="det-resp">${btnDrive(f, 17)}${btnPdf(f, 17)}</div>` + (f.pdfNombre ? `<p class="hint">📄 ${esc(f.pdfNombre)}${f.pdfSize ? ' · ' + fmtSize(f.pdfSize) : ''} · guardado en este dispositivo</p>` : '')
+    : '';
+  $('#det-body').innerHTML = `<div style="--c:${colorFic(f)}">
+    <h3 class="det-title">${esc(f.titulo)}</h3>
+    <p class="c-by">${platPill(f, true)}${adultoTag(f)}</p>
+    ${shipRow(f, 'det-ship')}
+    <div class="det-row">
+      <button class="st st-${f.estado}" data-act="d-estado" aria-label="Estado: ${ESTADOS[f.estado]}. Toca para cambiar">${ESTADOS[f.estado]}</button>
+      <button class="btn sec det-fav" data-act="d-fav" aria-pressed="${f.fav === 'si'}" style="${f.fav === 'si' ? 'color:var(--adult)' : ''}">${icon('heart', 16, f.fav === 'si')} ${f.fav === 'si' ? 'Favorito' : 'Marcar favorito'}</button>
+    </div>
+    ${sec('Si el sitio no abre', resp)}
+    ${sec('Sobre la obra', obra ? `<p>${esc(obra)}</p>` : '')}
+    ${sec('Calificación', f.rating ? `<p>${ratingHTML(f.rating)}</p>` : '')}
+    ${sec('Tu lectura', lectura ? `<p>${esc(lectura)}</p>` : '')}
+    ${sec('De qué iba', f.notas ? `<p class="det-notes">${esc(f.notas)}</p>` : '')}
+    ${sec('Qué me pareció', f.opinion ? `<p class="det-notes">${esc(f.opinion)}</p>` : '')}
+    ${sec('Mis estantes', f.estantes.length ? `<div class="tags">${f.estantes.map(x => `<span class="tag shelf">📚 ${esc(x)}</span>`).join('')}</div>` : '')}
+    ${sec('Marcador (para copiar a AO3)', `<p class="hint" style="margin-top:0">${f.leido ? 'Leído el ' + esc(f.leido) : 'Aún sin fecha de lectura'}</p><button class="btn sec mark-btn" data-act="d-marc">${icon('file', 16)} Copiar marcador</button>`)}
+    ${sec('Vibes', vibes ? `<div class="tags">${vibes}</div>` : '')}
+    ${sec('Etiquetas +18', t18 ? `<div class="tags">${t18}</div>` : '')}
+    ${sec('Palabras clave', f.tagsExtra ? `<p>${esc(f.tagsExtra)}</p>` : '')}
+  </div>`;
+  $('#det-foot').innerHTML =
+    (url ? `<a class="btn primary" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${icon('link', 17)} Leer</a>` : '') +
+    `<button class="btn sec" data-act="d-editar">${icon('edit', 17)} Editar</button>` +
+    `<button class="btn sec danger" data-act="d-borrar" aria-label="Eliminar">${icon('trash', 17)}</button>`;
+}
+$('#sheet-det').addEventListener('click', e => {
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  if (b.dataset.act === 'respaldo') return;                 // enlace a Drive: se abre solo
+  const f = db.find(x => x.id === detId); if (!f) return;
+  const a = b.dataset.act;
+  if (a === 'pdf') abrirPdf(f.id);
+  else if (a === 'd-fav') { f.fav = f.fav === 'si' ? 'no' : 'si'; vibrar(); guardarDB(); render(); }
+  else if (a === 'd-estado') { ciclarEstado(f); vibrar(); guardarDB(); render(); }
+  else if (a === 'd-marc') {
+    const txt = [f.titulo, f.ships.join(', ') + (f.fandom ? ' · ' + f.fandom : ''), f.rating ? `Calificación: ${f.rating}/10` : '', f.leido ? `Leído: ${f.leido}` : '', f.opinion || f.notas || ''].filter(x => x && x.trim()).join('\n');
+    (navigator.clipboard ? navigator.clipboard.writeText(txt) : Promise.reject()).then(() => toast('Marcador copiado'), () => toast('No pude copiar'));
+  }
+  else if (a === 'd-editar') abrirForm(f.id);
+  else if (a === 'd-borrar') { const id = f.id; cerrarHoja(); borrarFic(id); }
+});
+
+/* ───────── Formulario ───────── */
+let formEst = [];
+let editId = null, formVibes = new Set(), formT18 = new Set(), formEstado = 'por-leer', formPub = '', platManual = false, formRating = 0, formColor = '', formBase = '', formShips = [], formPlats = ['ao3'];
+let formPdf = { file:null, nombre:'', size:0, quitar:false };      // file = PDF recién elegido; quitar = hay que borrar el que ya estaba guardado
+const GRUPOS = {
+  vibes: { custom:'vibesCustom', campo:'categorias', el:'#f-vibes', set:() => formVibes, row:'#nv-row', inp:'#nv-input' },
+  t18:   { custom:'t18Custom',   campo:'tags18',     el:'#f-t18',   set:() => formT18,   row:'#nt-row', inp:'#nt-input' }
+};
+function opciones(g) {                                   // por defecto + las tuyas + las que ya usas
+  const G = GRUPOS[g], extra = new Set(prefs[G.custom]);
+  visibles().forEach(f => f[G.campo].forEach(k => { if (k.startsWith('c:')) extra.add(k); }));
+  G.set().forEach(k => { if (k.startsWith('c:')) extra.add(k); });
+  return [...Object.keys(DEFS[g]), ...[...extra].filter(k => !DEFS[g][k])];
+}
+function pintarGrupo(g) {
+  const G = GRUPOS[g];
+  $(G.el).innerHTML = opciones(g).map(k => {
+    const propio = !DEFS[g][k];
+    return `<button type="button" class="chip${G.set().has(k) ? ' on' : ''}" data-v="${esc(k)}">${esc(tLab(g, k))}${propio ? `<span class="x" data-del="${esc(k)}" role="button" aria-label="Quitar de la lista">${icon('x', 13)}</span>` : ''}</button>`;
+  }).join('') + `<button type="button" class="chip nuevo" data-nuevo="1">${icon('plus', 14)} Nueva</button>`;
+  if (g === 'vibes') pintarCaps();
+}
+function quitarPropio(g, k) {
+  if (!confirm(`¿Quitar "${tLab(g, k)}" de la lista y de todos tus fics?`)) return;
+  const G = GRUPOS[g];
+  prefs[G.custom] = prefs[G.custom].filter(x => x !== k); guardarPrefs();
+  db.forEach(f => { f[G.campo] = f[G.campo].filter(x => x !== k); });
+  G.set().delete(k); guardarDB(); pintarGrupo(g); render();
+}
+Object.keys(GRUPOS).forEach(g => {
+  const G = GRUPOS[g];
+  $(G.el).addEventListener('click', e => {
+    const del = e.target.closest('[data-del]');
+    if (del) { e.stopPropagation(); return quitarPropio(g, del.dataset.del); }
+    if (e.target.closest('[data-nuevo]')) { const r = $(G.row); r.hidden = !r.hidden; if (!r.hidden) $(G.inp).focus(); return; }
+    const b = e.target.closest('.chip'); if (!b) return; vibrar();
+    const k = b.dataset.v; G.set().has(k) ? G.set().delete(k) : G.set().add(k);
+    if (g === 'vibes' && G.set().has(k)) { if (k === 'largo') G.set().delete('oneshot'); else if (k === 'oneshot') G.set().delete('largo'); }
+    pintarGrupo(g);
+  });
+  const agregar = () => {
+    const v = $(G.inp).value.trim().replace(/\s+/g, ' ').slice(0, 30); if (!v) return;
+    const nv = norm(v);
+    let k = Object.keys(DEFS[g]).find(d => norm(DEFS[g][d].n) === nv || norm(DEFS[g][d].s) === nv);
+    if (!k) {
+      k = opciones(g).find(o => !DEFS[g][o] && norm(tLab(g, o)) === nv) || 'c:' + v;
+      if (!prefs[G.custom].includes(k)) { prefs[G.custom].push(k); guardarPrefs(); }
+    }
+    G.set().add(k); $(G.inp).value = ''; $(G.row).hidden = true; pintarGrupo(g);
+  };
+  $(G.row + ' button').onclick = agregar;
+  $(G.inp).addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); agregar(); } });
+});
+
+/* Capítulos: el total aparece con "Historia larga" (en Vibes); el apartado 7 también */
+function pintarCaps() {
+  const largo = formVibes.has('largo');
+  const ong = largo && (formPub === 'en-curso' || formPub === 'sin-actualizar');
+  $('#g-total').hidden = !largo;
+  $('#g-saga').hidden = !formVibes.has('saga');
+  $('#g-pubgroup').hidden = !largo;
+  $('#g-capsmain').hidden = !ong;
+  $('#tot-hint').textContent = ong
+    ? 'Cuántos capítulos dice que tendrá. Si dice 8/?, déjalo vacío.'
+    : 'Cuántos capítulos tiene en total.';
+}
+function pintarEst() {
+  const todos = new Set([...prefs.estantes, ...db.flatMap(f => f.estantes), ...formEst]);
+  $('#f-estantes').innerHTML = [...todos].map(x => `<button type="button" class="chip${formEst.includes(x) ? ' on' : ''}" data-v="${esc(x)}">${esc(x)}</button>`).join('') + `<button type="button" class="chip nuevo" data-nuevo="1">${icon('plus', 14)} Nuevo estante</button>`;
+}
+$('#f-estantes').addEventListener('click', e => {
+  if (e.target.closest('[data-nuevo]')) { const r = $('#ne-row'); r.hidden = !r.hidden; if (!r.hidden) $('#ne-input').focus(); return; }
+  const b = e.target.closest('.chip'); if (!b) return; vibrar();
+  const k = b.dataset.v; formEst = formEst.includes(k) ? formEst.filter(x => x !== k) : [...formEst, k]; pintarEst();
+});
+const addEst = () => {
+  const v = $('#ne-input').value.trim().replace(/\s+/g, ' ').slice(0, 30); if (!v) return;
+  const ex = [...prefs.estantes, ...db.flatMap(f => f.estantes)].find(x => norm(x) === norm(v)) || v;
+  if (!prefs.estantes.includes(ex)) { prefs.estantes.push(ex); guardarPrefs(); }
+  if (!formEst.includes(ex)) formEst.push(ex);
+  $('#ne-input').value = ''; $('#ne-row').hidden = true; pintarEst();
+};
+$('#ne-row button').onclick = addEst;
+$('#ne-input').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); addEst(); } });
+function pintarRating() {
+  $('#f-stars').innerHTML = Array.from({ length:10 }, (_, i) =>
+    `<button type="button" class="${i < formRating ? 'on' : ''}" data-n="${i + 1}" aria-label="${i + 1} de 10">${icon('star', 22, i < formRating)}</button>`).join('');
+  $('#rate-out').innerHTML = formRating ? ratingHTML(formRating) : 'Sin calificar';
+}
+
+/* ── PDF del formulario: adjuntar, cambiar o quitar ── */
+function pintarPdf() {
+  $('#pdf-box').innerHTML = formPdf.nombre
+    ? `<div class="pdfrow"><span class="pdfname">${icon('file', 16)} ${esc(formPdf.nombre)}${formPdf.size ? ' · ' + fmtSize(formPdf.size) : ''}</span>
+        <button type="button" class="btn sec" data-p="add">Cambiar</button><button type="button" class="btn sec danger" data-p="quitar">Quitar</button></div>`
+    : `<button type="button" class="btn sec" data-p="add">${icon('upload', 17)} Adjuntar PDF</button>`;
+}
+$('#pdf-box').addEventListener('click', e => {
+  const b = e.target.closest('[data-p]'); if (!b) return;
+  if (b.dataset.p === 'add') $('#f-pdf').click();
+  else { formPdf = { file:null, nombre:'', size:0, quitar:true }; pintarPdf(); }
+});
+$('#f-pdf').addEventListener('change', e => {
+  const file = e.target.files[0]; e.target.value = ''; if (!file) return;
+  if (!/\.pdf$/i.test(file.name) && file.type !== 'application/pdf') { toast('Solo se pueden adjuntar archivos PDF'); return; }
+  if (file.size > MAX_PDF) { toast(`Ese PDF pesa ${fmtSize(file.size)}; el máximo es 40 MB`); return; }
+  formPdf = { file, nombre:file.name, size:file.size, quitar:false }; pintarPdf();
+});
+
+/* ── Selector de color: paleta + personalizado (degradado, tono, HEX) ── */
+const esHex = c => /^#[0-9a-f]{6}$/i.test(c);
+let cp = { h:140, s:.75, v:.66 };
+const hsv2hex = (h, s, v) => { const f = n => { const k = (n + h / 60) % 6; return v - v * s * Math.max(0, Math.min(k, 4 - k, 1)); }; return '#' + [f(5), f(3), f(1)].map(x => Math.round(x * 255).toString(16).padStart(2, '0')).join(''); };
+const hex2hsv = hx => {
+  const r = parseInt(hx.slice(1, 3), 16) / 255, g = parseInt(hx.slice(3, 5), 16) / 255, b = parseInt(hx.slice(5, 7), 16) / 255;
+  const mx = Math.max(r, g, b), d = mx - Math.min(r, g, b); let h = cp.h;
+  if (d) { h = mx === r ? ((g - b) / d + 6) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h *= 60; }
+  return { h, s: mx ? d / mx : 0, v: mx };
+};
+function pintarPicker(saltarHex) {
+  const hx = hsv2hex(cp.h, cp.s, cp.v);
+  $('#cp-sv').style.setProperty('--h', cp.h);
+  $('#cp-dot').style.left = cp.s * 100 + '%'; $('#cp-dot').style.top = (1 - cp.v) * 100 + '%';
+  $('#cp-hue').value = cp.h; $('#cp-prev').style.background = hx;
+  if (!saltarHex) $('#cp-hex').value = hx;
+  return hx;
+}
+let cpAbierto = false;
+function coloresFandom() {                                  // colores que ya usaste en fics de ese fandom (más usados primero)
+  const fq = norm($('#f-fandom').value); if (!fq) return [];
+  const m = new Map();
+  db.forEach(f => { if (f.color && norm(f.fandom) === fq) { const c = f.color.toLowerCase(); m.set(c, (m.get(c) || 0) + 1); } });
+  return [...m.entries()].sort((a, b) => b[1] - a[1]).map(x => x[0]).slice(0, 6);
+}
+function pintarSw() {
+  const fc = coloresFandom(), cur = formColor.toLowerCase(), custom = esHex(formColor);
+  const lista = fc.length ? fc : ['0', '1', ...prefs.coloresRec];
+  if (cur && !custom && !lista.includes(cur)) lista.unshift(cur);
+  const sw = (c, bg, on, lab) => `<button type="button" class="csw" data-c="${c}" style="background:${bg}" aria-pressed="${on}" aria-label="${lab}">${icon('check', 16)}</button>`;
+  $('#f-color').innerHTML = `<button type="button" class="chip${formColor === '' ? ' on' : ''}" data-c="">Auto</button>` +
+    lista.map(c => sw(c, /^\d$/.test(c) ? `var(--f${c})` : c, cur === c, 'Color ' + c)).join('') +
+    sw('custom', custom && !lista.includes(cur) ? formColor : 'conic-gradient(#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00)', custom && !lista.includes(cur), 'Color personalizado');
+}
+function pintarColor() {
+  pintarSw();
+  const abre = cpAbierto && esHex(formColor);
+  $('#cpick').hidden = !abre;
+  if (abre) { cp = hex2hsv(formColor); pintarPicker(); }
+}
+$('#f-color').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return; vibrar();
+  const c = b.dataset.c;
+  if (c === 'custom') { const nuevo = !esHex(formColor); if (nuevo) formColor = '#32a852'; cpAbierto = nuevo ? true : !cpAbierto; }
+  else { formColor = c; cpAbierto = false; }
+  pintarColor();
+});
+const svMove = e => {
+  const r = $('#cp-sv').getBoundingClientRect();
+  cp.s = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
+  cp.v = 1 - Math.min(1, Math.max(0, (e.clientY - r.top) / r.height));
+  formColor = pintarPicker(); pintarSw();
+};
+$('#cp-sv').addEventListener('pointerdown', e => { e.currentTarget.setPointerCapture(e.pointerId); svMove(e); });
+$('#cp-sv').addEventListener('pointermove', e => { if (e.currentTarget.hasPointerCapture(e.pointerId)) svMove(e); });
+$('#cp-hue').addEventListener('input', e => { cp.h = +e.target.value; formColor = pintarPicker(); pintarSw(); });
+$('#cp-hex').addEventListener('input', e => {
+  let v = e.target.value.trim(); if (v && v[0] !== '#') v = '#' + v;
+  if (esHex(v)) { cp = hex2hsv(v.toLowerCase()); formColor = v.toLowerCase(); pintarPicker(true); pintarSw(); }
+});
+
+function pintarEstados() {
+  pintarRating(); pintarColor();
+  $$('#f-estado button').forEach(b => b.classList.toggle('on', b.dataset.v === formEstado));
+  $$('#f-pub button').forEach(b => b.classList.toggle('on', b.dataset.v === formPub));
+  $('#g-t18').hidden = !$('#f-adulto').checked;
+  pintarCaps();
+}
+$('#f-adulto').addEventListener('change', pintarEstados);
+
+/* Sugerencias de fandom y ship: listas plegables; en las parejas puedes elegir varias */
+const sugAb = { fandom:null, ship:null };            // null = automático (se abre sola al escribir)
+function pintarShips() {
+  $('#sel-ship').innerHTML = formShips.map(x => `<button type="button" class="chip on" data-x="${esc(x)}">${esc(x)}<span class="x">${icon('x', 13)}</span></button>`).join('');
+  $('#sel-ship').hidden = !formShips.length;
+}
+function agregarShip(v) {
+  v = (v ?? $('#f-ship').value).trim().replace(/\s+/g, ' ').slice(0, 60); if (!v) return false;
+  const ex = db.flatMap(f => f.ships).find(x => norm(x) === norm(v)); v = ex || v;         // respeta cómo ya la tenías escrita
+  if (!formShips.some(x => norm(x) === norm(v))) formShips.push(v);
+  $('#f-ship').value = ''; pintarShips(); sugerir(); return true;
+}
+function sugerir() {
+  const vis = visibles();
+  const fq = norm($('#f-fandom').value), sq = norm($('#f-ship').value);
+  const cuenta = (arr, get) => {
+    const m = new Map();
+    arr.forEach(f => get(f).forEach(v => { if (!v) return; const k = norm(v); const o = m.get(k) || { label:v, n:0 }; o.n++; m.set(k, o); }));
+    return m;
+  };
+  const orden = (a, b) => b[1].n - a[1].n || a[1].label.localeCompare(b[1].label, 'es');
+  const lista = (id, titulo, m, q, activos, auto) => {
+    const items = [...m.entries()].filter(([k]) => !q || k.includes(q)).sort(orden).slice(0, 40);
+    if (!items.length) return '';
+    const ab = sugAb[id] ?? auto;
+    return `<button type="button" class="sug-tog" data-tog="${id}" aria-expanded="${ab}"><span>${titulo} · ${items.length}</span>${icon('chev', 15)}</button>` +
+      (ab ? `<div class="sug-chips">${items.map(([k, o]) => `<button type="button" class="chip${activos.has(k) ? ' on' : ''}" data-v="${esc(o.label)}">${esc(o.label)}</button>`).join('')}</div>` : '');
+  };
+  const fm = cuenta(vis, f => [f.fandom]);
+  $('#s-fandom').innerHTML = lista('fandom', 'Fandoms ya añadidos', fm, fq, new Set([fq]), !!fq && !fm.has(fq));
+  /* parejas: sin fandom, todas; con un fandom que ya existe, solo las de ese fandom; con uno nuevo, ninguna */
+  const sm = !fq ? cuenta(vis, f => f.ships) : fm.has(fq) ? cuenta(vis.filter(f => norm(f.fandom) === fq), f => f.ships) : new Map();
+  $('#s-ship').innerHTML = lista('ship', 'Parejas ya añadidas', sm, sq, new Set(formShips.map(norm)), !!sq);
+  pintarSw();                                              // los colores dependen del fandom elegido
+}
+$('#s-fandom').addEventListener('click', e => {
+  const t = e.target.closest('[data-tog]');
+  if (t) { sugAb.fandom = t.getAttribute('aria-expanded') !== 'true'; return sugerir(); }
+  const b = e.target.closest('.chip'); if (!b) return; vibrar();
+  $('#f-fandom').value = b.dataset.v; sugAb.fandom = null; sugerir();
+});
+$('#s-ship').addEventListener('click', e => {
+  const t = e.target.closest('[data-tog]');
+  if (t) { sugAb.ship = t.getAttribute('aria-expanded') !== 'true'; return sugerir(); }
+  const b = e.target.closest('.chip'); if (!b) return; vibrar();
+  const v = b.dataset.v, i = formShips.findIndex(x => norm(x) === norm(v));
+  if (i >= 0) formShips.splice(i, 1);
+  else {
+    formShips.push(v);
+    if (!$('#f-fandom').value.trim()) {                    // si no hay fandom, usa el más común de esa pareja
+      const m = new Map();
+      visibles().filter(f => f.fandom && f.ships.some(x => norm(x) === norm(v))).forEach(f => m.set(f.fandom, (m.get(f.fandom) || 0) + 1));
+      const top = [...m.entries()].sort((a, c) => c[1] - a[1])[0];
+      if (top) $('#f-fandom').value = top[0];
+    }
+  }
+  sugAb.ship = true; pintarShips(); sugerir();             // la lista queda abierta para seguir eligiendo
+});
+$('#sel-ship').addEventListener('click', e => {
+  const b = e.target.closest('[data-x]'); if (!b) return; vibrar();
+  formShips = formShips.filter(x => x !== b.dataset.x); pintarShips(); sugerir();
+});
+$('#f-fandom').addEventListener('input', () => { sugAb.fandom = null; sugerir(); });
+$('#f-ship').addEventListener('input', () => { sugAb.ship = null; sugerir(); });
+$('#f-ship').addEventListener('keydown', e => { if (e.key === 'Enter' && $('#f-ship').value.trim()) { e.preventDefault(); agregarShip(); } });
+$('#btn-add-ship').onclick = () => { vibrar(); agregarShip(); $('#f-ship').focus(); };
+
+function mostrarDeteccion(url) {
+  const p = detectarPlat(url), h = $('#url-hint');
+  h.hidden = !p; if (p) h.textContent = 'Plataforma detectada: ' + PLATS[p];
+}
+
+function abrirForm(id) {
+  vibrar();
+  editId = id || null;
+  const f = id ? db.find(x => x.id === id) : null;
+  $('#fic-h').textContent = f ? 'Editar fanfic' : 'Agregar fanfic';
+  $('#f-titulo').value = f ? f.titulo : ''; $('#f-url').value = f ? f.url : '';
+  $('#f-url2').value = f ? f.urlRespaldo : '';
+  formPdf = { file:null, nombre: f ? f.pdfNombre : '', size: f ? f.pdfSize : 0, quitar:false };
+  $('#f-fandom').value = f ? f.fandom : ''; $('#f-ship').value = ''; formShips = f ? [...f.ships] : []; sugAb.fandom = sugAb.ship = null;
+  $('#f-personajes').value = f ? f.personajes : '';
+  $('#f-notas').value = f ? f.notas : ''; $('#f-opinion').value = f ? f.opinion : ''; $('#f-tropes').value = f ? f.tagsExtra : '';
+  formPlats = f ? [...f.plataformas] : ['ao3'];
+  $('#f-fav').checked = !!f && f.fav === 'si'; $('#f-adulto').checked = !!f && f.adulto;
+  formVibes = new Set(f ? f.categorias : []); formT18 = new Set(f ? f.tags18 : []);
+  formEstado = f ? f.estado : 'por-leer'; formPub = f ? f.pub : ''; platManual = !!f; formRating = f ? f.rating : 0; formColor = f ? f.color : ''; cpAbierto = false;
+  $('#f-cap-act').value = f ? f.capAct : ''; $('#f-cap-tot').value = $('#f-cap-tot2').value = f ? f.capTot : ''; $('#f-cap-pub').value = f ? f.capPub : '';
+  if (formVibes.has('largo') && formVibes.has('oneshot')) formVibes.delete('oneshot');
+  $('#f-saga-obras').value = f ? f.sagaObras : ''; $('#f-saga-caps').value = f ? f.sagaCaps : '';
+  if (f && !formVibes.has('oneshot') && (f.pub || f.capPub || +f.capTot > 1)) formVibes.add('largo');   // fics antiguos con datos de capítulos
+  formEst = f ? [...f.estantes] : []; $('#ne-row').hidden = true; $('#ne-input').value = ''; pintarEst();
+  $('#url-hint').hidden = true;
+  $$('#sheet-fic .group').forEach(g => g.classList.remove('has-error'));
+  $('#g-url .err').textContent = ERR_URL; $('#g-titulo .err').textContent = ERR_TIT; $('#g-resp .err').textContent = ERR_URL;
+  $('#sheet-fic details.more').open = false;
+  $('#nv-row').hidden = true; $('#nt-row').hidden = true; $('#nv-input').value = ''; $('#nt-input').value = '';
+  pintarShips(); pintarGrupo('vibes'); pintarGrupo('t18'); pintarEstados(); pintarPdf(); sugerir();
+  formBase = formSnap();
+  abrirHoja('sheet-fic');
+  $('#fic-body').scrollTop = 0;
+  if (!f) setTimeout(() => $('#f-url').focus(), 280);
+}
+$('#f-estado').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; formEstado = b.dataset.v; pintarEstados(); });
+$('#f-stars').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; vibrar(); const n = +b.dataset.n; formRating = formRating === n ? 0 : n; pintarRating(); });
+$('#f-pub').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; formPub = formPub === b.dataset.v ? '' : b.dataset.v; pintarEstados(); });
+$('#f-url').addEventListener('input', e => {
+  const p = detectarPlat(e.target.value);
+  if (p) formPlats = [p];                                  // la plataforma se detecta sola desde el enlace
+  mostrarDeteccion(e.target.value);
+  revisarDup();
+});
+$('#f-url2').addEventListener('input', () => $('#g-resp').classList.remove('has-error'));
+$('#f-titulo').addEventListener('input', revisarDup);
+['#f-cap-pub', '#f-cap-tot', '#f-cap-tot2'].forEach(s => $(s).addEventListener('input', () => $('#g-capsmain').classList.remove('has-error')));
+$('#f-cap-tot').addEventListener('input', e => { $('#f-cap-tot2').value = e.target.value; });
+$('#f-cap-tot2').addEventListener('input', e => { $('#f-cap-tot').value = e.target.value; });
+$('#f-cap-act').addEventListener('input', () => $('#g-caps').classList.remove('has-error'));
+$$('#fic-body input.input').forEach(i => { if (!i.enterKeyHint) i.enterKeyHint = 'next'; });
+$('#fic-body').addEventListener('keydown', e => {          // "Sig." / Enter: pasa al siguiente campo y baja solo
+  if (e.key !== 'Enter' || e.defaultPrevented || e.target.tagName !== 'INPUT' || e.target.id === 'cp-hex') return;
+  e.preventDefault();
+  const campos = $$('#fic-body input.input, #fic-body textarea').filter(x => x.id !== 'cp-hex' && x.offsetParent !== null);
+  const sig = campos[campos.indexOf(e.target) + 1];
+  if (sig) sig.focus(); else e.target.blur();
+});
+
+/* Duplicados: mismo enlace o mismo título */
+const ERR_URL = 'Ese enlace no parece válido.', ERR_TIT = 'Escribe al menos el título.';
+const nt = x => norm(x).replace(/\s+/g, ' ');
+function urlKey(u) {
+  u = safeUrl(u); if (!u) return '';
+  try {
+    const x = new URL(u), h = x.hostname.replace(/^www\./, ''), p = x.pathname.replace(/\/+$/, ''); let m;
+    if (h.includes('archiveofourown') && (m = p.match(/\/works\/(\d+)/))) return 'ao3:' + m[1];     // con o sin /chapters/…
+    if (h.includes('fanfiction.net') && (m = p.match(/\/s\/(\d+)/))) return 'ffnet:' + m[1];
+    return h + p.toLowerCase();
+  } catch (e) { return ''; }
+}
+function buscarDup(titulo, url) {
+  const t = nt(titulo), k = urlKey(url);
+  for (const f of db) {                                    // incluye los +18 ocultos
+    if (f.id === editId) continue;
+    if (k && urlKey(f.url) === k) return { campo:'url', fic:f };
+    if (t && nt(f.titulo) === t) return { campo:'titulo', fic:f };
+  }
+  return null;
+}
+function errCampo(campo, msg) { const g = campo === 'url' ? '#g-url' : campo === 'resp' ? '#g-resp' : '#g-titulo'; $(g + ' .err').textContent = msg; $(g).classList.add('has-error'); }
+function msgDup(d) {
+  const q = d.fic.adulto && prefs.adultos === 'ocultar' ? '' : `: “${d.fic.titulo}”`;
+  return d.campo === 'url' ? `Ese enlace ya está guardado${q}.` : `Ya tienes un fic con ese título${q}.`;
+}
+function revisarDup() {
+  $('#g-url .err').textContent = ERR_URL; $('#g-titulo .err').textContent = ERR_TIT;
+  $('#g-url').classList.remove('has-error'); $('#g-titulo').classList.remove('has-error');
+  const d = buscarDup($('#f-titulo').value, $('#f-url').value);
+  if (d) errCampo(d.campo, msgDup(d));
+}
+$('#btn-guardar').onclick = () => {
+  const titulo = $('#f-titulo').value.trim();
+  const urlRaw = $('#f-url').value.trim();
+  if (!titulo) { errCampo('titulo', ERR_TIT); $('#f-titulo').focus(); return; }
+  let url = '';
+  if (urlRaw) { url = safeUrl(urlRaw); if (!url) { errCampo('url', ERR_URL); $('#f-url').focus(); return; } }
+  const urlRespRaw = $('#f-url2').value.trim();
+  let urlRespaldo = '';
+  if (urlRespRaw) { urlRespaldo = safeUrl(urlRespRaw); if (!urlRespaldo) { errCampo('resp', ERR_URL); $('#f-url2').focus(); return; } }
+  const dup = buscarDup(titulo, url);
+  if (dup) { errCampo(dup.campo, msgDup(dup)); $(dup.campo === 'url' ? '#f-url' : '#f-titulo').focus(); toast('Ese fic ya lo tienes guardado'); return; }
+  const largo = formVibes.has('largo');
+  const pubV = largo ? formPub : '';                           // "¿Terminado?" solo existe en historias largas
+  const ong = pubV === 'en-curso' || pubV === 'sin-actualizar';
+  const capAct = $('#f-cap-act').value.trim(), capTot = largo ? $('#f-cap-tot').value.trim() : '';
+  const capPub = ong ? $('#f-cap-pub').value.trim() : '';
+  if (capPub && capTot && +capPub > +capTot) {
+    $('#cm-err').textContent = 'Los capítulos publicados no pueden ser más que el total.';
+    $('#g-capsmain').classList.add('has-error'); $('#f-cap-pub').focus(); return;
+  }
+  const maxCap = Math.max(+capTot || 0, +capPub || 0);
+  if (capAct && maxCap && +capAct > maxCap) {
+    $('#sheet-fic details.more').open = true;
+    $('#g-caps').classList.add('has-error'); $('#f-cap-act').focus(); return;
+  }
+  vibrar();
+  if (!formPlats.length) formPlats = [detectarPlat(url) || 'ao3'];
+  agregarShip();                                           // si dejaste una pareja escrita sin tocar Agregar, también cuenta
+  const adulto = $('#f-adulto').checked;
+  const pdfFile = formPdf.file, pdfQuitar = formPdf.quitar;  // se guardan aparte, antes de cerrar el formulario
+  const datos = {
+    titulo, url, urlRespaldo, plataformas:[...formPlats],
+    pdfNombre: formPdf.nombre, pdfSize: formPdf.size,
+    personajes:$('#f-personajes').value,
+    fandom:$('#f-fandom').value, ships:[...formShips], fav:$('#f-fav').checked ? 'si' : 'no',
+    categorias:[...formVibes], tags18: adulto ? [...formT18] : [], tagsExtra:$('#f-tropes').value, notas:$('#f-notas').value, opinion:$('#f-opinion').value,
+    estado:formEstado, adulto, cw:false, estantes:[...formEst],
+    leido: formEstado === 'terminado' ? ((editId && (db.find(x => x.id === editId) || {}).leido) || hoy()) : ((editId && (db.find(x => x.id === editId) || {}).leido) || ''),
+    pub:pubV, capAct, capTot, capPub, rating:formRating, color:formColor,
+    sagaObras: formVibes.has('saga') ? $('#f-saga-obras').value.trim() : '', sagaCaps: formVibes.has('saga') ? $('#f-saga-caps').value.trim() : ''
+  };
+  let fic;
+  if (editId) { const i = db.findIndex(x => x.id === editId); db[i] = normFic({ ...db[i], ...datos }); fic = db[i]; }
+  else { fic = normFic(datos); db.unshift(fic); }
+  if (esHex(formColor)) { prefs.coloresRec = [formColor.toLowerCase(), ...prefs.coloresRec.filter(c => c !== formColor.toLowerCase())].slice(0, 5); guardarPrefs(); }
+  guardarDB(); cerrarHoja(); render();
+  toast(datos.adulto && prefs.adultos === 'ocultar' ? 'Guardado · queda oculto por ser +18' : 'Guardado');
+  /* el PDF se guarda en IndexedDB después; si falla, el fic queda sin PDF y se avisa */
+  if (pdfFile) {
+    pdfPut(fic.id, new Blob([pdfFile], { type:'application/pdf' }))
+      .then(() => { pedirPersistencia(); pintarMenu(); })
+      .catch(() => { fic.pdfNombre = ''; fic.pdfSize = 0; guardarDB(); render(); toast('No pude guardar el PDF en este navegador. Prueba con otro archivo o libera espacio.', null, null, 5000); });
+  } else if (pdfQuitar) pdfDel(fic.id);
+};
+
+/* ───────── Filtros (hoja) ───────── */
+function contar(arr, fn) { const m = new Map(); arr.forEach(f => fn(f).forEach(k => { const o = m.get(k.key) || { label:k.label, n:0 }; o.n++; m.set(k.key, o); })); return m; }
+const filtAb = { open:null }, filtQ = {};
+let cierreT;
+function setAbierto(id) {                                  // abre/cierra con animación sin repintar (solo una sección abierta)
+  filtAb.open = id;
+  $$('#filtros-body .facc').forEach(sec => {
+    const on = sec.dataset.id === id;
+    sec.classList.toggle('open', on);
+    sec.querySelector('.fhead').setAttribute('aria-expanded', on);
+  });
+}
+function filtrarChips(id) {                                // buscador dentro de una sección
+  const sec = $(`#filtros-body .facc[data-id="${id}"]`); if (!sec) return;
+  const q = norm(filtQ[id] || ''); let hay = 0;
+  $$('.fchip', sec).forEach(c => { c.hidden = !!q && !c.dataset.s.includes(q); if (!c.hidden) hay++; });
+  const none = $('.fnone', sec); if (none) none.hidden = hay > 0;
+}
+function pintarFiltros() {
+  const vis = visibles();
+  const adultos = prefs.adultos !== 'ocultar';
+  const chip = (t, key, label, n, on) => `<button type="button" class="fchip${on ? ' on' : ''}" data-t="${t}" data-v="${esc(key)}" data-s="${esc(norm(label))}" aria-pressed="${on}">${icon('check', 14)}<span>${esc(label)}</span><em>${n}</em></button>`;
+  const porNombre = ([, a], [, b]) => b.n - a.n || a.label.localeCompare(b.label, 'es');
+  const mk = (t, m, activos) => [...m.entries()].sort(porNombre).map(([k, o]) => chip(t, k, o.label, o.n, activos.has(k)));
+  const bloque = (id, titulo, chips, sel, o = {}) => {
+    if (!chips.length) return '';
+    const open = filtAb.open === id;
+    return `<section class="facc${open ? ' open' : ''}${sel.length ? ' has' : ''}" data-id="${id}">
+      <button type="button" class="fhead" data-sec="${id}" aria-expanded="${open}">
+        <span class="fhead-t"><b>${titulo}</b><small>${sel.length ? esc(sel.join(', ')) : (o.sub || 'Todos')}</small></span>
+        ${sel.length > 1 ? `<span class="fbadge">${sel.length}</span>` : ''}${icon('chev', 18)}
+      </button>
+      <div class="fwrap"><div class="finner"><div class="fbody">
+        ${o.hint ? `<p class="fhint">${o.hint}</p>` : ''}
+        ${chips.length > 8 ? `<div class="fsearch">${icon('search', 16)}<input type="search" data-q="${id}" placeholder="Buscar…" value="${esc(filtQ[id] || '')}" autocomplete="off" aria-label="Buscar en ${esc(titulo)}"></div>` : ''}
+        <div class="fopts">${chips.join('')}</div>
+        <p class="fnone" hidden>No hay coincidencias</p>
+      </div></div></div>
+    </section>`;
+  };
+  const estados = Object.entries(ESTADOS).map(([k, v]) => chip('estado', k, v, vis.filter(f => f.estado === k).length, st.estado === k));
+  const pubs = Object.entries(PUBS).map(([k, l]) => chip('pub', k, l, vis.filter(f => f.pub === k).length, st.pubs.has(k)));
+  const plt = contar(vis, f => f.plataformas.map(k => ({ key:k, label:PLATS[k] })));
+  const fan = contar(vis, f => f.fandom ? [{ key:norm(f.fandom), label:f.fandom }] : []);
+  /* parejas: si hay fandom elegido, solo las de ese fandom; si no, todas */
+  const dePareja = f => f.ships.map(x => ({ key:norm(x), label:x }));
+  const base = st.fandoms.size ? vis.filter(f => st.fandoms.has(norm(f.fandom))) : vis;
+  const shpAll = contar(vis, dePareja), shp = contar(base, dePareja);
+  st.ships.forEach(k => { if (!shp.has(k) && shpAll.has(k)) shp.set(k, shpAll.get(k)); });   // las ya elegidas siempre se ven
+  const vib = contar(vis, f => f.categorias.map(k => ({ key:k, label:tLab('vibes', k) })));
+  const favN = vis.filter(f => f.fav === 'si').length;
+  const ad = vis.filter(f => f.adulto);
+  const t18 = contar(ad, f => f.tags18.map(k => ({ key:k, label:tShort('t18', k) })));
+  const adChips = [chip('adulto', '', 'Solo +18', ad.length, st.soloAdulto), ...mk('t18', t18, st.t18)];
+
+  const body = $('#filtros-body');
+  const y = body.scrollTop, ys = {};
+  $$('.facc', body).forEach(sec => { const o = $('.fopts', sec); if (o) ys[sec.dataset.id] = o.scrollTop; });
+  body.innerHTML =
+    bloque('estado', 'Estado de lectura', estados, st.estado !== 'todos' ? [ESTADOS[st.estado]] : []) +
+    bloque('plat', 'Plataforma', mk('plat', plt, st.plats), [...st.plats].map(k => PLATS[k])) +
+    bloque('pub', '¿Terminado?', pubs, [...st.pubs].map(k => PUBS[k])) +
+    bloque('fandom', 'Fandom / Universo', mk('fandom', fan, st.fandoms), [...st.fandoms].map(k => labelDe('fandom', k))) +
+    bloque('ship', 'Pareja / Ship', mk('ship', shp, st.ships), [...st.ships].map(labelShip), { sub:'Elige una o varias', hint:'Puedes elegir más de una pareja.' }) +
+    bloque('estante', 'Mis estantes', mk('estante', contar(vis, f => f.estantes.map(x => ({ key:norm(x), label:x }))), st.estantes), [...st.estantes].map(labelEstante), { sub:'Elige uno o varios' }) +
+    bloque('vibe', 'Vibes', mk('vibe', vib, st.vibes), [...st.vibes].map(k => tLab('vibes', k))) +
+    bloque('fav', 'Favoritos', favN ? [chip('fav', '', '★ Solo favoritos', favN, st.fav)] : [], st.fav ? ['Solo favoritos'] : []) +
+    (adultos && ad.length ? bloque('adulto', '+18', adChips, [...(st.soloAdulto ? ['Solo +18'] : []), ...[...st.t18].map(k => tShort('t18', k))]) : '');
+  body.scrollTop = y;
+  $$('.facc', body).forEach(sec => { const o = $('.fopts', sec); if (o && ys[sec.dataset.id]) o.scrollTop = ys[sec.dataset.id]; filtrarChips(sec.dataset.id); });
+  const n = calcular().lista.length;
+  $('#btn-ver').textContent = `Ver ${n} resultado${n === 1 ? '' : 's'}`;
+}
+$('#btn-filtros').onclick = () => { filtAb.open = null; pintarFiltros(); abrirHoja('sheet-filtros'); };
+$('#filtros-body').addEventListener('input', e => { const id = e.target.dataset.q; if (!id) return; filtQ[id] = e.target.value; filtrarChips(id); });
+$('#filtros-body').addEventListener('click', e => {
+  const h = e.target.closest('[data-sec]');
+  if (h) {
+    const id = h.dataset.sec, abrir = filtAb.open !== id;
+    setAbierto(abrir ? id : null);
+    if (abrir) setTimeout(() => h.closest('.facc').scrollIntoView({ block:'nearest', behavior:'smooth' }), 290);
+    return;
+  }
+  const b = e.target.closest('.fchip'); if (!b) return; vibrar();
+  const { t, v } = b.dataset;
+  const uno = set => { const ya = set.has(v); set.clear(); if (!ya) set.add(v); };     // una sola opción a la vez
+  if (t === 'fav') st.fav = !st.fav;
+  else if (t === 'estado') st.estado = st.estado === v ? 'todos' : v;
+  else if (t === 'pub') uno(st.pubs);
+  else if (t === 'plat') uno(st.plats);
+  else if (t === 'fandom') uno(st.fandoms);
+  else if (t === 'vibe') uno(st.vibes);
+  else if (t === 'estante') st.estantes.has(v) ? st.estantes.delete(v) : st.estantes.add(v);
+  else if (t === 'ship') st.ships.has(v) ? st.ships.delete(v) : st.ships.add(v);        // solo aquí se pueden elegir varias
+  else if (t === 'adulto') st.soloAdulto = !st.soloAdulto;
+  else if (t === 't18') uno(st.t18);
+  const id = b.closest('.facc').dataset.id;
+  render();
+  if (id !== 'ship' && id !== 'adulto' && id !== 'estante') { clearTimeout(cierreT); cierreT = setTimeout(() => { if (filtAb.open === id) setAbierto(null); }, 380); }   // al elegir una sola opción, se pliega
+});
+$('#btn-limpiar-filtros').onclick = () => { limpiarFiltros(); render(); };
+
+/* ───────── Ajustes ───────── */
+function pintarMenu() {
+  $$('#m-tema button').forEach(b => b.classList.toggle('on', b.dataset.v === prefs.tema));
+  $$('#m-adultos button').forEach(b => b.classList.toggle('on', b.dataset.v === prefs.adultos));
+  const grupos = prefs.tema === 'claro' ? [['Claro', false]] : prefs.tema === 'oscuro' ? [['Oscuro', true]] : [['Claro', false], ['Oscuro', true]];
+  $('#m-temas').innerHTML = grupos.map(([tit, d]) => (grupos.length > 1 ? `<div class="tem-sec">${tit}</div>` : '') +
+    TH.filter(t => t.dark === d).map(t => {
+      const on = (d ? prefs.temaOscuro : prefs.temaClaro) === t.id && (prefs.tema !== 'auto' || esOscuro() === d);
+      return `<button class="tem${on ? ' on' : ''}" data-th="${t.id}" aria-pressed="${on}">
+        <span class="tem-prev" style="background:linear-gradient(135deg,${t.bg} 0%,${t.soft} 45%,${t.acc} 100%)"><span class="tem-dots">${[t.card, t.chip, t.soft, t.acc, t.ink].map(c => `<i style="background:${c}"></i>`).join('')}</span></span>
+        <span><b>${esc(t.n)}</b><small>${esc(t.d)}</small></span></button>`; }).join('')).join('');
+  $$('#m-fuentes .fnt').forEach(b => { const on = b.dataset.f === prefs.fuente; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
+  $('#m-aviso').checked = !!prefs.aviso;
+  const ult = leer(BKEY, null);
+  const nP = db.filter(f => f.pdfNombre).length;
+  const base = `${db.length} fic${db.length === 1 ? '' : 's'} guardado${db.length === 1 ? '' : 's'} en este navegador. ` +
+    (ult ? `Último respaldo: ${new Date(ult).toLocaleDateString('es-CL', { day:'numeric', month:'long', year:'numeric' })}.` : 'Aún no has hecho un respaldo: te recomiendo uno de vez en cuando.') +
+    (nP ? ` Tienes ${nP} PDF guardado${nP === 1 ? '' : 's'} en este dispositivo; no van dentro del respaldo (.json), así que guarda esos archivos aparte.` : '');
+  $('#info-respaldo').textContent = base;
+  if (nP && navigator.storage && navigator.storage.estimate) {
+    navigator.storage.estimate().then(e => {
+      if (!e || !e.quota) return;
+      $('#info-respaldo').textContent = base + ` Espacio usado en el navegador: ${fmtSize(e.usage || 0)} de unos ${fmtSize(e.quota)} disponibles.`;
+    }).catch(() => {});
+  }
+}
+$('#btn-menu').onclick = () => { pintarMenu(); abrirHoja('sheet-menu'); };
+$('#m-tema').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; prefs.tema = b.dataset.v; guardarPrefs(); aplicarTema(); pintarMenu(); });
+$('#m-temas').addEventListener('click', e => { const b = e.target.closest('[data-th]'); if (!b) return; vibrar(); const t = TH.find(x => x.id === b.dataset.th); if (!t) return; if (t.dark) prefs.temaOscuro = t.id; else prefs.temaClaro = t.id; guardarPrefs(); aplicarTema(); pintarMenu(); });
+$('#m-adultos').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; prefs.adultos = b.dataset.v; st.revelados.clear(); guardarPrefs(); pintarMenu(); render(); });
+$('#m-fuentes').addEventListener('click', e => { const b = e.target.closest('.fnt'); if (!b) return; prefs.fuente = b.dataset.f; guardarPrefs(); aplicarTema(); pintarMenu(); requestAnimationFrame(ajustarTitulos); });
+$('#m-aviso').addEventListener('change', e => { prefs.aviso = e.target.checked; guardarPrefs(); render(); });
+
+/* Respaldos (una lista JSON, compatible con los de antes) */
+$('#btn-exportar').onclick = () => {
+  vibrar();
+  const blob = new Blob([JSON.stringify(db, null, 2)], { type:'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `respaldo-fics-${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  escribir(BKEY, new Date().toISOString()); pintarMenu(); toast('Respaldo descargado');
+};
+$('#btn-importar').onclick = () => $('#file-input').click();
+let pendiente = null;
+$('#file-input').onchange = e => {
+  const file = e.target.files[0]; if (!file) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    try {
+      let data = JSON.parse(ev.target.result);
+      if (data && !Array.isArray(data) && Array.isArray(data.fics)) data = data.fics;
+      if (!Array.isArray(data)) throw new Error('formato');
+      const lista = data.filter(f => f && typeof f === 'object' && String(f.titulo || '').trim()).map(normFic);
+      if (!lista.length) throw new Error('vacío');
+      pendiente = lista;
+      $('#imp-info').innerHTML = `El archivo trae <b>${lista.length}</b> fic${lista.length === 1 ? '' : 's'}. Ahora tienes <b>${db.length}</b>.`;
+      abrirHoja('sheet-import');
+    } catch (err) { toast('Ese archivo no es un respaldo válido'); }
+    e.target.value = '';
+  };
+  r.readAsText(file);
+};
+$('#imp-combinar').onclick = () => {
+  const ids = new Set(db.map(f => f.id)), claves = new Set(db.map(f => norm(f.titulo) + '|' + f.url));
+  let n = 0;
+  pendiente.forEach(f => { if (ids.has(f.id) || claves.has(norm(f.titulo) + '|' + f.url)) return; db.push(f); n++; });
+  pendiente = null; guardarDB(); cerrarHoja(); render(); toast(n ? `Se agregaron ${n} fic${n === 1 ? '' : 's'}` : 'No había fics nuevos');
+};
+$('#imp-reemplazar').onclick = () => { db = pendiente; pendiente = null; guardarDB(); cerrarHoja(); render(); toast('Respaldo cargado'); };
+
+/* ───────── Aviso (toast) ───────── */
+let tTimer;
+function toast(msg, accion, fn, ms = 2600) {
+  const t = $('#toast'), b = $('#toast-btn');
+  $('#toast-msg').textContent = msg;
+  b.hidden = !accion; b.textContent = accion || ''; b.onclick = () => { t.classList.remove('show'); fn && fn(); };
+  t.classList.add('show'); clearTimeout(tTimer); tTimer = setTimeout(() => t.classList.remove('show'), ms);
+}
+function vibrar() { if (navigator.vibrate) try { navigator.vibrate(8); } catch (e) {} }
+
+/* ───────── Títulos largos: se achican hasta caber en 2 líneas ───────── */
+function ajustarTitulos() {
+  $$('.c-title, .g-title').forEach(el => {
+    el.style.fontSize = ''; el.style.webkitLineClamp = '';
+    if (el.closest('.card.open') || !el.clientHeight) return;          /* abierta: se ve el título completo */
+    const base = parseFloat(getComputedStyle(el).fontSize), corta = () => el.scrollHeight > el.clientHeight + 1;
+    for (let s = base; corta() && s > 12;) { s = Math.max(12, s - 0.5); el.style.fontSize = s + 'px'; }     /* 1º: achicar hasta 12 px en 2 líneas */
+    if (corta()) {                                                                                         /* 2º: si no cabe, 3 líneas (11–12 px) */
+      el.style.webkitLineClamp = '3';
+      for (let s = 12; corta() && s > 11;) { s = Math.max(11, s - 0.5); el.style.fontSize = s + 'px'; }
+    }                                                                                                      /* si aun así no cabe, se corta con … */
+  });
+}
+{
+  let raf = 0; const pedir = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(ajustarTitulos); };
+  new MutationObserver(pedir).observe($('#lista'), { childList:true, subtree:true, attributes:true, attributeFilter:['class'] });
+  addEventListener('resize', pedir);
+  if (document.fonts) { document.fonts.ready.then(pedir); document.fonts.addEventListener('loadingdone', pedir); }
+}
+
+/* ───────── Inicio ───────── */
+aplicarTema(); pintarMenu(); render();
+})();
+</script>
+</body>
+</html>
