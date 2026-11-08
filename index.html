@@ -2343,7 +2343,6 @@ function pintarDet() {
     <div class="d-body">
       ${fandoms.length ? `<div class="d-sec"><h4>Fandoms</h4><div class="d-tags">${fandoms.map(x => `<span class="d-tag fan">${esc(x)}</span>`).join('')}</div></div>` : ''}
       ${mainShip ? `<div class="d-sec"><h4>Relación principal</h4><div class="d-tags"><span class="d-tag rel">${esc(mainShip)}</span></div></div>` : ''}
-      ${uniqTags.length ? `<div class="d-sec"><h4>Etiquetas adicionales</h4><div class="d-tags">${uniqTags.map(x => `<span class="d-tag">${esc(x)}</span>`).join('')}</div></div>` : ''}
       ${(f.notas || m.resumen) ? `<div class="d-sec"><h4>Resumen</h4><div class="d-sum">${String(f.notas || m.resumen).split(/\n\s*\n/).map(p => `<p>${esc(p.trim())}</p>`).join('')}</div></div>` : ''}
       ${wClean.length ? `<div class="d-sec"><h4>Advertencias de archivo</h4><div class="d-tags">${wClean.map(x => `<span class="d-tag warn">${esc(x)}</span>`).join('')}</div></div>` : ''}
 
@@ -3006,7 +3005,7 @@ $('#btn-guardar').onclick = () => {
   let fic;
   if (editId) { const i = db.findIndex(x => x.id === editId); db[i] = normFic({ ...db[i], ...datos }); fic = db[i]; }
   else { fic = normFic(datos); db.unshift(fic); }
-  const difs = Object.entries(detPrev).map(([k, a]) => ({ k, a, b:$(CAMPOS[k][0]).value })).filter(d => d.a !== d.b), idF = fic.id;
+  const difs = Object.entries(detPrev).map(([k, a]) => ({ k, a, b:$(CAMPOS[k][0]).value })).filter(d => d.a && d.a !== d.b), idF = fic.id;
   guardarDB(); cerrarHoja(); render();
   if (difs.length) setTimeout(() => mostrarResumenDet(idF, difs), 350);
   toast(datos.adulto && prefs.adultos === 'ocultar' ? 'Guardado · queda oculto por ser +18' : 'Guardado', (fic.libro || pdfFile || fic.pdfNombre) ? 'Leer' : null, () => abrirLector(fic.id), 4000);
