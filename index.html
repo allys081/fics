@@ -17,14 +17,15 @@ window.__TH=[
 ['flores','Felicidad de las flores','pétalos de rosa y burbujas de melocotón',0, '#fff6f8','#ffffff','#2b1430','#6b4a6e', '#f6d9e4','#fbeef3','#B53864','#ffe3ec','#ffffff'],
 ['peonia','Latte de peonía','colorete, palo de rosa y crema de vainilla',0, '#FFF7E6','#fffcf5','#2D3A47','#55606c', '#f0dfdc','#f6eee8','#975960','#fbe3e9','#ffffff'],
 ['lila','Sueño diurno de lila','bruma color lavanda, convertida en luz del día',0, '#F6F2FC','#FFFFFF','#2E2440','#54496A', '#E4D9F5','#F1EBFB','#775BA2','#ECE3FA','#ffffff'],
-['violeta','Latte violeta','flores de lila sobre crema de vainilla',0, '#FFF7E6','#FFFCF5','#3A2D4F','#5d5070', '#EEE2D2','#F6EFE9','#805CAB','#EFE4FA','#ffffff'],
 ['melocoton','Ensueño melocotón','lápiz labial color baya, caramelo y jazmín',0, '#FDF1E6','#FFFAF4','#45192C','#6A3B4C', '#F2D7C3','#FBE8D8','#C42A62','#FCE0E6','#FFFFFF'],
 ['kuro','Beso Kuro','violeta intenso, lila y un poco de rosa',0, '#F1EEFB','#FCFBFF','#241A43','#463C6C', '#DCD5F2','#EEEAFA','#514283','#E6E1F7','#FFFFFF'],
+['orquidea','Orquídea rosada','pétalos de orquídea, malva y crema rosada',0, '#FBF1F7','#FFFCFE','#3B1F45','#6B4A74', '#F0D9EA','#F7E8F2','#9A4A9C','#F4E0F1','#FFFFFF'],
+['ciruela','Ciruela clara','ciruela madura, rosa empolvado y crema',0, '#F8F0F4','#FFFCFD','#3E1F3A','#6D4A68', '#EBD6E2','#F3E5ED','#6E3366','#F0DFEA','#FFFFFF'],
+['malva','Malva ceniza','malva grisáceo, humo suave y papel antiguo',0, '#F4F0F2','#FDFBFC','#35283A','#625566', '#E3DADF','#EDE6EA','#7B5C80','#EBE0EC','#FFFFFF'],
 ['primavera','Flores de primavera','flores de cerezo, cielo y hojas nuevas',0, '#F8F3EA','#FFFDF8','#3A2E39','#5B4D58', '#E9E0D3','#F3F0E8','#8C4E77','#F4E3EC','#FFFFFF'],
 ['niebla','Niebla de lavanda','resplandor púrpura después de medianoche',1, '#2A2438','#352F44','#f4f2f9','#DBD8E3', '#4c4462','#3f3852','#c4b5f5','#4a4166','#2A2438'],
 ['supernova','Supernova de medianoche','noche oscura y violeta y luz de estrellas',1, '#000000','#100021','#ECE7F5','#B9ADC7', '#25183D','#120328','#A3A7C9','#1A1240','#000130'],
 ['frambuesa','Frambuesa y café','café con leche y un toque de frambuesa',0, '#F6EDE8','#FFFBF8','#46262F','#7A5560', '#E8D3CF','#F0E1DC','#A34862','#F6DDE3','#FFFFFF'],
-['cielo','Lavanda y cielo','azul bruma con acento lila-morado',0, '#F1F3FB','#FFFFFF','#2A2B4D','#585B85', '#DADEF2','#E8EBF8','#9078D0','#EAE3F8','#FFFFFF'],
 ['ciruelahumo','Ciruela humo','ciruela grisácea y rosa empolvado',1, '#231F26','#2D282F','#ECE7EC','#B5ABB8', '#413A44','#38323B','#C9A3B8','#3F3441','#231F26'],
 ['pizarra','Pizarra y lavanda','gris pizarra con lavanda apagada',1, '#1F2127','#292C34','#E9EAF0','#AEB1C0', '#3A3E49','#323640','#AFA8CF','#363550','#1F2127'],
 ['frambuesa_n','Frambuesa pastel','frambuesa suave sobre una noche de ciruela',1, '#241821','#2E2029','#F4E8F0','#C6AEBD', '#46303F','#392733','#D983B5','#4C2E41','#241821'],
@@ -2969,7 +2970,9 @@ $('#btn-guardar').onclick = () => {
   const palInput = parseInt($('#f-palabras').value.trim(), 10) || 0;
   const pubInput = $('#f-publicado').value.trim();
   const actInput = $('#f-actualizado').value.trim();
-  const pubV = formPub || (capTot && capPub && +capPub >= +capTot ? 'completo' : (capTot === '1' || formVibes.has('oneshot') ? 'completo' : (capPub || capTot ? 'en-curso' : '')));
+  let pubV = formPub || (capTot && capPub && +capPub >= +capTot ? 'completo' : (capTot === '1' || formVibes.has('oneshot') ? 'completo' : (capPub || capTot ? 'en-curso' : '')));
+  { const nT = +capTot || 0, nP = +capPub || 0, completa = capTot === '1' || (nT && nP && nP >= nT), incompleta = nT && nP && nP < nT;
+    if (pubV === 'completo' && incompleta) pubV = 'en-curso'; else if (pubV === 'en-curso' && completa) pubV = 'completo'; }
   if (capPub && capTot && +capPub > +capTot) {
     $('#cm-err').textContent = 'Los capítulos publicados no pueden ser más que el total.';
     $('#g-pubgroup').classList.add('has-error'); $('#f-cap-pub').focus(); return;
@@ -2990,17 +2993,21 @@ $('#btn-guardar').onclick = () => {
   const prevMeta = (prevFic && prevFic.meta) || {};
   const mergedMeta = normMeta(Object.assign({}, prevMeta, formMeta || {}, {
     palabras: palInput || (formMeta && formMeta.palabras) || prevMeta.palabras || 0,
-    capN: +capPub || (formMeta && formMeta.capN) || prevMeta.capN || (capTot === '1' || formVibes.has('oneshot') ? 1 : 0),
-    capT: capTot || (formMeta && formMeta.capT) || prevMeta.capT || (formVibes.has('oneshot') ? '1' : (capPub ? '?' : '')),
+    capN: editId ? (+capPub || (capTot === '1' ? 1 : 0)) : (+capPub || (formMeta && formMeta.capN) || prevMeta.capN || (capTot === '1' || formVibes.has('oneshot') ? 1 : 0)),
+    capT: editId ? (capTot || (capTot === '' && capPub ? '?' : '')) : (capTot || (formMeta && formMeta.capT) || prevMeta.capT || (formVibes.has('oneshot') ? '1' : (capPub ? '?' : ''))),
     publicado: pubInput || (formMeta && formMeta.publicado) || prevMeta.publicado || '',
     actualizado: actInput || (formMeta && formMeta.actualizado) || prevMeta.actualizado || ''
   }));
+  const catsGuardar = [...formVibes].filter(k => !!VIBES[k]);
+  { const nT = +capTot || 0, nP = +capPub || 0, quitar = k => { const i = catsGuardar.indexOf(k); if (i > -1) catsGuardar.splice(i, 1); };
+    if (nT > 1 || nP > 1) { quitar('oneshot'); if (!catsGuardar.includes('largo')) catsGuardar.push('largo'); }
+    else if (capTot === '1') { quitar('largo'); if (!catsGuardar.includes('oneshot')) catsGuardar.push('oneshot'); } }
   const datos = {
     titulo, autor:$('#f-autor').value.trim(), url, urlRespaldo, plataformas:[...formPlats],
     pdfNombre: esPdf ? formPdf.nombre : '', pdfSize: esPdf ? formPdf.size : 0,
     personajes:'',
     fandom:$('#f-fandom').value, ships:[...formShips], fav:$('#f-fav').checked ? 'si' : 'no',
-    categorias:[...formVibes].filter(k => !!VIBES[k]), tags18: adulto ? [...formT18] : [], tagsExtra:$('#f-tropes').value, notas:$('#f-notas').value, opinion:$('#f-opinion').value,
+    categorias:catsGuardar, tags18: adulto ? [...formT18] : [], tagsExtra:$('#f-tropes').value, notas:$('#f-notas').value, opinion:$('#f-opinion').value,
     estado:formEstado, adulto, cw:false, estantes:[...formEst],
     leido: formEstado === 'terminado' ? ((prevFic && prevFic.leido) || hoy()) : ((prevFic && prevFic.leido) || ''),
     pub:pubV, capAct, capTot, capPub, rating: prevFic ? prevFic.rating : 0, color:'',
