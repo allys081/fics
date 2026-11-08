@@ -2800,9 +2800,14 @@ async function traerMeta(rawUrl) {
     if (!sid) return null;
     const enlace = `https://www.wattpad.com/story/${sid}`;
     let r = null;
-    const j = await bajar(`https://www.wattpad.com/api/v3/stories/${sid}?fields=title,description,user(name),tags,numParts,createDate,modifyDate,completed,mature,language(name)`, true, x => x && x.title);
+    /* las palabras se piden aparte: si Wattpad no las da, el resto se rellena igual */
+    const [j, jp] = await Promise.all([
+      bajar(`https://www.wattpad.com/api/v3/stories/${sid}?fields=title,description,user(name),tags,numParts,createDate,modifyDate,completed,mature,language(name)`, true, x => x && x.title),
+      bajar(`https://www.wattpad.com/api/v3/stories/${sid}?fields=parts(wordCount)`, true, x => x && Array.isArray(x.parts))
+    ]);
+    const palabrasWp = jp ? jp.parts.reduce((t, x) => t + (+x.wordCount || 0), 0) : 0;
     if (j) {
-      r = { titulo:j.title, autor:(j.user && j.user.name) || '', url:enlace, etiqueta:'Wattpad', meta:{ rating:j.mature ? 'Mature' : '', tags:j.tags || [], capN:j.numParts || 0, capT:j.completed ? String(j.numParts || '') : '?', resumen:j.description || '', publicado:(j.createDate || '').slice(0, 10), actualizado:(j.modifyDate || '').slice(0, 10), idioma:(j.language && j.language.name) || '' } };
+      r = { titulo:j.title, autor:(j.user && j.user.name) || '', url:enlace, etiqueta:'Wattpad', meta:{ rating:j.mature ? 'Mature' : '', tags:j.tags || [], capN:j.numParts || 0, capT:j.completed ? String(j.numParts || '') : '?', resumen:j.description || '', publicado:(j.createDate || '').slice(0, 10), actualizado:(j.modifyDate || '').slice(0, 10), idioma:(j.language && j.language.name) || '', palabras:palabrasWp || 0 } };
     } else {                                                // plan B: leer la página pública de la historia
       const html = await bajar(enlace, false, x => /wattpad/i.test(x));
       if (html) {
