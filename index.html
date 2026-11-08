@@ -3216,9 +3216,56 @@ function libTx(modo, fn) {
     t.oncomplete = () => ok(rq && rq.result); t.onerror = t.onabort = () => no(t.error);
   }));
 }
-const libroPut = (id, o) => libTx('readwrite', s => s.put(o, id));
+const libroPut = (id, o) => libTx('readwrite', s => s.put(o, id)).then(r => { if (!String(id).includes('~tr~')) trDelTodo(String(id).replace(/~pdf$/, '')); return r; });
 const libroGet = id => libTx('readonly', s => s.get(id));
-const libroDel = id => libTx('readwrite', s => s.delete(id)).catch(() => {});
+const libroDel = id => libTx('readwrite', s => s.delete(id)).catch(() => {}).then(r => { if (!String(id).includes('~tr~')) trDelTodo(String(id).replace(/~pdf$/, '')); return r; });
+
+/* ══════════ Lectura sin conexión: copia del capítulo ya traducido ══════════
+   Cada vez que el navegador traduce un capítulo, se guarda una copia del texto traducido en IndexedDB
+   (mismo almacén "libros", con la clave  <id>~tr~<n° de capítulo>).  Sin conexión, el lector la usa.
+   Estas copias NO van en el respaldo .json: el formato del respaldo no cambia. */
+const trLim = id => IDBKeyRange.bound(id + '~tr~', id + '~tr~￿');
+const trPut = (id, i, o) => libTx('readwrite', s => s.put(o, id + '~tr~' + i));
+function trDelTodo(id) { return libTx('readwrite', s => s.delete(trLim(id))).catch(() => {}); }   // al borrar o cambiar el archivo, se borran sus copias
+async function trCargar(id) {                                  // { n° de capítulo: html } de lo ya guardado de este fic
+  const m = {};
+  try { ((await libTx('readonly', s => s.getAll(trLim(id)))) || []).forEach(o => { if (o && typeof o.h === 'string') m[o.i] = o.h; }); } catch (e) {}
+  return m;
+}
+function trLimpio(html) {                                      // mismo filtro de seguridad que reciben los libros al importarlos
+  const t = document.createElement('template'); t.innerHTML = String(html || '');
+  limpiarNodo(t.content);
+  return t.innerHTML;
+}
+const TR = { id:'', i:0, orig:'', ult:'', timer:0 };           // qué capítulo está en pantalla, su texto original y el último texto guardado
+const trTexto = n => n.textContent.replace(/\s+/g, ' ').trim();
+function trCuerpo() {                                          // lo que se ve, sin el encabezado "Capítulo n de N" ni las marcas de la búsqueda
+  const c = $('#lec-page').cloneNode(true);
+  c.querySelectorAll('.lec-cn').forEach(n => n.remove());
+  c.querySelectorAll('mark.hl').forEach(m => m.replaceWith(...m.childNodes));
+  return c;
+}
+function trMarcar(esCopia) {                                   // se llama justo después de pintar un capítulo
+  const pg = $('#lec-page'), t = trTexto(trCuerpo());
+  TR.id = L.id; TR.i = L.i; TR.orig = esCopia ? '' : t; TR.ult = esCopia ? t : '';
+  pg.classList.toggle('notranslate', esCopia);                 // una copia ya traducida no se vuelve a traducir
+  if (esCopia) pg.setAttribute('translate', 'no'); else pg.removeAttribute('translate');
+}
+function trRevisar() {                                         // si el texto en pantalla ya no es el original, es una traducción: se guarda
+  clearTimeout(TR.timer);
+  if (!TR.id) return;
+  const cuerpo = trCuerpo(), txt = trTexto(cuerpo);
+  if (txt.length < 40 || txt === TR.orig || txt === TR.ult) return;
+  const html = trLimpio(cuerpo.innerHTML);
+  if (html.length > 6e6) return;                               // capítulos gigantes: no se copian
+  TR.ult = txt;
+  if (L && L.id === TR.id) { L.tr = L.tr || {}; L.tr[TR.i] = html; }
+  trPut(TR.id, TR.i, { i:TR.i, h:html, t:Date.now() }).catch(() => {});
+}
+new MutationObserver(() => { clearTimeout(TR.timer); TR.timer = setTimeout(trRevisar, 2500); })
+  .observe($('#lec-page'), { childList:true, subtree:true, characterData:true });
+addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') trRevisar(); });
+
 
 /* ── datos de la ficha (se llaman desde normFic: deben ser function) ── */
 function normLibro(l) {
@@ -3836,6 +3883,7 @@ async function abrirLector(id) {
   const hasPdf = !!f.pdfNombre;
   const enPdf = hasPdf && (soloPdf || p.pdf || lp.vistaPdf);
   L = { id, f, caps:b.chapters, i:0, txt:{}, hasPdf, soloPdf, enPdf, pdfDoc:null, pdfObs:null };
+  L.tr = await trCargar(id);                                // copias traducidas guardadas de este fic
   $('#lector').hidden = false; document.body.classList.add('locked'); history.pushState({ lector:1 }, '');
   $('#lec-t').textContent = f.titulo;
   aplicarLP();
@@ -3848,7 +3896,7 @@ async function abrirLector(id) {
   if (f.estado === 'por-leer') { f.estado = 'leyendo'; guardarDB(); render(); }
 }
 function cerrarLector(porPop) {
-  if (!L) return; guardarPos();
+  if (!L) return; guardarPos(); trRevisar();
   if (L.pdfObs) L.pdfObs.disconnect();
   if (L.pdfDoc) try { L.pdfDoc.destroy(); } catch (e) {}
   L = null; limpiarPops(); $('#lector').hidden = true; document.body.classList.remove('locked');
@@ -3856,7 +3904,10 @@ function cerrarLector(porPop) {
 }
 function mostrarCap(i, frac) {
   L.i = i; busq = { q:'', marks:[], k:-1 }; const c = L.caps[i], s = $('#lec-scroll');
-  $('#lec-page').innerHTML = `<p class="lec-cn">Capítulo ${i + 1} de ${L.caps.length}</p>` + c.h;
+  trRevisar();                                              // guarda lo que quedó traducido del capítulo anterior
+  const copia = navigator.onLine === false && L.tr && L.tr[i];   // sin conexión y ya traducido antes: se usa la copia
+  $('#lec-page').innerHTML = `<p class="lec-cn">Capítulo ${i + 1} de ${L.caps.length}</p>` + (copia ? trLimpio(copia) : c.h);
+  trMarcar(!!copia);
   animarLector();
   s.scrollTop = frac ? frac * Math.max(0, s.scrollHeight - s.clientHeight) : 0;
   $('#lec-t').textContent = L.f.titulo; $('#lec-sel').value = i;
