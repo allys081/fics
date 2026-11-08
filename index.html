@@ -118,7 +118,7 @@ a{color:inherit}
 .fbtn{display:flex;align-items:center;gap:6px;height:38px;padding:0 12px;border-radius:12px;background:var(--card);border:1px solid var(--line);font-weight:700;font-size:12.5px;flex:none;white-space:nowrap}
 .fbtn em{font-style:normal;background:var(--sel);color:var(--on-sel);min-width:18px;height:18px;border-radius:99px;display:none;place-items:center;font-size:10.5px;padding:0 5px}
 .fbtn.has em{display:grid}
-.pills{display:flex;gap:6px;overflow-x:auto;flex:1 1 120px;order:4;scrollbar-width:none;min-width:0}
+.pills{display:flex;gap:6px;overflow-x:auto;flex:1 1 100%;order:6;scrollbar-width:none;min-width:0}
 .pills:empty{display:none}
 .pills::-webkit-scrollbar{display:none}
 .pill{flex:none;display:inline-flex;align-items:center;gap:5px;background:var(--chip);color:var(--ink);border:1px solid var(--line);border-radius:99px;padding:6px 8px 6px 11px;font-size:12px;font-weight:700;white-space:nowrap}
@@ -497,7 +497,11 @@ details.more .inner{padding-top:6px}
   .search{height:40px;border-radius:13px;gap:8px;padding:0 4px 0 12px}
   .seg{border-radius:12px}.seg button{padding:6px 2px;font-size:11.5px;border-radius:9px}.seg button b{font-size:10px}
   .tools{margin:9px 0;gap:6px}
-  .fbtn{padding:0 11px;font-size:12px;gap:5px}
+  .tools{gap:5px}
+  .fbtn{padding:0 8px;font-size:12px;gap:4px}
+  .fbtn{font-size:11.5px}.fbtn .ic,.fbtn [data-ic]{display:none}
+  .fbtn em{min-width:16px;height:16px}
+  .view button{width:34px;height:38px}
   .listhead{font-size:11px;margin-bottom:6px}.listhead select{font-size:11px}
   .lista{gap:8px}.lista.grid{gap:8px}
   .card{padding:10px 8px 10px 14px;border-radius:15px}
@@ -712,10 +716,10 @@ body.dropping::after{content:'Suelta aquí tus EPUB, MOBI, AZW3, TXT, HTML o PDF
 .g-off{margin-top:5px;color:var(--ok);font-weight:700;font-size:11px;display:flex;align-items:center;gap:5px}
 .g-off i{width:8px;height:8px;border-radius:50%;background:var(--ok)}
 .g-side{display:flex;flex-direction:column;align-items:center;flex:none}
-.g-rate{color:var(--acc);font-weight:800;font-size:11px;line-height:1;margin-top:1px;white-space:nowrap;margin-right:-2px}
+.g-rate{color:var(--acc);font-weight:800;font-size:11px;line-height:1;margin-top:1px;white-space:nowrap;margin-right:-2px;font-size:9.5px}
 .g-side{margin-bottom:-15px}
 .g-side .cbtn{width:32px;height:32px;margin:0 -2px -11px 0!important}
-.g-rate{margin-top:4px!important}
+.g-rate{margin-top:3px!important;font-size:9.5px}
 .g-top.rt + *{padding-right:28px}
 .estante-bar{display:none!important}
 .shelf-card{min-height:118px;padding:14px 14px 12px 19px;gap:10px}
@@ -1635,7 +1639,6 @@ function pintarPills() {
   st.ships.forEach(k => out.push(pill('ship', k, labelShip(k))));
   st.pubs.forEach(k => out.push(pill('pub', k, PUBS[k])));
   st.plats.forEach(k => out.push(pill('plat', k, PLATS[k])));
-  st.estantes.forEach(k => out.push(pill('estante', k, labelEstante(k))));
   st.vibes.forEach(k => out.push(pill('vibe', k, tShort('vibes', k))));
   if (st.soloAdulto) out.push(pill('adulto', '', '+18'));
   st.t18.forEach(k => out.push(pill('t18', k, tShort('t18', k))));
