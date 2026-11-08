@@ -5,6 +5,9 @@
 <title>Mis Fanfics</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#f4effc">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' blob: data:; frame-src blob: data:; connect-src 'self' https://plain-cake-b7f5.aylin-millape.workers.dev https://translate.googleapis.com https://cdnjs.cloudflare.com blob: data:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js" defer crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="icon" type="image/png" sizes="192x192" href="icon-any-192.png">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
@@ -830,10 +833,54 @@ body.dropping::after{content:'Suelta aquí tus EPUB, MOBI, AZW3, TXT, HTML o PDF
   </div>
   <button class="mas" id="aviso-mas" hidden></button>
   <button class="ocultos" id="aviso-ocultos" hidden></button>
+  <p style="text-align:center;margin:18px 0 90px;font-size:.85rem"><a href="#info" id="link-info" style="color:var(--mute);text-decoration:underline">Cómo funciona Mis Fanfics y privacidad</a></p>
 </div>
 
 <button class="fab" id="fab"><span data-ic="plus" data-size="22"></span>Agregar</button>
 <div class="toast" id="toast" role="status" aria-live="polite"><span id="toast-msg"></span><button id="toast-btn" hidden></button></div>
+
+
+<!-- Hoja: cómo funciona y privacidad -->
+<div class="overlay" id="sheet-info" aria-hidden="true">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="info-h" style="max-height:92vh;overflow:auto">
+    <h2 id="info-h">Cómo funciona Mis Fanfics y privacidad</h2>
+    <p>Mis Fanfics es tu biblioteca personal de fanfics. Pegas el enlace de una obra (AO3, Wattpad, FanFiction.net) o subes archivos que ya tengas, y la app organiza título, autor, pareja, etiquetas y resumen, y te deja leerlos aquí mismo, incluso sin internet. Es una herramienta personal y no oficial: no está afiliada a AO3 ni a la Organización para Obras Transformativas (OTW) y no reemplaza a AO3.</p>
+    <h3>¿Qué sucede cuando agregas un enlace?</h3>
+    <ul>
+      <li>Tu navegador pide la página de la obra a través de <b>tu propio Worker de Cloudflare</b> (ya no se usan proxies públicos). Ese Worker ve el enlace que pegaste.</li>
+      <li>Solo se leen los datos públicos de la obra. La historia completa no se descarga: para leer sin conexión subes el archivo.</li>
+      <li>Si el resumen está en inglés, ese texto se envía a Google Translate para traducirlo.</li>
+      <li>No hay servidor propio que guarde tus datos ni cuentas de usuario.</li>
+    </ul>
+    <h3>Dónde se almacena tu biblioteca</h3>
+    <ul>
+      <li>Todo (fics, estantes, favoritos, notas, progreso, configuración y tus PDF/EPUB) se guarda <b>únicamente en este navegador, en este dispositivo</b>.</li>
+      <li>Borrar los datos del navegador para este sitio elimina tu biblioteca. Usa ⋮ → Ajustes → Respaldar.</li>
+      <li>Tu respaldo .json incluye los archivos que subiste y las marcas +18. Guárdalo en un lugar privado.</li>
+    </ul>
+    <h3>Qué sale de tu navegador</h3>
+    <ul>
+      <li>Extraer desde un enlace: el enlace va a tu Worker y a AO3/Wattpad/FanFiction.net.</li>
+      <li>Traducir un resumen: el texto va a Google Translate.</li>
+      <li>Al cargar: fuentes de Google Fonts y, al abrir un EPUB/PDF, las librerías JSZip, pdf.js y DOMPurify desde cdnjs.cloudflare.com.</li>
+      <li>No hay analíticas ni cookies de seguimiento.</li>
+    </ul>
+    <h3>Sobre los autores y su obra</h3>
+    <ul>
+      <li>Mis Fanfics no aloja, recopila ni comparte los fanfics de nadie.</li>
+      <li>Respeta los deseos de los autores sobre descargar y compartir su trabajo. Si quieres apoyar a AO3, dona a la <a href="https://donate.transformativeworks.org/" target="_blank" rel="noopener noreferrer">OTW</a>.</li>
+    </ul>
+    <h3>Seguridad</h3>
+    <ul>
+      <li>El texto de EPUB, HTML y MOBI se limpia con un filtro propio y con DOMPurify, y la página usa una política de seguridad (CSP) que bloquea scripts ajenos.</li>
+      <li>Los archivos de más de 40 MB se rechazan. Sube solo archivos de fuentes de confianza.</li>
+      <li>El modo +18 oculta o difumina en pantalla, pero no cifra.</li>
+    </ul>
+    <h3>Cómo se hizo</h3>
+    <p>La idea, el diseño y las funciones son responsabilidad de su creadora, con inspiración en FicShelf. Parte del código se escribió con ayuda de inteligencia artificial. Usa pdf.js (Mozilla, Apache 2.0), JSZip (MIT / GPLv3) y DOMPurify (Apache 2.0 / MPL 2.0).</p>
+    <div class="acts"><button class="btn" id="info-cerrar" type="button">← Volver a Mis Fanfics</button></div>
+  </div>
+</div>
 
 <!-- Hoja: agregar / editar -->
 <div class="overlay" id="sheet-fic" aria-hidden="true">
@@ -2760,12 +2807,7 @@ function mostrarDeteccion(url) {
 const PROXY_PROPIO = 'https://plain-cake-b7f5.aylin-millape.workers.dev/?url=';   // opcional y 100 % fiable: la URL de tu Cloudflare Worker, p. ej. 'https://mi-proxy.usuario.workers.dev/?url='
 const PROXIES = u => [
   ...(PROXY_PROPIO ? [PROXY_PROPIO + encodeURIComponent(u)] : []),
-  `https://corsproxy.io/?url=${encodeURIComponent(u)}`,
-  `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
-  `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`,
-  `https://thingproxy.freeboard.io/fetch/${u}`,
-  u
-];
+];   // solo tu Worker: los proxies públicos gratuitos se quitaron por privacidad y seguridad
 /* prueba todos los proxies a la vez y se queda con el primero que responda algo válido */
 async function bajar(u, json, valida) {
   const intento = async ep => {
@@ -3531,6 +3573,15 @@ function limpiarNodo(root) {
     }
     if (el.tagName === 'A') { const h = el.getAttribute('href') || ''; if (/^https?:/i.test(h)) { el.target = '_blank'; el.rel = 'noopener noreferrer'; } else el.removeAttribute('href'); }
   });
+  /* segunda capa: DOMPurify (si cargó) revisa lo que el filtro propio dejó pasar */
+  if (window.DOMPurify) {
+    try {
+      const host = root.nodeType === 11 ? document.createElement('div') : root;
+      if (host !== root) host.append(...root.childNodes);
+      window.DOMPurify.sanitize(host, { IN_PLACE:true, FORBID_TAGS:['style','form','svg','math','iframe','object','embed'], FORBID_ATTR:['style'], ALLOW_DATA_ATTR:false });
+      if (host !== root) root.append(...host.childNodes);
+    } catch (e) {}
+  }
   return root;
 }
 const txtDe = s => String(s).replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
@@ -4386,6 +4437,21 @@ addEventListener('keydown', e => {
 });
 addEventListener('pagehide', guardarPos);
 
+
+/* ── info/privacidad, recordatorio de respaldo y aviso de espacio ── */
+$('#link-info').onclick = e => { e.preventDefault(); abrirHoja('sheet-info'); };
+$('#info-cerrar').onclick = () => cerrarHoja();
+setTimeout(() => {
+  try {
+    const ult = leer(BKEY, null), dias = ult ? (Date.now() - new Date(ult)) / 864e5 : 999;
+    if (db.length && dias > 14 && !sessionStorage.getItem('fics_av_resp')) {
+      sessionStorage.setItem('fics_av_resp', '1');
+      toast(ult ? `Hace ${Math.floor(dias)} días que no haces un respaldo` : 'Aún no has hecho un respaldo', 'Respaldar', () => { pintarMenu(); abrirHoja('sheet-menu'); }, 8000);
+    } else if (navigator.storage && navigator.storage.estimate) {
+      navigator.storage.estimate().then(e => { if (e && e.quota && e.usage / e.quota > 0.8) toast('Casi no queda espacio en este navegador: haz un respaldo y borra archivos', null, null, 8000); }).catch(() => {});
+    }
+  } catch (e) {}
+}, 3500);
 /* ── sin conexión: service worker (solo si el index se sirve por https/localhost junto a sw.js) ── */
 if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register('sw.js').catch(() => {});
 
