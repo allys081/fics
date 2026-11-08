@@ -126,6 +126,8 @@ a{color:inherit}
 .view button{width:36px;height:36px;display:grid;place-items:center;color:var(--mute)}
 .view button.on{background:var(--acc);color:var(--on-acc)}
 .listhead{display:flex;justify-content:space-between;align-items:center;color:var(--mute);font-size:12px;margin-bottom:8px;min-height:24px}
+.conteo-est{flex:1;min-width:0;text-align:center;color:var(--ink);font-weight:800;font-size:12.5px;padding:0 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.conteo-est:empty{display:none}
 .listhead label{display:flex;align-items:center;gap:4px}
 .listhead select{appearance:none;-webkit-appearance:none;border:0;background:none;color:var(--ink);font-weight:700;font-size:12px;padding:4px 16px 4px 2px;cursor:pointer;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none' stroke='%23999' stroke-width='1.6'%3E%3Cpath d='M1 1l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 2px center}
@@ -495,8 +497,7 @@ details.more .inner{padding-top:6px}
   .search{height:40px;border-radius:13px;gap:8px;padding:0 4px 0 12px}
   .seg{border-radius:12px}.seg button{padding:6px 2px;font-size:11.5px;border-radius:9px}.seg button b{font-size:10px}
   .tools{margin:9px 0;gap:6px}
-  .fbtn{height:32px;padding:0 10px;font-size:11.5px;border-radius:10px;gap:5px}
-  .view button{width:32px;height:32px}
+  .fbtn{padding:0 11px;font-size:12px;gap:5px}
   .listhead{font-size:11px;margin-bottom:6px}.listhead select{font-size:11px}
   .lista{gap:8px}.lista.grid{gap:8px}
   .card{padding:10px 8px 10px 14px;border-radius:15px}
@@ -711,9 +712,11 @@ body.dropping::after{content:'Suelta aquí tus EPUB, MOBI, AZW3, TXT, HTML o PDF
 .g-off{margin-top:5px;color:var(--ok);font-weight:700;font-size:11px;display:flex;align-items:center;gap:5px}
 .g-off i{width:8px;height:8px;border-radius:50%;background:var(--ok)}
 .g-side{display:flex;flex-direction:column;align-items:center;flex:none}
-.g-rate{color:var(--acc);font-weight:800;font-size:11px;line-height:1;margin-top:1px;white-space:nowrap}
-.g-side .cbtn{width:26px;height:26px;margin:0!important}
-.g-side .cbtn .ic{width:17px;height:17px}
+.g-rate{color:var(--acc);font-weight:800;font-size:11px;line-height:1;margin-top:1px;white-space:nowrap;margin-right:-2px}
+.g-side{margin-bottom:-15px}
+.g-side .cbtn{width:32px;height:32px;margin:0 -2px -11px 0!important}
+.g-rate{margin-top:4px!important}
+.g-top.rt + *{padding-right:28px}
 .estante-bar{display:none!important}
 .shelf-card{min-height:118px;padding:14px 14px 12px 19px;gap:10px}
 .shelf-card-title{flex:1;min-width:0;overflow-wrap:break-word;word-break:normal;hyphens:manual;font-size:14.5px}
@@ -792,6 +795,7 @@ body.dropping::after{content:'Suelta aquí tus EPUB, MOBI, AZW3, TXT, HTML o PDF
 
   <div class="listhead" id="listhead">
     <span id="conteo"></span>
+    <b id="conteo-est" class="conteo-est"></b>
     <label>Ordenar: <select id="orden" aria-label="Ordenar por"></select></label>
   </div>
 
@@ -1499,7 +1503,7 @@ function gridHTML(f) {
   return `<article class="card g${blur ? ' blur' : ''}" data-id="${esc(f.id)}" data-has-shelf="${hasShelf ? '1' : '0'}" style="--c:${colorFic(f)}">
     <div class="c-body g-body">
       <div>
-        <div class="g-top">
+        <div class="g-top${f.rating ? ' rt' : ''}">
           <h3 class="g-title">${esc(f.titulo)}</h3>
           <div class="g-side"><button class="cbtn fav" data-act="fav" aria-pressed="${f.fav === 'si'}" aria-label="${f.fav === 'si' ? 'Quitar de favoritos' : 'Marcar como favorito'}" style="${f.fav === 'si' ? '' : 'color:var(--mute)'}">${icon('heart', 18, f.fav === 'si')}</button>${f.rating ? `<span class="g-rate">★${f.rating}</span>` : ''}</div>
         </div>
@@ -1594,6 +1598,7 @@ function render() {
     cont.hidden = false; if (lh) lh.hidden = false;
     cont.className = 'lista ' + (compacta ? 'compacta' : 'grid');
     $('#orden').value = prefs.orden;
+    { const ce = $('#conteo-est'); if (ce) ce.textContent = (!st.secCol && !st.secVida && nCols > 0) ? [...(st.fav ? ['Favoritos'] : []), ...(st.soloMarcador ? ['Marcadores'] : []), ...(st.soloOffline ? ['Sin conexión'] : []), ...[...st.estantes].map(k => labelEstante(k))].join(' · ') : ''; }
     $('#conteo').textContent = `${lista.length} resultado${lista.length === 1 ? '' : 's'}`;
     if (!lista.length) {
       cont.innerHTML = !vis.length
@@ -1617,6 +1622,7 @@ function render() {
   $$('#lista .card').forEach(c => c.draggable = st.estantes.size === 1);
   if (filtrosAbiertos()) pintarFiltros();
   if (actual === 'sheet-det') pintarDet();
+  navSync();
 }
 
 function pintarPills() {
@@ -1804,8 +1810,7 @@ function pintarVidaUtil(vis) {
 
   $('#sec-vida').innerHTML = `
     <div class="sg-head">
-      <h2>Mi vida útil (Shelf Life)</h2>
-      <button type="button" class="btn sec" id="btn-cerrar-vida" style="height:34px;padding:0 12px;font-size:12px">← Volver a los fics</button>
+      <h2>Mi vida útil</h2>
     </div>
     <div class="sg-grid">
       <div class="sg-tiles">
@@ -2039,7 +2044,6 @@ const guardarNuevaCol = () => {
 $('#col-new-save').onclick = guardarNuevaCol;
 $('#col-new-inp').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); guardarNuevaCol(); } });
 $('#sec-vida').addEventListener('click', e => {
-  if (e.target.closest('#btn-cerrar-vida')) { st.secVida = false; render(); return; }
   const sc = e.target.closest('[data-vscope]');
   if (sc) { st.vidaScope = sc.dataset.vscope; render(); return; }
   const fl = e.target.closest('[data-stat-filter]');
@@ -2082,6 +2086,30 @@ $('#btn-priv').onclick = () => {
 };
 $('#aviso-ocultos').onclick = () => $('#btn-priv').click();
 $('#aviso-mas').onclick = () => { st.verTodos = !st.verTodos; render(); if (!st.verTodos) $('#aviso-mas').scrollIntoView({ block:'center' }); };
+
+
+/* ───────── Botón "atrás" del teléfono: retrocede dentro de la página ───────── */
+const nav = { key:'', ign:false, cierres:0 };
+const vistaClave = () => st.secVida ? 'v' : st.secCol ? 'c' : (st.estantes.size + (st.fav ? 1 : 0) + (st.soloOffline ? 1 : 0) + (st.soloMarcador ? 1 : 0)) > 0 ? 'e' : '';
+function navSync() {
+  const k = vistaClave(); if (k === nav.key) return;
+  const ant = nav.key; nav.key = k;
+  if (typeof actual !== 'undefined' && actual) return;                         // con una hoja abierta no se toca el historial
+  if (typeof L !== 'undefined' && L) return;
+  try {
+    if (!ant) history.pushState({ vista:k }, '');
+    else if (k) history.replaceState({ vista:k }, '');
+    else if (history.state && history.state.vista) { nav.ign = true; history.back(); }
+  } catch (e) {}
+}
+window.addEventListener('popstate', () => {
+  if (nav.ign) { nav.ign = false; return; }
+  if ((typeof actual !== 'undefined' && actual) || (typeof L !== 'undefined' && L)) return;
+  const want = (history.state && history.state.vista) || '';
+  if (want || !nav.key) return;                                                   // si se vuelve a la pantalla principal, se limpia la vista actual
+  st.secCol = false; st.secVida = false; st.estantes.clear(); st.fav = false; st.soloOffline = false; st.soloMarcador = false; st.estado = 'todos';
+  nav.key = ''; render();
+});
 
 /* ───────── Hojas (sheets) ───────── */
 let actual = null;
