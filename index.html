@@ -137,9 +137,6 @@ a{color:inherit}
 @media(min-width:700px){.lista.grid{grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}.lista.compacta{gap:12px}.app{padding-left:28px;padding-right:28px}.top h1{font-size:30px}}
 .lista.grid .vacio{grid-column:1/-1}
 .card{position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:13px 12px 12px 14px;box-shadow:var(--shadow);cursor:pointer}
-.card[data-has-shelf="1"]{padding-left:18px}
-.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c,transparent);display:none}
-.card[data-has-shelf="1"]::before{display:block}
 .c-head{display:flex;gap:6px;align-items:flex-start}
 .c-titles{flex:1;min-width:0;padding-top:2px}
 .c-title{font-family:var(--serif);font-size:15.5px;font-weight:700;line-height:1.25;letter-spacing:-.1px;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -717,9 +714,20 @@ body.dropping::after{content:'Suelta aquí tus EPUB, MOBI, AZW3, TXT, HTML o PDF
 .g-off i{width:8px;height:8px;border-radius:50%;background:var(--ok)}
 .g-side{display:flex;flex-direction:column;align-items:center;flex:none}
 .g-rate{color:var(--acc);font-weight:800;font-size:11px;line-height:1;margin-top:1px;white-space:nowrap;margin-right:-2px;font-size:9.5px}
-.g-side{margin-bottom:-15px}
-.g-side .cbtn{width:32px;height:32px;margin:0 -2px -11px 0!important}
-.g-rate{margin-top:3px!important;font-size:9.5px}
+.g-side{margin-bottom:-22px}
+.g-side .cbtn{width:32px;height:32px;margin:0 -2px -4px 0!important}
+.g-rate{margin-top:3px!important;font-size:8.5px;font-weight:700;opacity:.9}
+.ce-x{display:inline-grid;place-items:center;width:20px;height:20px;margin-left:5px;vertical-align:middle;color:var(--mute);border-radius:50%;background:var(--chip)}
+.paleta-ov{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.42);display:flex;align-items:flex-end;justify-content:center}
+.paleta{background:var(--card);color:var(--ink);width:min(100%,440px);border-radius:22px 22px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));box-shadow:0 -10px 40px rgba(0,0,0,.3)}
+.paleta-t{font-weight:800;font-size:14px;margin-bottom:12px}
+.paleta-g{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;justify-items:center}
+.paleta .sw{width:36px;height:36px;border-radius:50%;border:2px solid var(--card);box-shadow:0 0 0 1px var(--line)}
+.paleta .sw.on{box-shadow:0 0 0 2.5px var(--ink)}
+.paleta-f{display:flex;align-items:center;gap:8px;margin-top:14px;flex-wrap:wrap}
+.paleta-f label{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;flex:1;min-width:140px}
+.paleta-f input[type=color]{width:44px;height:34px;border:1px solid var(--line);border-radius:9px;background:var(--bg);padding:2px}
+.paleta-f .btn{height:34px;font-size:12px;padding:0 12px}
 .g-top.rt + *{padding-right:28px}
 .estante-bar{display:none!important}
 .shelf-card{min-height:118px;padding:14px 14px 12px 19px;gap:10px}
@@ -1602,7 +1610,7 @@ function render() {
     cont.hidden = false; if (lh) lh.hidden = false;
     cont.className = 'lista ' + (compacta ? 'compacta' : 'grid');
     $('#orden').value = prefs.orden;
-    { const ce = $('#conteo-est'); if (ce) ce.textContent = (!st.secCol && !st.secVida && nCols > 0) ? [...(st.fav ? ['Favoritos'] : []), ...(st.soloMarcador ? ['Marcadores'] : []), ...(st.soloOffline ? ['Sin conexión'] : []), ...[...st.estantes].map(k => labelEstante(k))].join(' · ') : ''; }
+    { const ce = $('#conteo-est'); if (ce) { const nom = (!st.secCol && !st.secVida && nCols > 0) ? [...(st.fav ? ['Favoritos'] : []), ...(st.soloMarcador ? ['Marcadores'] : []), ...(st.soloOffline ? ['Sin conexión'] : []), ...[...st.estantes].map(k => labelEstante(k))].join(' · ') : ''; ce.innerHTML = nom ? `${esc(nom)}<button type="button" class="ce-x" id="ce-x" aria-label="Quitar filtro de estante">${icon('x', 12)}</button>` : ''; } }
     $('#conteo').textContent = `${lista.length} resultado${lista.length === 1 ? '' : 's'}`;
     if (!lista.length) {
       cont.innerHTML = !vis.length
@@ -1632,9 +1640,6 @@ function render() {
 function pintarPills() {
   const out = [];
   const pill = (t, v, txt) => `<button class="pill" data-t="${t}" data-v="${esc(v)}" aria-label="Quitar filtro ${esc(txt)}">${esc(txt)} ${icon('x', 13)}</button>`;
-  if (st.fav) out.push(pill('fav', '', 'Favoritos'));
-  if (st.soloMarcador) out.push(pill('marcador', '', 'Marcadores'));
-  if (st.soloOffline) out.push(pill('offline', '', 'Sin conexión'));
   st.fandoms.forEach(k => out.push(pill('fandom', k, labelDe('fandom', k))));
   st.ships.forEach(k => out.push(pill('ship', k, labelShip(k))));
   st.pubs.forEach(k => out.push(pill('pub', k, PUBS[k])));
@@ -1966,6 +1971,28 @@ $('#btn-vida').onclick = () => {
   if (st.secVida) st.secCol = false;
   render();
 };
+const PALETA = ['0', '1', '2', '3', '4', '5', '6', '7', '#e03131', '#f76707', '#f59f00', '#37b24d', '#868e96', '#343a40'];
+function cerrarPaleta() { const d = $('#paleta-est'); if (d) d.remove(); }
+function abrirPaleta(k) {
+  cerrarPaleta();
+  if (!prefs.estanteColores || typeof prefs.estanteColores !== 'object') prefs.estanteColores = {};
+  const lab = labelEstante(k), actual = String(prefs.estanteColores[k] ?? '');
+  const cc = colorEstante(lab), hex = /^#[0-9a-f]{6}$/i.test(cc) ? cc : (/^#[0-9a-f]{6}$/i.test(actual) ? actual : '#b5365f');
+  const d = document.createElement('div'); d.id = 'paleta-est'; d.className = 'paleta-ov';
+  d.innerHTML = `<div class="paleta" role="dialog" aria-label="Color del estante"><p class="paleta-t">Color de «${esc(lab)}»</p>
+    <div class="paleta-g">${PALETA.map(c => `<button type="button" class="sw${actual === c ? ' on' : ''}" data-c="${c}" style="background:${/^\d$/.test(c) ? `var(--f${c})` : c}" aria-label="Elegir color"></button>`).join('')}</div>
+    <div class="paleta-f"><label>Otro color <input type="color" id="paleta-in" value="${hex}"></label><button type="button" class="btn sec" data-c="auto">Automático</button><button type="button" class="btn sec" data-c="x">Listo</button></div></div>`;
+  document.body.appendChild(d);
+  const poner = c => { if (c === 'auto') delete prefs.estanteColores[k]; else prefs.estanteColores[k] = c; guardarPrefs(); render(); };
+  d.addEventListener('click', e => {
+    if (e.target === d) return cerrarPaleta();
+    const b = e.target.closest('[data-c]'); if (!b) return;
+    const c = b.dataset.c; if (c === 'x') return cerrarPaleta();
+    poner(c); cerrarPaleta();
+  });
+  $('#paleta-in').addEventListener('input', e => poner(e.target.value));
+  $('#paleta-in').addEventListener('change', () => cerrarPaleta());
+}
 $('#sec-colecciones').addEventListener('click', e => {
   const rn = e.target.closest('[data-shelf-ren]'), dl = e.target.closest('[data-shelf-del]');
   if (rn || dl) {
@@ -1985,18 +2012,7 @@ $('#sec-colecciones').addEventListener('click', e => {
     guardarPrefs(); guardarDB(); render(); return;
   }
   const colBtn = e.target.closest('[data-shelf-color]');
-  if (colBtn) {
-    e.stopPropagation(); vibrar();
-    const k = colBtn.dataset.shelfColor;
-    if (!prefs.estanteColores || typeof prefs.estanteColores !== 'object') prefs.estanteColores = {};
-    let cur = 0;
-    if (/^\d$/.test(String(prefs.estanteColores[k]))) cur = +prefs.estanteColores[k];
-    else { let h = 0; for (let i = 0; i < k.length; i++) h = (h * 33 + k.charCodeAt(i)) | 0; cur = Math.abs(h) % 8; }
-    const ci = document.createElement('input'); ci.type = 'color'; const cc = colorEstante(labelEstante(k)); ci.value = /^#[0-9a-f]{6}$/i.test(cc) ? cc : '#8b445c';
-    ci.style.cssText = 'position:fixed;opacity:0;pointer-events:none'; document.body.appendChild(ci);
-    ci.oninput = () => { prefs.estanteColores[k] = ci.value; guardarPrefs(); render(); }; ci.onchange = () => ci.remove(); ci.click();
-    return;
-  }
+  if (colBtn) { e.stopPropagation(); vibrar(); abrirPaleta(colBtn.dataset.shelfColor); return; }
   if (e.target.closest('#btn-new-shelf-top') || e.target.closest('[data-col="new"]')) {
     vibrar();
     const r = $('#col-new-row'); r.hidden = !r.hidden;
@@ -2024,6 +2040,10 @@ $('#sec-colecciones').addEventListener('click', e => {
   else if (act.startsWith('estado:')) st.estado = act.slice(7);
   st.secCol = false; st.secVida = false;
   render();
+});
+document.addEventListener('click', e => {
+  if (!e.target.closest('#ce-x')) return;
+  vibrar(); st.estantes.clear(); st.fav = false; st.soloMarcador = false; st.soloOffline = false; render();
 });
 $('#estante-bar').addEventListener('click', e => {
   if (e.target.closest('#btn-volver-estantes')) {
@@ -2558,9 +2578,9 @@ function rellenarFormDesdeMeta(r, fuenteLabel) {
     const palCalc = r.meta.palabras || (r.chapters ? r.chapters.reduce((a, c) => a + palabrasDe(c.h), 0) : 0);
     formMeta = normMeta(Object.assign({}, formMeta || {}, r.meta, { palabras: palCalc }));
     const m = formMeta;
-    if (m.fandoms && m.fandoms[0]) $('#f-fandom').value = m.fandoms[0];
+    if (m.fandoms && m.fandoms[0]) $('#f-fandom').value = canonFandom(m.fandoms[0]);
     if (m.ships && m.ships.length) {
-      formShips = [m.ships[0]];
+      formShips = [canonShip(m.ships[0])];
       $('#f-ship').value = '';
       pintarShips();
     }
@@ -2617,15 +2637,15 @@ function rellenarFormDesdeMeta(r, fuenteLabel) {
     const dets = [
       $('#f-titulo').value ? `<b>Título:</b> ${esc($('#f-titulo').value)}` : '',
       r.autor ? `<b>Autor:</b> ${esc(r.autor)}` : '',
-      m.fandoms && m.fandoms[0] ? `<b>Fandom:</b> ${esc(m.fandoms[0])}` : '',
-      m.ships && m.ships[0] ? `<b>Pareja:</b> ${esc(m.ships[0])}` : '',
+      m.fandoms && m.fandoms[0] ? `<b>Fandom:</b> ${esc(canonFandom(m.fandoms[0]))}${r.estimado && r.estimado.fandom ? ' (estimado)' : ''}` : '',
+      m.ships && m.ships[0] ? `<b>Pareja:</b> ${esc(canonShip(m.ships[0]))}${r.estimado && r.estimado.ship ? ' (estimado)' : ''}` : '',
       m.palabras ? `<b>Palabras:</b> ${m.palabras.toLocaleString('es')}` : '',
       capStr(m) ? `<b>Capítulos:</b> ${esc(capStr(m))}` : '',
       m.publicado ? `<b>Publicado:</b> ${esc(m.publicado)}` : '',
       m.actualizado ? `<b>Actualizado:</b> ${esc(m.actualizado)}` : ''
     ].filter(Boolean);
     stBox.hidden = false;
-    stBox.innerHTML = `<div style="color:var(--ok);font-weight:700;margin-bottom:4px">✓ Detectado desde ${esc(fuenteLabel)} · puedes editar cualquier dato abajo:</div>` +
+    stBox.innerHTML = `<div style="color:var(--ok);font-weight:700;margin-bottom:4px">✓ Detectado desde ${esc(fuenteLabel)} · revisa y edita lo que haga falta:</div>` +
       (dets.length ? `<div style="display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11.5px;color:var(--mute)">${dets.map(d => `<span>${d}</span>`).join('')}</div>` : '');
   }
 }
@@ -2735,17 +2755,31 @@ function mostrarDeteccion(url) {
   const p = detectarPlat(url), h = $('#url-hint');
   h.hidden = !p; if (p) h.textContent = 'Plataforma detectada: ' + PLATS[p];
 }
-const PROXIES = u => [`https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`, `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`, u];
-async function bajar(u, json) {
-  for (const ep of PROXIES(u)) {
+const PROXY_PROPIO = 'https://plain-cake-b7f5.aylin-millape.workers.dev/?url=';   // opcional y 100 % fiable: la URL de tu Cloudflare Worker, p. ej. 
+const PROXIES = u => [
+  ...(PROXY_PROPIO ? [PROXY_PROPIO + encodeURIComponent(u)] : []),
+  `https://corsproxy.io/?url=${encodeURIComponent(u)}`,
+  `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
+  `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`,
+  `https://thingproxy.freeboard.io/fetch/${u}`,
+  u
+];
+/* prueba todos los proxies a la vez y se queda con el primero que responda algo válido */
+async function bajar(u, json, valida) {
+  const intento = async ep => {
+    const c = new AbortController(), t = setTimeout(() => c.abort(), 10000);
     try {
-      const c = new AbortController(), t = setTimeout(() => c.abort(), 7000), r = await fetch(ep, { signal:c.signal }); clearTimeout(t);
-      if (!r.ok) continue; const x = await r.text(); if (!x) continue;
-      if (json) { try { return JSON.parse(x); } catch (e) { continue; } }
-      return x;
-    } catch (e) {}
-  }
-  return null;
+      const r = await fetch(ep, { signal:c.signal }); if (!r.ok) throw 0;
+      const x = await r.text(); if (!x) throw 0;
+      const v = json ? JSON.parse(x) : x;
+      if (valida ? !valida(v) : (!json && x.length < 300)) throw 0;
+      return v;
+    } finally { clearTimeout(t); }
+  };
+  return new Promise(ok => {
+    const eps = PROXIES(u); let fin = 0, listo = false;
+    eps.forEach(ep => intento(ep).then(v => { if (!listo) { listo = true; ok(v); } }, () => {}).finally(() => { if (++fin === eps.length && !listo) ok(null); }));
+  });
 }
 async function traerMeta(rawUrl) {
   const u = safeUrl(rawUrl); if (!u) return null; let m;
@@ -2758,10 +2792,32 @@ async function traerMeta(rawUrl) {
     const titulo = te ? te.textContent.trim() : ''; if (!titulo && !meta) return null;
     return { titulo, autor:[...new Set(au.map(a => a.textContent.trim()).filter(Boolean))].join(', '), url:`https://archiveofourown.org/works/${m[1]}`, meta, etiqueta:'AO3 #' + m[1] };
   }
-  if ((m = u.match(/wattpad\.com\/story\/(\d+)/i))) {
-    const j = await bajar(`https://www.wattpad.com/api/v3/stories/${m[1]}?fields=title,description,user(name),tags,numParts,createDate,modifyDate,completed,mature,language(name)`, true);
-    if (!j || !j.title) return null;
-    return { titulo:j.title, autor:(j.user && j.user.name) || '', url:`https://www.wattpad.com/story/${m[1]}`, etiqueta:'Wattpad', meta:{ rating:j.mature ? 'Mature' : '', tags:j.tags || [], capN:j.numParts || 0, capT:j.completed ? String(j.numParts || '') : '?', resumen:j.description || '', publicado:(j.createDate || '').slice(0, 10), actualizado:(j.modifyDate || '').slice(0, 10), idioma:(j.language && j.language.name) || '' } };
+  if (/wattpad\.com\/(?:story\/)?\d+/i.test(u)) {
+    let sid = (u.match(/wattpad\.com\/story\/(\d+)/i) || [])[1];
+    if (!sid) {                                             // enlace de un capítulo: se busca a qué historia pertenece
+      const pid = (u.match(/wattpad\.com\/(\d+)/i) || [])[1];
+      const p = pid && await bajar(`https://www.wattpad.com/api/v3/story_parts/${pid}?fields=group(id)`, true, j => j && j.group && j.group.id);
+      if (p) sid = String(p.group.id);
+    }
+    if (!sid) return null;
+    const enlace = `https://www.wattpad.com/story/${sid}`;
+    let r = null;
+    const j = await bajar(`https://www.wattpad.com/api/v3/stories/${sid}?fields=title,description,user(name),tags,numParts,createDate,modifyDate,completed,mature,language(name)`, true, x => x && x.title);
+    if (j) {
+      r = { titulo:j.title, autor:(j.user && j.user.name) || '', url:enlace, etiqueta:'Wattpad', meta:{ rating:j.mature ? 'Mature' : '', tags:j.tags || [], capN:j.numParts || 0, capT:j.completed ? String(j.numParts || '') : '?', resumen:j.description || '', publicado:(j.createDate || '').slice(0, 10), actualizado:(j.modifyDate || '').slice(0, 10), idioma:(j.language && j.language.name) || '' } };
+    } else {                                                // plan B: leer la página pública de la historia
+      const html = await bajar(enlace, false, x => /wattpad/i.test(x));
+      if (html) {
+        const d = new DOMParser().parseFromString(html, 'text/html'), og = p => ((d.querySelector(`meta[property="${p}"]`) || {}).content || '').trim();
+        const titulo = og('og:title').replace(/\s*[-–|]\s*(?:Wattpad|Read).*$/i, '').trim();
+        if (titulo) {
+          const g = re => (html.match(re) || [])[1] || '', n = +g(/"numParts":(\d+)/) || 0;
+          r = { titulo, autor:g(/"user":\{[^{}]*?"name":"([^"]+)"/), url:enlace, etiqueta:'Wattpad', meta:{ tags:[], capN:n, capT:g(/"completed":(true|false)/) === 'true' ? String(n) : '?', resumen:og('og:description') } };
+        }
+      }
+    }
+    if (r) { const fd = fandomPorNombre([...(r.meta.tags || []), r.titulo].join(' ')); if (fd) r.meta.fandoms = [fd]; }
+    return r;
   }
   if ((m = u.match(/fanfiction\.net\/s\/(\d+)/i))) {
     const html = await bajar(`https://www.fanfiction.net/s/${m[1]}`); if (!html) return null;
@@ -2785,14 +2841,14 @@ async function revisarActualizaciones(f) {
 async function detectarDesdeUrl(rawUrl, manualClick) {
   const u = safeUrl(rawUrl); if (!u) { if (manualClick) toast('Pega primero un enlace válido'); return; }
   const stBox = $('#auto-status');
-  if (!/archiveofourown\.org|wattpad\.com\/story|fanfiction\.net\/s\//i.test(u)) {
+  if (!/archiveofourown\.org|wattpad\.com\/(?:story\/)?\d+|fanfiction\.net\/s\//i.test(u)) {
     if (manualClick && stBox) { stBox.hidden = false; stBox.innerHTML = `Plataforma detectada: <b>${esc(PLATS[detectarPlat(u) || 'otro'])}</b>. Puedes subir el PDF o completar los datos abajo.`; }
     return;
   }
   if (stBox) { stBox.hidden = false; stBox.innerHTML = '⏳ Detectando información del enlace…'; }
   const r = await traerMeta(u);
   if (r) return rellenarFormDesdeMeta(r, r.etiqueta);
-  if (stBox) stBox.innerHTML = 'No pude leer ese enlace (el sitio puede bloquear la consulta). Sube el PDF arriba o completa los datos a mano.';
+  if (stBox) stBox.innerHTML = 'No pude leer ese enlace: los servicios gratuitos que uso para saltar el bloqueo del sitio no respondieron. Toca «Extraer» para reintentar, o sube el PDF arriba.';
 }
 
 function abrirForm(id) {
@@ -2841,7 +2897,7 @@ $('#f-url').addEventListener('input', e => {
   mostrarDeteccion(val);
   revisarDup();
   clearTimeout(urlDetectTimer);
-  if (/archiveofourown\.org\/(?:collections\/[^/]+\/)?works\/\d+|wattpad\.com\/story\/\d+|fanfiction\.net\/s\/\d+/i.test(val)) {
+  if (/archiveofourown\.org\/(?:collections\/[^/]+\/)?works\/\d+|wattpad\.com\/(?:story\/)?\d+|fanfiction\.net\/s\/\d+/i.test(val)) {
     urlDetectTimer = setTimeout(() => detectarDesdeUrl(val, false), 450);
   }
 });
@@ -3443,7 +3499,7 @@ function statsLinea(f) {
   const c = (f.capPub || f.capTot) ? `${f.capPub || f.capTot}/${f.capTot || '?'}` : capStr(m);
   if (c) b.push(`<span>Capítulo ${esc(c)}</span>`);
   if (t) b.push(`<span>${f.libro ? esc(f.libro.fmt.toUpperCase()) : 'PDF'}</span>`);
-  const pr = f.estado === 'leyendo' ? `<div class="g-prog"><i style="width:${parseInt(progPct(f)) || 3}%"></i></div>` : '';
+  const pr = `<div class="g-prog"><i style="width:${parseInt(progPct(f)) || (f.estado === 'leyendo' ? 3 : 0)}%"></i></div>`;
   return pr + (b.length ? `<div class="g-stats-line">${b.join('')}</div>` : '') + (t ? '<p class="g-off"><i></i>Sin conexión</p>' : '');
 }
 function metaMini(f) { return statsLinea(f); }
@@ -3602,6 +3658,157 @@ function ao3PdfMeta(rawPars, nombre) {
   return { titulo, autor, url, meta:m, bodyStart:origBodyIdx };
 }
 
+/* ── Detección genérica: sirve cuando el archivo NO trae la cabecera de AO3 (fandom, pareja, resumen, capítulos, autor…) ── */
+const FANDOMS_BASE = [
+  { n:'Harry Potter', k:['hogwarts','hogsmeade','gryffindor','slytherin','hufflepuff','ravenclaw','dumbledore','voldemort','quidditch','muggle','azkaban','snape','weasley','malfoy','hermione','mortifago','death eater','horrocrux','auror','gringotts'],
+    ch:[['Harry','harry'],['Hermione','hermione'],['Ron','ron'],['Draco','draco'],['Severus','severus','snape'],['Sirius','sirius'],['Remus','remus','lupin'],['James','james'],['Lily','lily'],['Albus','albus','dumbledore'],['Tom','riddle','voldemort'],['Lucius','lucius'],['Neville','neville'],['Ginny','ginny'],['Fred','fred'],['George','george'],['Peter','pettigrew'],['Narcissa','narcissa'],['Bellatrix','bellatrix'],['Regulus','regulus'],['Minerva','mcgonagall','minerva'],['Cedric','cedric'],['Blaise','blaise'],['Theo','theodore']] },
+  { n:'Marvel', k:['avengers','vengadores','wakanda','asgard','thanos','hydra','shield','tony stark','steve rogers','capitan america','captain america','iron man','spider-man','spiderman','hulk','mjolnir','infinity stone'],
+    ch:[['Tony','tony','stark'],['Steve','steve','rogers'],['Bucky','bucky','barnes'],['Loki','loki'],['Thor','thor'],['Natasha','natasha','romanoff'],['Clint','clint','barton'],['Bruce','bruce','banner'],['Peter','parker'],['Wanda','wanda'],['Stephen','strange'],['Wade','wade','deadpool'],['Pietro','pietro'],['Sam','falcon']] },
+  { n:'Rick and Morty', k:['morty','rick sanchez','summer smith','beth smith','jerry smith','portal gun','pistola de portales','birdperson','squanchy','schwifty','evil morty'],
+    ch:[['Rick','rick'],['Morty','morty'],['Summer','summer'],['Beth','beth'],['Jerry','jerry'],['Birdperson','birdperson'],['Squanchy','squanchy']] },
+  { n:'The Witcher', k:['geralt','jaskier','yennefer','kaer morhen','witcher','vesemir','toussaint','novigrad','cintra','rivia'],
+    ch:[['Geralt','geralt'],['Jaskier','jaskier','dandelion'],['Yennefer','yennefer'],['Ciri','ciri'],['Triss','triss'],['Vesemir','vesemir'],['Eskel','eskel'],['Lambert','lambert'],['Cahir','cahir'],['Regis','regis']] },
+  { n:'Supernatural', k:['winchester','castiel','crowley','impala','bobby singer','sam y dean','dean y sam','sam and dean'],
+    ch:[['Dean','dean'],['Sam','sam'],['Castiel','castiel','cas'],['Crowley','crowley'],['Bobby','bobby'],['Lucifer','lucifer']] }
+];
+const _junk = s => /^(untitled|sin t[ií]tulo|microsoft|document|documento|unknown|desconocid|anonymous|admin|user|usuario|pdf|word|print|calibre|libreoffice|writer|adobe)/i.test(s) || /\.(docx?|pdf|txt|html?|epub|odt)$/i.test(s);
+function _infoVal(s, max) { s = String(s || '').replace(/\s+/g, ' ').trim(); return s && s.length >= 3 && s.length <= (max || 150) && !_junk(s) ? s : ''; }
+function _igualFandom(a, b) { const x = norm(a).replace(/\s+-\s+.*$/, ''), y = norm(b).replace(/\s+-\s+.*$/, ''); return !!x && !!y && (x === y || x.startsWith(y + ' ') || y.startsWith(x + ' ')); }
+function _contar(T, freq, k) { if (/^[a-z0-9]+$/.test(k)) return freq.get(k) || 0; let n = 0, i = -1; while ((i = T.indexOf(k, i + 1)) !== -1) n++; return n; }
+
+/* fandom guardado que mejor coincide ("Harry Potter - J. K. Rowling" → "Harry Potter" si así lo tienes) */
+function canonFandom(nom) {
+  nom = String(nom || '').trim(); if (!nom) return '';
+  const base = nom.replace(/\s+-\s+.*$/, '').trim() || nom, cnt = new Map();
+  db.forEach(f => { if (f.fandom) cnt.set(f.fandom, (cnt.get(f.fandom) || 0) + 1); });
+  let best = null, bn = 0;
+  cnt.forEach((n, lab) => { if (_igualFandom(lab, nom) && n > bn) { best = lab; bn = n; } });
+  return best || base;
+}
+/* pareja guardada que mejor coincide ("Severus Snape/James Potter" → "James/Severus") */
+function canonShip(sh, buscar) {
+  sh = String(sh || '').trim(); if (!sh) return '';
+  const lados = x => String(x).split(/\s*(?:\/|&|×|\sx\s)\s*/i).map(t => norm(t).split(/[^a-z0-9]+/).filter(Boolean)).filter(a => a.length);
+  const coincide = (a, b) => a[0] === b[0] || (a.length === 1 && b.includes(a[0])) || (b.length === 1 && a.includes(b[0]));
+  const hit = (x, y) => (coincide(x[0], y[0]) && coincide(x[1], y[1])) || (coincide(x[0], y[1]) && coincide(x[1], y[0]));
+  const d = lados(sh); if (d.length < 2) return buscar ? '' : sh;
+  const cnt = new Map(); db.forEach(f => f.ships.forEach(x => cnt.set(x, (cnt.get(x) || 0) + 1)));
+  let best = null, bn = 0;
+  cnt.forEach((n, lab) => { const l = lados(lab); if (l.length >= 2 && hit(d, l) && n > bn) { best = lab; bn = n; } });
+  return buscar ? (best || '') : (best || sh);
+}
+/* fandoms conocidos: los de la lista base + los que ya tienes guardados */
+function candidatosFandom() {
+  const cands = FANDOMS_BASE.map(b => ({ n:b.n, k:b.k.map(norm), ch:b.ch, nv:0 }));
+  const stop = new Set(['and', 'the', 'universe', 'universo', 'saga', 'serie', 'series', 'cinematic', 'fandom']);
+  const vistos = new Map(); db.forEach(f => { if (f.fandom) vistos.set(f.fandom, (vistos.get(f.fandom) || 0) + 1); });
+  vistos.forEach((n, lab) => {
+    const c = cands.find(x => _igualFandom(x.n, lab));
+    if (c) { if (n > c.nv) { c.nv = n; c.n = lab; } return; }
+    const toks = norm(lab).replace(/\s+-\s+.*$/, '').split(/[^a-z0-9]+/).filter(w => w.length >= 4 && !stop.has(w));
+    if (toks.length) cands.push({ n:lab, k:toks, ch:[], nv:n });
+  });
+  return cands;
+}
+function fandomPorNombre(txt) {                       // p. ej. tags de Wattpad: "harrypotter", "drarry"…
+  const t = norm(txt).replace(/[^a-z0-9]+/g, ''); if (!t) return '';
+  const c = candidatosFandom().find(c => t.includes(norm(c.n).replace(/[^a-z0-9]+/g, '')) || c.k.some(k => k.length >= 6 && /^[a-z0-9]+$/.test(k) && t.includes(k)));
+  return c ? c.n : '';
+}
+
+/* r = resultado del lector (titulo, autor, meta, chapters…); pars = todos los párrafos del texto */
+function enriquecerGenerico(r, pars, info, nombre) {
+  pars = (pars || []).map(x => String(x).trim()).filter(Boolean);
+  const m = r.meta = r.meta || {}, est = r.estimado = {}, head = pars.slice(0, 50);
+  const lab = re => { for (const l of head) { const k = l.match(re); if (k) return k[1].trim(); } return ''; };
+  const lista = v => v.split(/\s*[,;]\s*/).map(x => x.trim()).filter(Boolean);
+
+  /* autor y enlace de la portada */
+  if (!r.autor) {
+    r.autor = _infoVal(info && info.Author, 80);
+    if (!r.autor) for (const l of head.slice(0, 25)) {
+      const k = l.match(/^(?:[Pp]or|[Bb]y)\s+([A-ZÁÉÍÓÚÑ@][^.!?]{1,60})$/) || l.match(/^(?:[Aa]utor(?:a)?|[Aa]uthor|[Ee]scrito por|[Ww]ritten by)\s*[:：]?\s+(.{2,70})$/);
+      if (k) { r.autor = k[1].trim(); break; }
+    }
+  }
+  if (!r.url) for (const l of head) { const u = l.match(/https?:\/\/(?:www\.)?(?:archiveofourown\.org\/works\/\d+|wattpad\.com\/story\/\d+|fanfiction\.net\/s\/\d+)/i); if (u) { r.url = u[0].replace(/^http:/i, 'https:'); break; } }
+
+  /* datos escritos en la portada: "Fandom:", "Pareja:", "Etiquetas:", "Capítulos:", "Sinopsis:" */
+  if (!(m.fandoms && m.fandoms.length)) { const v = lab(/^(?:fandoms?|universo)\s*[:：]\s*(.{2,120})$/i); if (v) m.fandoms = lista(v).slice(0, 3); }
+  if (!(m.ships && m.ships.length)) { const v = lab(/^(?:parejas?(?: principal(?:es)?)?|ships?|pairings?|relaci[oó]n(?:es)?|relationships?)\s*[:：]\s*(.{3,120})$/i); if (v) m.ships = lista(v).slice(0, 3); }
+  if (!(m.tags && m.tags.length)) { const v = lab(/^(?:etiquetas|tags|categor[ií]as)\s*[:：]\s*(.{3,300})$/i); if (v) m.tags = lista(v).slice(0, 30); }
+  if (!m.capN) { const v = lab(/^cap[ií]tulos?\s*[:：]\s*(\d+(?:\s*\/\s*(?:\d+|\?))?)$/i); if (v) { const [a, b] = v.split('/').map(x => x.trim()); m.capN = +a; m.capT = b || a; } }
+  if (!m.resumen) {
+    const i = head.findIndex(l => /^(?:sinopsis|resumen|summary|descripci[oó]n|description|synopsis|sumario)\s*[:：]?(?:\s|$)/i.test(l));
+    if (i >= 0) {
+      const prim = head[i].replace(/^[^:：\s]+\s*[:：]?\s*/, '').trim(), res = prim ? [prim] : [];
+      for (let j = i + 1; j < Math.min(pars.length, i + 7) && res.join(' ').length < 1500; j++) {
+        if (/^(?:cap[ií]tulo|chapter|notas?|notes?|advertencias?|warnings?|pr[oó]logo)\b/i.test(pars[j])) break;
+        res.push(pars[j]);
+      }
+      m.resumen = res.join('\n\n').slice(0, 1500);
+    }
+  }
+
+  /* capítulos: se cuentan los encabezados "Capítulo N" (el PDF es una copia completa: N/N) */
+  if (!m.capN && r.chapters) {
+    const nums = []; r.chapters.forEach(c => { const k = String(c.t || '').match(/^(?:chapter|cap[ií]tulo|cap\.?)\s*(\d{1,4})\b/i); if (k) nums.push(+k[1]); });
+    if (nums.length >= 2) { const mx = Math.max(...nums), tot = mx <= nums.length * 2 ? Math.max(mx, nums.length) : nums.length; m.capN = tot; m.capT = String(tot); }
+  }
+
+  /* estadísticas del texto */
+  const T = norm(pars.join(' ')).slice(0, 2500000), freq = new Map();
+  (T.match(/[a-z0-9]+/g) || []).forEach(w => freq.set(w, (freq.get(w) || 0) + 1));
+  if (!m.idioma) {
+    const g = ws => ws.reduce((a, w) => a + (freq.get(w) || 0), 0);
+    const es = g(['de', 'que', 'los', 'las', 'una', 'para', 'con', 'por', 'pero', 'como']), en = g(['the', 'and', 'was', 'that', 'with', 'her', 'his', 'you', 'for', 'she']);
+    if (es + en > 50) m.idioma = es >= en ? 'Español' : 'English';
+  }
+
+  /* fandom: por las palabras propias de cada universo */
+  const cands = candidatosFandom();
+  let fan = null;
+  if (m.fandoms && m.fandoms.length) fan = cands.find(c => _igualFandom(c.n, m.fandoms[0])) || null;
+  else {
+    cands.forEach(c => { c.tot = 0; c.dist = 0; c.k.forEach(k => { const n = _contar(T, freq, k); if (n) { c.dist++; c.tot += n; } }); });
+    const ord = cands.filter(c => c.dist >= Math.min(2, c.k.length) && c.tot >= 10).sort((a, b) => b.tot - a.tot);
+    if (ord.length) { fan = ord[0]; m.fandoms = [fan.n]; est.fandom = true; }
+  }
+
+  /* pareja: los dos personajes que más aparecen juntos (título y resumen pesan más) */
+  if (!(m.ships && m.ships.length)) {
+    const chars = [];
+    const addCh = (lab, al) => {
+      al = al.map(norm).filter(a => a.length >= 3); if (!al.length) return;
+      const ex = chars.find(c => c.al.some(a => al.includes(a)));
+      if (ex) al.forEach(a => { if (!ex.al.includes(a)) ex.al.push(a); }); else chars.push({ lab, al, n:0, ts:0 });
+    };
+    if (fan) fan.ch.forEach(c => addCh(c[0], c.slice(1)));
+    db.forEach(f => {
+      if (fan ? !_igualFandom(f.fandom, fan.n) : false) return;
+      f.ships.forEach(sh => String(sh).split(/\s*(?:\/|&|×)\s*/).forEach(side => { const w = norm(side).split(/[^a-z0-9]+/).filter(Boolean); if (w[0]) addCh(side.trim().split(/\s+/)[0], [w[0]]); }));
+    });
+    const TS = new Set(norm([r.titulo || nombre || '', m.resumen || ''].join(' ')).match(/[a-z0-9]+/g) || []);
+    chars.forEach(c => { c.n = c.al.reduce((a, w) => a + (freq.get(w) || 0), 0); c.ts = c.al.some(w => TS.has(w)) ? 1 : 0; });
+    const top = chars.filter(c => c.n >= 15 || (c.ts && c.n >= 5)).sort((a, b) => (b.n + b.ts * 300) - (a.n + a.ts * 300)).slice(0, 6);
+    if (top.length >= 2) {
+      const co = new Map();
+      pars.forEach(p => {
+        const toks = new Set(norm(p).match(/[a-z0-9]+/g) || []), pres = top.filter(c => c.al.some(w => toks.has(w)));
+        for (let i = 0; i < pres.length; i++) for (let j = i + 1; j < pres.length; j++) { const k = top.indexOf(pres[i]) + '-' + top.indexOf(pres[j]); co.set(k, (co.get(k) || 0) + 1); }
+      });
+      let mejor = null, ms = 0;
+      co.forEach((n, k) => {
+        const [i, j] = k.split('-').map(Number), a = top[i], b = top[j]; if (n < 8) return;
+        const guardada = !!canonShip(a.lab + '/' + b.lab, true);
+        const sc = n * (1 + 0.5 * (a.ts + b.ts)) * (guardada ? 1.25 : 1);
+        if (sc > ms) { ms = sc; mejor = [a, b]; }
+      });
+      if (mejor) { m.ships = [canonShip(mejor[0].lab + '/' + mejor[1].lab)]; est.ship = true; }
+    }
+  }
+}
+
 /* ── EPUB ── */
 async function cargarJSZip() {
   if (window.JSZip) return window.JSZip;
@@ -3622,6 +3829,7 @@ async function cargarPdfJs() {
 const PDF_FIN = /[.!?…"”’»)\]*_:;—–-]$/;
 async function parsePdf(buf, nombre, prog) {
   const lib = await cargarPdfJs(), pdf = await lib.getDocument({ data:new Uint8Array(buf) }).promise, paginas = [];
+  let info = {}; try { info = (await pdf.getMetadata()).info || {}; } catch (e) {}
   for (let n = 1; n <= pdf.numPages; n++) {
     const pg = await pdf.getPage(n), tc = await pg.getTextContent(), lineas = [];
     let cur = null;
@@ -3659,6 +3867,7 @@ async function parsePdf(buf, nombre, prog) {
       else ult.t = /[A-Za-zÁ-ú]-$/.test(ult.t) && /^[a-zá-ú]/.test(l.t) ? ult.t.slice(0, -1) + l.t : ult.t + ' ' + l.t;
     });
   });
+  const parsTodos = pars.map(p => p.t);
   const ao3 = ao3PdfMeta(pars, nombre);
   if (ao3 && ao3.bodyStart > 0 && ao3.bodyStart < pars.length - 1) pars = pars.slice(ao3.bodyStart);
   const palabras = pars.reduce((a, p) => a + (p.t.match(/\S+/g) || []).length, 0);
@@ -3676,8 +3885,10 @@ async function parsePdf(buf, nombre, prog) {
     pars.forEach(p => { acc.push(p); w += (p.t.match(/\S+/g) || []).length; if (w >= 6000) { chapters.push({ t:'Parte ' + (chapters.length + 1), h:html(acc) }); acc = []; w = 0; } });
     if (acc.length) chapters.push({ t:'Parte ' + (chapters.length + 1), h:html(acc) });
   }
-  const cleanTit = (ao3 && ao3.titulo) || String(nombre || '').replace(/\.pdf$/i, '').replace(/[_]+/g, ' ').trim();
-  return { titulo:cleanTit, autor:(ao3 && ao3.autor) || '', url:(ao3 && ao3.url) || '', meta:(ao3 && ao3.meta) || { palabras }, chapters:chapters.filter(c => txtDe(c.h)) };
+  const cleanTit = (ao3 && ao3.titulo) || _infoVal(info.Title) || String(nombre || '').replace(/\.pdf$/i, '').replace(/[_]+/g, ' ').trim();
+  const res = { titulo:cleanTit, autor:(ao3 && ao3.autor) || '', url:(ao3 && ao3.url) || '', meta:(ao3 && ao3.meta) || { palabras }, chapters:chapters.filter(c => txtDe(c.h)) };
+  try { enriquecerGenerico(res, parsTodos, info, nombre); } catch (e) { console.warn('Detección genérica:', e); }
+  return res;
 }
 async function parseEpub(buf) {
   const zip = await (await cargarJSZip()).loadAsync(buf);
@@ -3778,6 +3989,10 @@ async function parsear(ext, buf, nombre) {
   const r = ext === 'epub' ? await parseEpub(buf) : /^(mobi|azw3?)$/.test(ext) ? parseMobi(buf) : /^(x?html?)$/.test(ext) ? parseHtml(buf, nombre) : parseTxt(buf, nombre);
   if (!r.chapters.length) throw new Error('No encontré texto legible en el archivo');
   r.chapters.forEach((c, i) => { if (!c.t) c.t = 'Parte ' + (i + 1); });
+  try {
+    const ps = r.chapters.flatMap(c => String(c.h).split(/<\/p>|<br\s*\/?>|<\/h[1-6]>|<\/div>|<\/li>/i).map(txtDe).filter(Boolean));
+    enriquecerGenerico(r, ps, {}, nombre);
+  } catch (e) { console.warn('Detección genérica:', e); }
   return r;
 }
 
@@ -3793,8 +4008,8 @@ function aplicarMetaExtraida(f, r) {
   if (r.meta) {
     const m = normMeta(Object.assign({}, f.meta || {}, r.meta, { palabras:r.meta.palabras || (r.chapters ? r.chapters.reduce((a, c) => a + palabrasDe(c.h), 0) : 0) }));
     f.meta = m;
-    if (!f.fandom && m.fandoms[0]) f.fandom = m.fandoms[0];
-    if (!f.ships.length && m.ships.length) { f.ships = [m.ships[0]]; f.ship = m.ships[0]; }
+    if (!f.fandom && m.fandoms[0]) f.fandom = canonFandom(m.fandoms[0]);
+    if (!f.ships.length && m.ships.length) { f.ships = [canonShip(m.ships[0])]; f.ship = f.ships[0]; }
     if (!f.notas && m.resumen) f.notas = m.resumen;
     const sumTxt = f.notas || m.resumen || '';
     if (esTextoIngles(sumTxt)) {
