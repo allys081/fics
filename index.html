@@ -1466,7 +1466,7 @@ function cardHTML(f) {
       <div class="c-head">
         <div class="c-titles">
           <h3 class="c-title">${esc(f.titulo)}</h3>
-          <p class="c-by">${f.autor ? `<span>por <b style="color:var(--ink)">${esc(f.autor)}</b></span>` : ''}${platPill(f)}${adultoTag(f)}${respTags(f)}${f.leido ? `<span class="fan">leído ${esc(f.leido)}</span>` : ''}</p>
+          <p class="c-by">${platPill(f)}${adultoTag(f)}${respTags(f)}${f.leido ? `<span class="fan">leído ${esc(f.leido)}</span>` : ''}</p>
         </div>
         <div class="c-btns">
           <div class="g-side"><button class="cbtn fav" data-act="fav" aria-pressed="${f.fav === 'si'}" aria-label="${f.fav === 'si' ? 'Quitar de favoritos' : 'Marcar como favorito'}" style="${f.fav === 'si' ? '' : 'color:var(--mute)'}">${icon('heart', 19, f.fav === 'si')}</button>${f.rating ? `<span class="g-rate">★${f.rating}</span>` : ''}</div>
@@ -1519,7 +1519,6 @@ function gridHTML(f) {
           <h3 class="g-title">${esc(f.titulo)}</h3>
           <div class="g-side"><button class="cbtn fav" data-act="fav" aria-pressed="${f.fav === 'si'}" aria-label="${f.fav === 'si' ? 'Quitar de favoritos' : 'Marcar como favorito'}" style="${f.fav === 'si' ? '' : 'color:var(--mute)'}">${icon('heart', 18, f.fav === 'si')}</button>${f.rating ? `<span class="g-rate">★${f.rating}</span>` : ''}</div>
         </div>
-        ${f.autor ? `<p class="g-by">por <b>${esc(f.autor)}</b></p>` : ''}
         ${f.ships.length ? `<p class="g-ship">${shipChip(f, 2)}</p>` : ''}
         ${f.fandom ? `<p class="g-fan"><span>${esc(f.fandom)}</span></p>` : ''}
         ${serieTxt ? `<p class="g-serie">Serie: <b>${esc(serieTxt)}</b></p>` : ''}
@@ -2755,7 +2754,7 @@ function mostrarDeteccion(url) {
   const p = detectarPlat(url), h = $('#url-hint');
   h.hidden = !p; if (p) h.textContent = 'Plataforma detectada: ' + PLATS[p];
 }
-const PROXY_PROPIO = 'https://plain-cake-b7f5.aylin-millape.workers.dev/?url=';   // opcional y 100 % fiable: la URL de tu Cloudflare Worker, p. ej. 
+const PROXY_PROPIO = 'https://plain-cake-b7f5.aylin-millape.workers.dev/?url=';   // opcional y 100 % fiable: la URL de tu Cloudflare Worker, p. ej. 'https://mi-proxy.usuario.workers.dev/?url='
 const PROXIES = u => [
   ...(PROXY_PROPIO ? [PROXY_PROPIO + encodeURIComponent(u)] : []),
   `https://corsproxy.io/?url=${encodeURIComponent(u)}`,
