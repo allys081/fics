@@ -746,6 +746,26 @@ body.dropping::after{content:'Suelta aquí tus EPUB, MOBI, AZW3, TXT, HTML o PDF
 .tools{margin:8px 0 6px}.listhead{margin-bottom:6px}
 .shelf-mini{width:22px;height:22px;border-radius:7px;font-size:12px;display:grid;place-items:center;color:var(--mute)}
 .card[draggable=true]{cursor:grab}
+
+#vista-info{position:fixed;inset:0;z-index:300;overflow-y:auto;background:var(--bg);color:var(--ink)}
+#vista-info[hidden]{display:none}
+.iv-top{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:calc(env(safe-area-inset-top) + 10px) 16px 10px;background:var(--acc);color:var(--on-acc)}
+.iv-top .brand .logo,.iv-top .brand span{color:var(--on-acc)}
+.iv-top .btn{height:38px;padding:0 14px;font-size:13px;background:transparent;color:var(--on-acc);border:1px solid color-mix(in srgb,var(--on-acc) 55%,transparent);border-radius:10px}
+.iv-main{max-width:640px;margin:0 auto;padding:22px 16px calc(40px + env(safe-area-inset-bottom))}
+.iv-main h2{font-family:var(--serif);font-size:28px;line-height:1.15;margin-bottom:12px}
+.iv-intro{margin-bottom:18px;line-height:1.55;font-size:15px}
+.ic{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 16px;margin-bottom:14px}
+.ic h3{font-family:var(--serif);font-size:20px;margin-bottom:10px}
+.ic .sub{color:var(--mute);font-size:13px;margin-bottom:8px}
+.ic h4{font-size:12.5px;color:var(--mute);font-weight:600;margin:16px 0 4px}
+.ic ul{padding-left:20px}.ic li{margin:8px 0;line-height:1.5;font-size:14.5px}.ic p{line-height:1.55;font-size:14.5px}
+.ic details{border-top:1px solid var(--line)}
+.ic summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:12px;padding:13px 2px;font-weight:600;font-size:14.5px}
+.ic summary::-webkit-details-marker{display:none}
+.ic summary::after{content:"+";color:var(--mute);font-size:18px;line-height:1}
+.ic details[open] summary::after{content:"–"}
+.ic .ab{padding:0 2px 14px;line-height:1.55;font-size:14.5px}.ic .ab ol{padding-left:20px}
 </style>
 </head>
 <body>
@@ -840,46 +860,16 @@ body.dropping::after{content:'Suelta aquí tus EPUB, MOBI, AZW3, TXT, HTML o PDF
 <div class="toast" id="toast" role="status" aria-live="polite"><span id="toast-msg"></span><button id="toast-btn" hidden></button></div>
 
 
-<!-- Hoja: cómo funciona y privacidad -->
-<div class="overlay" id="sheet-info" aria-hidden="true">
-  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="info-h" style="max-height:92vh;overflow:auto">
-    <h2 id="info-h">Cómo funciona Mis Fanfics y privacidad</h2>
-    <p>Mis Fanfics es tu biblioteca personal de fanfics. Pegas el enlace de una obra (AO3, Wattpad, FanFiction.net) o subes archivos que ya tengas, y la app organiza título, autor, pareja, etiquetas y resumen, y te deja leerlos aquí mismo, incluso sin internet. Es una herramienta personal y no oficial: no está afiliada a AO3 ni a la Organización para Obras Transformativas (OTW) y no reemplaza a AO3.</p>
-    <h3>¿Qué sucede cuando agregas un enlace?</h3>
-    <ul>
-      <li>Tu navegador pide la página de la obra a través de <b>tu propio Worker de Cloudflare</b> (ya no se usan proxies públicos). Ese Worker ve el enlace que pegaste.</li>
-      <li>Solo se leen los datos públicos de la obra. La historia completa no se descarga: para leer sin conexión subes el archivo.</li>
-      <li>Si el resumen está en inglés, ese texto se envía a Google Translate para traducirlo.</li>
-      <li>No hay servidor propio que guarde tus datos ni cuentas de usuario.</li>
-    </ul>
-    <h3>Dónde se almacena tu biblioteca</h3>
-    <ul>
-      <li>Todo (fics, estantes, favoritos, notas, progreso, configuración y tus PDF/EPUB) se guarda <b>únicamente en este navegador, en este dispositivo</b>.</li>
-      <li>Borrar los datos del navegador para este sitio elimina tu biblioteca. Usa ⋮ → Ajustes → Respaldar.</li>
-      <li>Tu respaldo .json incluye los archivos que subiste y las marcas +18. Guárdalo en un lugar privado.</li>
-    </ul>
-    <h3>Qué sale de tu navegador</h3>
-    <ul>
-      <li>Extraer desde un enlace: el enlace va a tu Worker y a AO3/Wattpad/FanFiction.net.</li>
-      <li>Traducir un resumen: el texto va a Google Translate.</li>
-      <li>Al cargar: fuentes de Google Fonts y, al abrir un EPUB/PDF, las librerías JSZip, pdf.js y DOMPurify desde cdnjs.cloudflare.com.</li>
-      <li>No hay analíticas ni cookies de seguimiento.</li>
-    </ul>
-    <h3>Sobre los autores y su obra</h3>
-    <ul>
-      <li>Mis Fanfics no aloja, recopila ni comparte los fanfics de nadie.</li>
-      <li>Respeta los deseos de los autores sobre descargar y compartir su trabajo. Si quieres apoyar a AO3, dona a la <a href="https://donate.transformativeworks.org/" target="_blank" rel="noopener noreferrer">OTW</a>.</li>
-    </ul>
-    <h3>Seguridad</h3>
-    <ul>
-      <li>El texto de EPUB, HTML y MOBI se limpia con un filtro propio y con DOMPurify, y la página usa una política de seguridad (CSP) que bloquea scripts ajenos.</li>
-      <li>Los archivos de más de 40 MB se rechazan. Sube solo archivos de fuentes de confianza.</li>
-      <li>El modo +18 oculta o difumina en pantalla, pero no cifra.</li>
-    </ul>
-    <h3>Cómo se hizo</h3>
-    <p>La idea, el diseño y las funciones son responsabilidad de su creadora, con inspiración en FicShelf. Parte del código se escribió con ayuda de inteligencia artificial. Usa pdf.js (Mozilla, Apache 2.0), JSZip (MIT / GPLv3) y DOMPurify (Apache 2.0 / MPL 2.0).</p>
-    <div class="acts"><button class="btn" id="info-cerrar" type="button">← Volver a Mis Fanfics</button></div>
-  </div>
+<!-- Página: cómo funciona y privacidad -->
+<div id="vista-info" hidden>
+  <header class="iv-top"><div class="brand"><svg class="logo" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 40c-4-4-12-5-19-3V19c7-2 15-1 19 3 4-4 12-5 19-3v18c-7-2-15-1-19 3z"/><path d="M24 22v18"/><path d="M24 18c-2-4 2-6 0-10"/><path d="M24 2.5l1.1 2.6 2.6 1.1-2.6 1.1-1.1 2.6-1.1-2.6-2.6-1.1 2.6-1.1z" fill="currentColor" stroke-width="1"/><path d="M35 9l.8 1.8 1.8.8-1.8.8-.8 1.8-.8-1.8-1.8-.8 1.8-.8z" fill="currentColor" stroke-width=".8"/><path d="M13 11l.8 1.8 1.8.8-1.8.8-.8 1.8-.8-1.8-1.8-.8 1.8-.8z" fill="currentColor" stroke-width=".8"/><circle cx="31" cy="16" r="1" fill="currentColor" stroke="none"/></svg><h1 style="font-size:22px"><span>Mis Fanfics</span></h1></div><button type="button" class="btn sec" id="info-cerrar">← Volver a Mis Fanfics</button></header>
+  <main class="iv-main">
+    <h2>Cómo funciona Mis Fanfics y privacidad</h2>
+    <p class="iv-intro">Mis Fanfics es una pequeña herramienta personal. Pegas el enlace de una obra (AO3, Wattpad, FanFiction.net) o subes archivos que ya tengas, y la app organiza título, autor, pareja, etiquetas y resumen, y te deja leerlos aquí mismo, incluso sin internet. Es una herramienta no oficial y no está afiliada a AO3 ni a la Organización para Obras Transformativas (OTW). No reemplaza a AO3.</p>
+    <section class="ic"><h3>¿Cómo hago…?</h3><p class="sub">Pulsa una pregunta para ver la respuesta.</p><h4>Agregar fanfics</h4><details open><summary>Agregar un fic desde un enlace</summary><div class="ab"><ol><li>Pulsa <b>+ Agregar</b>.</li><li>Pega el enlace y pulsa <b>Extraer</b>.</li><li>Revisa los datos y pulsa <b>Guardar fanfic</b>.</li></ol></div></details><details><summary>Subir fanfics desde mi dispositivo</summary><div class="ab">Pulsa el icono de subir (arriba) o arrastra tus archivos EPUB, MOBI, AZW3, TXT, HTML o PDF a la página.</div></details><details><summary>Ver capítulos nuevos</summary><div class="ab">Abre la ficha del fic y pulsa <b>Buscar capítulos nuevos</b>. Aparecerá una insignia «+N cap. nuevos».</div></details><h4>Detalles del fic</h4><details><summary>Corregir un título, autor o etiquetas</summary><div class="ab">Ficha → ⋯ → Detalles de edición.</div></details><details><summary>Marcar un fic como Para leer, Leyendo o Terminado</summary><div class="ab">Toca la pastilla de estado en la tarjeta, o usa <b>Estado ▾</b> en la ficha.</div></details><details><summary>Calificar un fanfic</summary><div class="ab">En la ficha, toca las estrellas (1 a 5). Tocar la misma estrella la quita.</div></details><h4>Estantes</h4><details><summary>Crear, renombrar o eliminar un estante</summary><div class="ab">Estantes → + Nuevo estante. Con ✎ renombras y con ✕ eliminas (los fics no se borran). El punto de color cambia su color.</div></details><details><summary>Poner un fic en un estante</summary><div class="ab">Ficha → Estantes ▾ → marca los que quieras.</div></details><details><summary>¿Cuál es la diferencia entre Estado y estante?</summary><div class="ab">El estado dice en qué punto de la lectura vas (uno por fic). Un estante es una carpeta tuya (un fic puede estar en varios).</div></details><h4>Eliminar y ocultar</h4><details><summary>Eliminar un fic</summary><div class="ab">Ficha → ⋯ → Eliminar de la biblioteca. Tienes unos segundos para pulsar <b>Deshacer</b>.</div></details><details><summary>Ocultar fics +18</summary><div class="ab">Toca el ojo arriba, o en Ajustes elige Ocultar, Difuminar o Mostrar.</div></details><h4>Guardar y trasladar tu biblioteca</h4><details><summary>Leer sin conexión</summary><div class="ab">Sube el archivo del fic. Quedará guardado en este navegador y podrás usar el botón Leer sin internet.</div></details><details><summary>Copia de seguridad o cambio de dispositivo</summary><div class="ab">⋮ → Ajustes → <b>Respaldar</b> descarga un .json. En el otro dispositivo usa <b>Cargar</b>.</div></details></section>
+    <section class="ic"><h3>¿Qué sucede cuando agregas un enlace?</h3><ul><li>Tu navegador pide la página de la obra a través de <b>tu propio Worker de Cloudflare</b> (ya no se usan proxies públicos). Ese Worker ve el enlace que pegaste.</li><li>Solo se leen los datos públicos de la obra. La historia completa no se descarga: para leer sin conexión subes el archivo.</li><li>Si el resumen está en inglés, ese texto se envía a Google Translate para traducirlo.</li><li>Mis Fanfics no tiene servidor propio que guarde tus datos ni cuentas de usuario.</li></ul></section><section class="ic"><h3>Dónde se almacena tu biblioteca</h3><ul><li>Todo (fics, estantes, favoritos, notas, progreso, configuración y tus PDF/EPUB) se guarda <b>únicamente en este navegador, en este dispositivo</b>.</li><li>No se sube nada a nadie, incluidos los archivos que subes.</li><li>Borrar los datos del navegador para este sitio elimina tu biblioteca. Usa Ajustes → Respaldar para tener una copia o pasarla a otro dispositivo.</li><li>Tu respaldo .json incluye los archivos que subiste y las marcas +18. Guárdalo en un lugar privado.</li></ul></section><section class="ic"><h3>Qué sale de tu navegador</h3><ul><li>Al extraer desde un enlace: el enlace va a tu Worker y a AO3/Wattpad/FanFiction.net.</li><li>Al traducir un resumen: el texto va a Google Translate.</li><li>Al cargar: fuentes de Google Fonts y, desde cdnjs.cloudflare.com, las librerías DOMPurify, JSZip y pdf.js.</li><li>No hay analíticas, cookies de seguimiento ni formularios de contacto.</li></ul></section><section class="ic"><h3>Sobre los autores y su obra</h3><ul><li>Mis Fanfics no aloja, recopila ni comparte los fanfics de nadie, y no tiene forma de publicarlos.</li><li>Por favor, respeta los deseos de los autores respecto a descargar y compartir su trabajo.</li><li>Cuando un fic viene de AO3, la ficha enlaza de vuelta a la obra original.</li><li>Si quieres apoyar a AO3, el mejor lugar es la <a href="https://donate.transformativeworks.org/" target="_blank" rel="noopener noreferrer">página de donaciones de la OTW</a>.</li></ul></section><section class="ic"><h3>Seguridad</h3><ul><li>El texto de EPUB, HTML y MOBI se limpia con un filtro propio y con DOMPurify, y la página usa una política de seguridad (CSP) que bloquea scripts ajenos.</li><li>Los archivos de más de 40 MB se rechazan en vez de bloquear el navegador.</li><li>El modo +18 oculta o difumina en pantalla, pero no cifra: cualquiera con acceso a tu navegador podría volver a mostrarlo.</li><li>Sube solo archivos de fuentes en las que confíes.</li></ul></section><section class="ic"><h3>Cómo se hizo</h3><p>La idea, el diseño y las funciones de Mis Fanfics son responsabilidad de su creadora, con inspiración en FicShelf. Parte del código se escribió con ayuda de inteligencia artificial. Usa los proyectos de código abierto <b>pdf.js</b> de Mozilla (Apache 2.0), <b>JSZip</b> (MIT / GPLv3) y <b>DOMPurify</b> de Cure53 (Apache 2.0 / MPL 2.0).</p></section>
+    <p style="text-align:center;margin:18px 0"><button type="button" class="btn primary" id="info-cerrar2">← Volver a Mis Fanfics</button></p>
+  </main>
 </div>
 
 <!-- Hoja: agregar / editar -->
@@ -4439,8 +4429,12 @@ addEventListener('pagehide', guardarPos);
 
 
 /* ── info/privacidad, recordatorio de respaldo y aviso de espacio ── */
-$('#link-info').onclick = e => { e.preventDefault(); abrirHoja('sheet-info'); };
-$('#info-cerrar').onclick = () => cerrarHoja();
+const vInfo = $('#vista-info');
+const syncInfo = () => { const on = location.hash === '#info'; vInfo.hidden = !on; document.body.style.overflow = on ? 'hidden' : ''; if (on) vInfo.scrollTop = 0; };
+$('#link-info').onclick = e => { e.preventDefault(); location.hash = 'info'; };
+const cerrarInfo = () => { if (location.hash === '#info') history.back(); else syncInfo(); };
+$('#info-cerrar').onclick = $('#info-cerrar2').onclick = () => { if (history.length > 1) history.back(); else { location.hash = ''; syncInfo(); } };
+window.addEventListener('hashchange', syncInfo); syncInfo();
 setTimeout(() => {
   try {
     const ult = leer(BKEY, null), dias = ult ? (Date.now() - new Date(ult)) / 864e5 : 999;
